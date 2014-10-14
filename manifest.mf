@@ -1,1 +1,1 @@
-Main-Class: Haupt
+Main-Class: PetriNetEditor

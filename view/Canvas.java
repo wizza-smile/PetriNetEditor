@@ -1,5 +1,11 @@
 package view;
 
+
+import model.*;
+import view.figures.*;
+import controller.*;
+
+
 import java.util.*;
 
 import java.awt.*;
@@ -8,9 +14,7 @@ import java.awt.geom.Point2D;
 
 import javax.swing.*;
 
-import view.figures.*;
 
-import model.Global;
 
 // import model.Arc;
 // import model.InputArc;
@@ -36,10 +40,9 @@ import model.Global;
 
 public class Canvas extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
 
+    CanvasController canvas_controller;
+    private MainWindow main_window;
 
-    private PetriNetEditor pne;
-    // /** Figures that are painted and represent the Petri Net */
-    private HashMap figures = new HashMap();
     // /** An arc Figure*/
     private AbstractArcFigure arcFigure;
     // /** The background grid*/
@@ -48,25 +51,16 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     private boolean enabledGrid = true;
 
     // /** Creates new form Canvas */
-    public Canvas(PetriNetEditor pne) {
-        this.pne = pne;
+    public Canvas(MainWindow main_window) {
+        this.main_window = main_window;
+        canvas_controller = main_window.global_controller.getCanvasController();
+
         this.setOpaque(false);
         this.addMouseListener(this);
-
-        // javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        // this.setLayout(layout);
-        // layout.setHorizontalGroup(
-        //     layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 400, Short.MAX_VALUE)
-        // );
-        // layout.setVerticalGroup(
-        //     layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 300, Short.MAX_VALUE)
-        // );
-
-
     }
 
-    // @Override
     /** Method that paints all the figures and the grid*/
+    @Override
     public void paintComponent(Graphics graphics) {
         java.awt.Graphics2D g2 = (java.awt.Graphics2D) graphics;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -78,35 +72,35 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
 
         // Draw Net Objects Places, Transitions and Arcs
-        Iterator it = figures.values().iterator();
-        while (it.hasNext()) {
-            AbstractFigure element = (AbstractFigure) it.next();
-            element.draw(g2);
-        }
+        // Iterator it = figures.values().iterator();
+        // while (it.hasNext()) {
+        //     AbstractFigure element = (AbstractFigure) it.next();
+        //     element.draw(g2);
+        // }
 
-        if (arcFigure != null) {
-            arcFigure.draw(g2);
-        }
+        // if (arcFigure != null) {
+        //     arcFigure.draw(g2);
+        // }
 
         // selectionManager.updateBounds();
 
 
-        pne.setStatusBarText("PAINT ");
+        ///main_window.setStatusBarText("PAINT ");
     }
 
 
 
     public void mouseClicked(MouseEvent e) {
-        // pne.setStatusBarText("MOUSE CLICKED");
+        // main_window.setStatusBarText("MOUSE CLICKED");
     }
 
     public void mousePressed(MouseEvent e) {
-      addFigure(Global.PLACEMODE);//, snapPointToGrid(e.getPoint())
-      pne.setStatusBarText("addFigure");
+      canvas_controller.addFigure(Global.PLACEMODE);//, snapPointToGrid(e.getPoint())
+      main_window.setStatusBarText("addFigure");
         // switch (Global.mode) {
         //     case Global.PLACEMODE:
         //         addFigure(Global.PLACEMODE);//, snapPointToGrid(e.getPoint())
-        //         pne.setStatusBarText("addFigure");
+        //         main_window.setStatusBarText("addFigure");
         //         break;
         //     // case Global.TRANSITIONMODE:
         //     //     addFigure(Global.TRANSITIONMODE, snapPointToGrid(e.getPoint()));
@@ -119,6 +113,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         //         break;
         // }
         repaint();
+        main_window.setStatusBarText("MOUSE Pressed " + e.getY());
     }
 
     public void mouseReleased(MouseEvent e) {
@@ -134,7 +129,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     }
 
     public void mouseMoved(MouseEvent e) {
-        pne.setStatusBarText("MOUSE MOVED");
+        main_window.setStatusBarText("MOUSE MOVED");
     }
 
     public void mouseWheelMoved(MouseWheelEvent e) {
@@ -209,56 +204,6 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     //     }
     // }
 
-    /** Adds a figure to the canvas and to the PetriNet model*/
-    public void addFigure(int element) {//, Point2D position
-        switch (element) {
-            case Global.PLACEMODE:
-                // Place place = new Place();
-                // Global.petriNet.addPlace(place);
-                String placeId = "ONE";
-                PlaceFigure placeFigure = new PlaceFigure(placeId, new Point2D.Double(100, 100));//place.getId(), position
-                figures.put(placeId, placeFigure);//place.getId()
-                figures.put(placeId + "label", placeFigure.getLabel());
-                break;
-            // case Global.TRANSITIONMODE:
-            //     Transition transition = new Transition();
-            //     Global.petriNet.addTransition(transition);
-            //     TransitionFigure transitionFigure = new TransitionFigure(transition.getId(), position);
-            //     figures.put(transition.getId(), transitionFigure);
-            //     figures.put(transition.getId() + "label", transitionFigure.getLabel());
-            //     break;
-            // case Global.NORMALARCMODE:
-            //     AbstractFigure start = arcFigure.getStartConnector();
-            //     AbstractFigure end = arcFigure.getEndConnector();
-            //     String id;
-            //     if (Global.petriNet.getNetElement(start.getElementId()) instanceof Place) {
-            //         Place p = (Place) Global.petriNet.getNetElement(start.getElementId());
-            //         Transition t = (Transition) Global.petriNet.getNetElement(end.getElementId());
-            //         InputArc arc = new InputArc(p, t);
-            //         Global.petriNet.addInputArc(arc);
-            //         id = arc.getId();
-            //     } else {
-            //         Place p = (Place) Global.petriNet.getNetElement(end.getElementId());
-            //         Transition t = (Transition) Global.petriNet.getNetElement(start.getElementId());
-            //         OutputArc arc = new OutputArc(p, t);
-            //         Global.petriNet.addOutputArc(arc);
-            //         id = arc.getId();
-            //     }
-            //     figures.put(id, arcFigure);
-            //     arcFigure.setElementId(id);
-            //     Iterator it = arcFigure.getPoints().iterator();
-            //     int i = 0;
-            //     while (it.hasNext()) {
-            //         PathPoint pathPoint = (PathPoint) it.next();
-            //         if (i != 0 && i != arcFigure.getPoints().size() - 1) {
-            //             pathPoint.setElementId(arcFigure.getElementId() + "_pathpoint_" + i);
-            //             figures.put(pathPoint.getElementId(), pathPoint);
-            //         }
-            //         i++;
-            //     }
-            //     break;
-        }
-    }
 
     // /** Remove a figure from both the canvas and the PetriNet*/
     // public void removeFigure(AbstractFigure figure) {

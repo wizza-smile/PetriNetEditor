@@ -1,5 +1,7 @@
 package view;
 
+import controller.*;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -8,7 +10,9 @@ import javax.swing.border.*;
 import javax.swing.JToolBar.*;
 
 
-public class PetriNetEditor extends JFrame {//implements Scrollable
+public class MainWindow extends JFrame {//implements Scrollable
+
+    GlobalController global_controller;
 
     Color editorBackgroundColor = new Color(224, 224, 255);
 
@@ -17,10 +21,9 @@ public class PetriNetEditor extends JFrame {//implements Scrollable
     Canvas canvas;
     JScrollPane jScrollPane;
 
-    public PetriNetEditor() {
-
+    public MainWindow(GlobalController gctrl) {
+        this.global_controller = gctrl;
         initview();
-
     }
 
     private void initview() {
