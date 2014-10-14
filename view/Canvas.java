@@ -1,41 +1,29 @@
-package gui;
+package view;
 
 import java.util.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Point2D;
 
 import javax.swing.*;
 
-import gui.figures.AbstractArcFigure;
-import gui.figures.PlaceFigure;
-import gui.figures.TransitionFigure;
-import gui.figures.AbstractFigure;
-import gui.figures.NormalArcFigure;
-import gui.figures.PathPoint;
+import view.figures.*;
 
-// import java.awt.event.KeyEvent;
-// import java.awt.event.KeyListener;
-// import java.awt.event.MouseEvent;
-// import java.awt.event.MouseListener;
-// import java.awt.event.MouseMotionListener;
-// import java.awt.event.MouseWheelEvent;
-// import java.awt.event.MouseWheelListener;
+import model.Global;
 
-// import business.Arc;
-import business.Global;
-// import business.InputArc;
-// import business.NetObject;
-// import business.OutputArc;
-// import business.Place;
-// import business.Simulation;
-// import business.Transition;
+// import model.Arc;
+// import model.InputArc;
+// import model.NetObject;
+// import model.OutputArc;
+// import model.Place;
+// import model.Simulation;
+// import model.Transition;
 //
 // import java.awt.Color;
 // import java.awt.Graphics2D;
 // import java.awt.HeadlessException;
 // import java.awt.RenderingHints;
-import java.awt.geom.Point2D;
 // import java.awt.image.BufferedImage;
 // import java.util.ArrayList;
 // import java.util.HashMap;
@@ -164,7 +152,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
 
     // /** Creates new form Canvas */
-    // public Canvas(GUI window) {
+    // public Canvas(view window) {
     //     initComponents();
     // }
 

@@ -1,9 +1,9 @@
-/* Copyright Guillem Catala. www.guillemcatala.com/petrinetsim. Licensed http://creativecommons.org/licenses/by-nc-sa/3.0/ */
-package business;
+/* Copyright viewllem Catala. www.viewllemcatala.com/petrinetsim. Licensed http://creativecommons.org/licenses/by-nc-sa/3.0/ */
+package model;
 
 /**
  *
- * @author Guillem
+ * @author viewllem
  */
 public class Global {
 

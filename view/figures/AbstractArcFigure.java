@@ -1,5 +1,5 @@
-/* Copyright Guillem Catala. www.guillemcatala.com/petrinetsim. Licensed http://creativecommons.org/licenses/by-nc-sa/3.0/ */
-package gui.figures;
+/* Copyright viewllem Catala. www.viewllemcatala.com/petrinetsim. Licensed http://creativecommons.org/licenses/by-nc-sa/3.0/ */
+package view.figures;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -10,11 +10,11 @@ import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
-import gui.Grid;
+import view.Grid;
 
 /**
  *
- * @author Guillem
+ * @author viewllem
  */
 public abstract class AbstractArcFigure extends AbstractFigure implements ConnectionFigure {
 

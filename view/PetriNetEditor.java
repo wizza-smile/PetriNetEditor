@@ -1,4 +1,4 @@
-package gui;
+package view;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -19,11 +19,11 @@ public class PetriNetEditor extends JFrame {//implements Scrollable
 
     public PetriNetEditor() {
 
-        initGUI();
+        initview();
 
     }
 
-    private void initGUI() {
+    private void initview() {
         this.setTitle("PetriNetEditor");
         this.setSize(800, 600);
         this.setMinimumSize(new Dimension(400, 400));

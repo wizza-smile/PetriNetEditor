@@ -1,5 +1,5 @@
-/* Copyright Guillem Catala. www.guillemcatala.com/petrinetsim. Licensed http://creativecommons.org/licenses/by-nc-sa/3.0/ */
-package gui;
+/* Copyright viewllem Catala. www.viewllemcatala.com/petrinetsim. Licensed http://creativecommons.org/licenses/by-nc-sa/3.0/ */
+package view;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -7,7 +7,7 @@ import java.awt.geom.GeneralPath;
 
 /**
  *
- * @author Guillem
+ * @author viewllem
  */
 public class Grid {
 

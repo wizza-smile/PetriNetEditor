@@ -1,15 +1,15 @@
-/* Copyright Guillem Catala. www.guillemcatala.com/petrinetsim. Licensed http://creativecommons.org/licenses/by-nc-sa/3.0/ */
-package gui.figures;
+/* Copyright viewllem Catala. www.viewllemcatala.com/petrinetsim. Licensed http://creativecommons.org/licenses/by-nc-sa/3.0/ */
+package view.figures;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.RectangularShape;
-import gui.Grid;
+import view.Grid;
 
 /**
  *
- * @author Guillem
+ * @author viewllem
  */
 public class PlaceFigure extends AbstractFigure {
 

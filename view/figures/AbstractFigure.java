@@ -1,5 +1,5 @@
-/* Copyright Guillem Catala. www.guillemcatala.com/petrinetsim. Licensed http://creativecommons.org/licenses/by-nc-sa/3.0/ */
-package gui.figures;
+/* Copyright viewllem Catala. www.viewllemcatala.com/petrinetsim. Licensed http://creativecommons.org/licenses/by-nc-sa/3.0/ */
+package view.figures;
 
 import java.awt.Color;
 import java.awt.geom.Point2D;
@@ -7,7 +7,7 @@ import java.awt.geom.RectangularShape;
 
 /**
  *
- * @author Guillem
+ * @author viewllem
  */
 public abstract class AbstractFigure {
 
