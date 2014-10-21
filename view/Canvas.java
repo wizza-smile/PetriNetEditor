@@ -40,8 +40,9 @@ import javax.swing.*;
 
 public class Canvas extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
 
-    CanvasController canvas_controller;
-    private MainWindow main_window;
+    GlobalController global_controller;
+    // CanvasController canvas_controller;
+    // private MainWindow main_window;
 
     // /** An arc Figure*/
     private AbstractArcFigure arcFigure;
@@ -51,9 +52,12 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     private boolean enabledGrid = true;
 
     // /** Creates new form Canvas */
-    public Canvas(MainWindow main_window) {
-        this.main_window = main_window;
-        canvas_controller = main_window.global_controller.getCanvasController();
+    public Canvas(GlobalController gctrl) {
+        global_controller = gctrl;
+
+
+        // this.main_window = main_window;
+        // canvas_controller = main_window.global_controller.getCanvasController();
 
         this.setOpaque(false);
         this.addMouseListener(this);
@@ -72,20 +76,21 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
 
         // Draw Net Objects Places, Transitions and Arcs
-        // Iterator it = figures.values().iterator();
-        // while (it.hasNext()) {
-        //     AbstractFigure element = (AbstractFigure) it.next();
-        //     element.draw(g2);
-        // }
+        Iterator it = global_controller.getPetriNet().getElements().values().iterator();
+        while (it.hasNext()) {
+            System.out.println(((Place)it.next()).classname);
+            // AbstractFigure element = (AbstractFigure) Class.forName(it.next().classname + "Figure").newInstance();
+            // element.draw(g2);
+        }
 
-        // if (arcFigure != null) {
-        //     arcFigure.draw(g2);
-        // }
+        if (arcFigure != null) {
+            arcFigure.draw(g2);
+        }
 
         // selectionManager.updateBounds();
 
+        global_controller.setStatusBarText("PAINT");
 
-        ///main_window.setStatusBarText("PAINT ");
     }
 
 
@@ -95,25 +100,10 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     }
 
     public void mousePressed(MouseEvent e) {
-      canvas_controller.addFigure(Global.PLACEMODE);//, snapPointToGrid(e.getPoint())
-      main_window.setStatusBarText("addFigure");
-        // switch (Global.mode) {
-        //     case Global.PLACEMODE:
-        //         addFigure(Global.PLACEMODE);//, snapPointToGrid(e.getPoint())
-        //         main_window.setStatusBarText("addFigure");
-        //         break;
-        //     // case Global.TRANSITIONMODE:
-        //     //     addFigure(Global.TRANSITIONMODE, snapPointToGrid(e.getPoint()));
-        //     //     break;
-        //     // case Global.NORMALARCMODE:
-        //     //     addArc(e.getPoint());
-        //     //     break;
+        global_controller.dispatchEvent(global_controller.CANVAS_MOUSE_PRESSED, e);//, snapPointToGrid(e.getPoint())
 
-        //     default:
-        //         break;
-        // }
         repaint();
-        main_window.setStatusBarText("MOUSE Pressed " + e.getY());
+        // main_window.setStatusBarText("MOUSE Pressed " + e.getY());
     }
 
     public void mouseReleased(MouseEvent e) {
@@ -129,7 +119,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     }
 
     public void mouseMoved(MouseEvent e) {
-        main_window.setStatusBarText("MOUSE MOVED");
+        //main_window.setStatusBarText("MOUSE MOVED");
     }
 
     public void mouseWheelMoved(MouseWheelEvent e) {

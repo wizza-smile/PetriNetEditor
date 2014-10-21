@@ -19,14 +19,13 @@ public class MainWindow extends JFrame {//implements Scrollable
     JPanel panel;
     JLabel statusbar;
     Canvas canvas;
-    JScrollPane jScrollPane;
+    JScrollPane canvasPane;
 
     public MainWindow(GlobalController gctrl) {
         this.global_controller = gctrl;
-        initview();
     }
 
-    private void initview() {
+    public void init() {
         this.setTitle("PetriNetEditor");
         this.setSize(800, 600);
         this.setMinimumSize(new Dimension(400, 400));
@@ -43,26 +42,24 @@ public class MainWindow extends JFrame {//implements Scrollable
         statusbar = createStatusBar();
         this.add(statusbar, BorderLayout.SOUTH);
 
-
-
-
-        canvas = new Canvas(this);
-        canvas.setPreferredSize(new Dimension(600, 550));
-
-
-
-        jScrollPane = new JScrollPane(canvas, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
-        jScrollPane.setViewportBorder(BorderFactory.createLineBorder(Color.GRAY));
-
-        jScrollPane.getVerticalScrollBar().setUnitIncrement(12);
-
-        jScrollPane.getViewport().setBackground(editorBackgroundColor);
-
-        this.add(jScrollPane, BorderLayout.CENTER);
+        canvasPane = createCanvasPane();
+        this.add(canvasPane, BorderLayout.CENTER);
     }
 
 
+    public void injectCanvas(Canvas canvas) {
+        canvasPane.setViewportView(canvas);
+    }
+
+
+    private JScrollPane createCanvasPane() {
+        canvasPane = new JScrollPane(canvas, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        canvasPane.setViewportBorder(BorderFactory.createLineBorder(Color.GRAY));
+        canvasPane.getVerticalScrollBar().setUnitIncrement(12);
+        canvasPane.getViewport().setBackground(editorBackgroundColor);
+
+        return canvasPane;
+    }
 
 
 

@@ -1,18 +1,21 @@
 package controller;
 
+import model.*;
 import view.*;
 
+import java.util.*;
+import java.awt.event.*;
 import javax.swing.*;
 
 
 public class GlobalController {
 
-    MainWindowController mainWindow_controller;
+    PetriNet petriNet;
+
+    public MainWindowController mainWindow_controller;
     CanvasController canvas_controller;
 
 
-    /** The current PetriNet model */
-    // public static PetriNet petriNet = new PetriNet();
     /** Application mode*/
     public static int mode = 0;
     /** To enable figure selection*/
@@ -27,17 +30,47 @@ public class GlobalController {
     public static final int SIMULATIONMODE = 4;
 
 
+    // EVENTS
+    public static final int CANVAS_MOUSE_PRESSED = 0;
+
+
 
 
     public void startApplication() {
-        mainWindow_controller = new MainWindowController(this);
-        mainWindow_controller.startMainWindow();
+        petriNet = new PetriNet();
+
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                GlobalController.this.mainWindow_controller = new MainWindowController(GlobalController.this);
+                GlobalController.this.mainWindow_controller.startMainWindow();
+
+                GlobalController.this.canvas_controller = new CanvasController(GlobalController.this);
+                GlobalController.this.mainWindow_controller.injectCanvas(canvas_controller.createCanvas());
+            }
+        });
     }
 
-    public void getCanvasController() {
-        if (!canvas_controller) canvas_controller = new CanvasController();
 
-        return canvas_controller;
+    public PetriNet getPetriNet() {
+        return petriNet;
+    }
+
+    public void dispatchEvent(int type, EventObject e) {
+        switch (type) {
+            case CANVAS_MOUSE_PRESSED:
+                canvas_controller.mousePressed((MouseEvent)e);
+            default:
+                break;
+        }
+
+    }
+
+    public void addPetriNetElement() {
+        petriNet.addElement();
+    }
+
+    public void setStatusBarText(String s) {
+        mainWindow_controller.setStatusBarText(s);
     }
 
 

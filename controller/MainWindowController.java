@@ -7,20 +7,31 @@ import javax.swing.*;
 
 public class MainWindowController {
 
-    GlobalController gctrl;
-    MainWindow mwnd;
+    GlobalController global_controller;
+    MainWindow main_window;
 
     MainWindowController(GlobalController gctrl) {
-        this.gctrl = gctrl;
+        this.global_controller = gctrl;
     }
 
     public void startMainWindow() {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                mwnd = new MainWindow(gctrl);
-                mwnd.setVisible(true);
-            }
-        });
+        main_window = new MainWindow(global_controller);
+        main_window.init();
+        main_window.setVisible(true);
+    }
+
+    // public MainWindow getMainWindow() {
+    //     System.out.println("get MAINWINDOEW");
+    //     return MainWindowController.this.main_window;
+    // }
+
+    public void injectCanvas(Canvas canvas) {
+        this.main_window.injectCanvas(canvas);
+    }
+
+
+    public void setStatusBarText(String s) {
+        main_window.setStatusBarText(s);
     }
 
 }
