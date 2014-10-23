@@ -1,50 +1,65 @@
 /* Copyright viewllem Catala. www.viewllemcatala.com/petrinetsim. Licensed http://creativecommons.org/licenses/by-nc-sa/3.0/ */
 package view.figures;
 
+import model.*;
+import view.Grid;
+
+
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.RectangularShape;
-import view.Grid;
 
 /**
  *
  * @author viewllem
  */
-public class PlaceFigure extends AbstractFigure {
+public class PlaceFigure implements BaseFigure {
+
+    Place place;
+
+    protected boolean selected = false;
+    protected boolean highlighted = false;
+    protected Color fillColor = new Color(255, 255, 255);
+    protected Color strokeColor = new Color(0, 0, 0);
+    protected Color selectedColor = new Color(153, 153, 255);
+    protected Color highlightedColor = new Color(115, 230, 0);
 
     private String placeId;
     private Ellipse2D ellipse;
     final public static int DIAMETER = Grid.cellSize;
-    protected TokenSetFigure tokenFigure;
+    //protected TokenSetFigure tokenFigure;
 
-    public PlaceFigure(String placeId, Point2D position) {
-        this.placeId = placeId;
-        this.position = position;
-        this.label = new TextFigure(this);
-        this.tokenFigure = new TokenSetFigure(this);
-        this.ellipse = generateEllipse();
+    public PlaceFigure(Place place) {
+        this.place = place;
+
+        // this.placeId = placeId;
+        // this.position = position;
+        // this.label = new TextFigure(this);
+        // this.tokenFigure = new TokenSetFigure(this);
+        // this.ellipse = generateEllipse();
     }
 
-    @Override
+
     public boolean contains(Point2D position) {
         return this.ellipse.contains(position);
     }
 
-    @Override
+
     public RectangularShape getBounds() {
-        return new Ellipse2D.Double(position.getX() - DIAMETER / 2, position.getY() - DIAMETER / 2, DIAMETER, DIAMETER);
+        return new Ellipse2D.Double(place.position.getX() - DIAMETER / 2, place.position.getY() - DIAMETER / 2, DIAMETER, DIAMETER);
     }
 
-    @Override
+
     public void draw(Graphics2D g) {
         this.ellipse = generateEllipse();
         drawFill(g);
         drawStroke(g);
-        tokenFigure.draw(g);
+        // tokenFigure.draw(g);
     }
 
-    @Override
+
     public void drawFill(Graphics2D g) {
         if (selected) {
             g.setPaint(selectedColor);
@@ -54,7 +69,7 @@ public class PlaceFigure extends AbstractFigure {
         g.fill(ellipse);
     }
 
-    @Override
+
     public void drawStroke(Graphics2D g) {
         g.setStroke(new java.awt.BasicStroke(2f));
         if (highlighted) {
@@ -65,24 +80,25 @@ public class PlaceFigure extends AbstractFigure {
         g.draw(ellipse);
     }
 
+
     public Ellipse2D generateEllipse() {
-        return new Ellipse2D.Double(position.getX() - DIAMETER / 2, position.getY() - DIAMETER / 2, DIAMETER, DIAMETER);
+        return new Ellipse2D.Double(place.position.getX() - DIAMETER / 2, place.position.getY() - DIAMETER / 2, DIAMETER, DIAMETER);
     }
 
-    @Override
-    public void setPosition(Point2D newPosition) {
-        position = newPosition;
-        label.setRelativePosition(newPosition);
-        tokenFigure.setRelativePosition(newPosition);
-    }
 
-    @Override
-    public String getElementId() {
-        return this.placeId;
-    }
+    // public void setPosition(Point2D newPosition) {
+    //     place.position = newPosition;
+    //     label.setRelativePosition(newPosition);
+    //     tokenFigure.setRelativePosition(newPosition);
+    // }
 
-    @Override
-    public void setElementId(String id) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+
+    // public String getElementId() {
+    //     return this.placeId;
+    // }
+
+
+    // public void setElementId(String id) {
+    //     throw new UnsupportedOperationException("Not supported yet.");
+    // }
 }

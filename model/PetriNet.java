@@ -1,5 +1,6 @@
 package model;
 
+import controller.*;
 import view.figures.*;
 
 import java.util.*;
@@ -7,21 +8,32 @@ import java.awt.geom.Point2D;
 
 public class PetriNet {
 
-    /** Figures that are painted and represent the Petri Net */
-    private HashMap<String, Place> elements = new HashMap();
+    GlobalController global_controller;
 
-    public HashMap<String, Place> getElements() {
-        HashMap<String, Place> outputElements = new HashMap();
+    /** Figures that are painted and represent the Petri Net */
+    private HashMap<String, PetriNetElement> elements = new HashMap();
+
+    public PetriNet(GlobalController gctrl) {
+        this.global_controller = gctrl;
+    }
+
+    public HashMap<String, PetriNetElement> getElements() {
+
+        // Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        // for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+        //     System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+        // }
+
+        HashMap<String, PetriNetElement> outputElements = new HashMap();
 
         Iterator it = elements.entrySet().iterator();
         while (it.hasNext()) {
-            Map.Entry pairs = (Map.Entry)it.next();
+            Map.Entry<String, PetriNetElement> pairs = (Map.Entry)it.next();
             // System.out.println(pairs.getKey() + " = " + pairs.getValue());
 
             //HIER CLONEN
 
-            outputElements.put((String)pairs.getKey(), (Place)pairs.getValue());//place.getId()
-
+            outputElements.put((String)pairs.getKey(), pairs.getValue().cloneElement());//place.getId()
         }
 
 

@@ -32,9 +32,11 @@ public class CanvasController {
     public void mousePressed(MouseEvent e) {
         global_controller.setStatusBarText("CanvasController");
 
-
         global_controller.addPetriNetElement();
+
         canvas.repaint();
+
+
         // switch (global_controller.mode) {
         //     case Global.PLACEMODE:
         //         addFigure(Global.PLACEMODE);//, snapPointToGrid(e.getPoint())

@@ -13,7 +13,7 @@ public class GlobalController {
     PetriNet petriNet;
 
     public MainWindowController mainWindow_controller;
-    CanvasController canvas_controller;
+    public CanvasController canvas_controller;
 
 
     /** Application mode*/
@@ -37,7 +37,7 @@ public class GlobalController {
 
 
     public void startApplication() {
-        petriNet = new PetriNet();
+        petriNet = new PetriNet(this);
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -55,15 +55,15 @@ public class GlobalController {
         return petriNet;
     }
 
-    public void dispatchEvent(int type, EventObject e) {
-        switch (type) {
-            case CANVAS_MOUSE_PRESSED:
-                canvas_controller.mousePressed((MouseEvent)e);
-            default:
-                break;
-        }
+    // public void dispatchEvent(int type, EventObject e) {
+    //     switch (type) {
+    //         case CANVAS_MOUSE_PRESSED:
+    //             canvas_controller.mousePressed((MouseEvent)e);
+    //         default:
+    //             break;
+    //     }
 
-    }
+    // }
 
     public void addPetriNetElement() {
         petriNet.addElement();

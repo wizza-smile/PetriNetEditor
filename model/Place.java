@@ -4,17 +4,31 @@ import view.figures.*;
 
 import java.awt.geom.Point2D;
 
-public class Place extends AbstractPetriNetElement {
-    public static String classname = "Place";
+public class Place implements PetriNetElement {
+    // public static String classname = "Place";
+    public String label = "LABEL_TEXT";
+    public Point2D position;
     private String placeId;
-    protected Point2D position;
 
-    public Place(String placeId, Point2D position) {
+    Place(String placeId, Point2D position) {
         this.placeId = placeId;
         this.position = position;
         this.label = "LABEL";
         // this.tokenFigure = new TokenSetFigure(this);
         // this.ellipse = generateEllipse();
+    }
+
+    Place(Place source) {
+        this.placeId  = source.placeId;
+        this.position = source.position;
+        this.label    = source.label;
+    }
+
+    //clone source place
+    public PetriNetElement cloneElement() {
+        Place clonedPlace = new Place(this);
+
+        return clonedPlace;
     }
 
     public Object clone() {
@@ -26,6 +40,12 @@ public class Place extends AbstractPetriNetElement {
     public String getLabel() {
         return label;
     }
+
+    public BaseFigure getFigure(){
+        PlaceFigure placeFigure = new PlaceFigure(this);
+
+        return placeFigure;
+    };
 
 
 }
