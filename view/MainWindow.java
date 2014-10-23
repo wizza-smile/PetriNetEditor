@@ -110,17 +110,17 @@ public class MainWindow extends JFrame {//implements Scrollable
 
 class ButtonBar extends JToolBar {
 
-
+    //{buttonId, setBorderPainted}
     public Object[][] fileButtons = new Object[][]{
-        {"create_new"},
-        {"open"},
-        {"save"},
-        {"exit"}
+        {"create_new", false},
+        {"open", false},
+        {"save", false},
+        {"exit", false}
     };
 
     public Object[][] modeButtons = new Object[][]{
-        {"arrow_mode"},
-        {"place_mode"}
+        {"arrow_mode", true},
+        {"place_mode", true}
     };
 
     ButtonBar() {
@@ -129,18 +129,21 @@ class ButtonBar extends JToolBar {
         this.setFloatable(false);
         this.setAlignmentX(0);
         this.setBackground(Color.DARK_GRAY);
+        this.setMargin(new Insets(5,5,5,5));
 
-
-        addButtonBlock(fileButtons);
+        addButtonBlock(fileButtons, false);
         Separator jSeparator = new Separator();
         this.add(jSeparator);
-        addButtonBlock(modeButtons);
+        addButtonBlock(modeButtons, true);
 
 
     }
 
-    private void addButtonBlock(Object[][] block) {
+    private void addButtonBlock(Object[][] block, Boolean seperator) {
         for (Object[] button_info : block) {
+           if (seperator) {
+                this.addSeparator(new Dimension(13, 1));
+           }
            this.add(createButton(button_info));
         }
     }
@@ -149,7 +152,7 @@ class ButtonBar extends JToolBar {
     private JButton createButton(Object[] button_info) {
         ImageIcon icon = new ImageIcon(this.getClass().getResource("images/" + button_info[0] + ".png"));
         JButton button = new JButton(icon);
-        button.setBorderPainted(false);
+        button.setBorderPainted((Boolean)button_info[1]);
 
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {

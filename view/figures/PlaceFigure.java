@@ -5,6 +5,7 @@ import model.*;
 import view.Grid;
 
 
+import java.awt.*;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
@@ -81,7 +82,10 @@ public class PlaceFigure extends BaseFigure {
 
 
     public void drawBorder(Graphics2D g) {
-        g.setStroke(new java.awt.BasicStroke());
+
+        float dash1[] = {5f, 3};
+        g.setStroke(new BasicStroke(2f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1f, dash1, 0f));
+
         if (highlighted) {
             g.setPaint(highlightedColor);
         } else {

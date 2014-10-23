@@ -26,6 +26,9 @@ public class CanvasController {
             case  GlobalController.MODE_PLACE:
                 PetriNetController.addPetriNetElement();
                 break;
+            case  GlobalController.MODE_ARROW:
+                System.out.println("MODE_ARROW");
+                break;
             default:
                 System.out.println("MOUSE PRESSSSSS");
                 break;
