@@ -8,14 +8,14 @@ import java.awt.geom.Point2D;
 
 public class PetriNet {
 
-    GlobalController global_controller;
+    // GlobalController global_controller;
 
     /** Figures that are painted and represent the Petri Net */
     private HashMap<String, PetriNetElement> elements = new HashMap();
 
-    public PetriNet(GlobalController gctrl) {
-        this.global_controller = gctrl;
-    }
+    // public PetriNet(GlobalController gctrl) {
+    //     this.global_controller = gctrl;
+    // }
 
     public HashMap<String, PetriNetElement> getElements() {
 

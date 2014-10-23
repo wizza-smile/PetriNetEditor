@@ -10,29 +10,28 @@ import javax.swing.*;
 
 public class CanvasController {
 
-    GlobalController global_controller;
+    // GlobalController global_controller;
     // ContainedElements containedElements;
 
-    Canvas canvas;
+    static Canvas canvas;
     // MainWindow main_window;
 
-    CanvasController(GlobalController gctrl) {
-        this.global_controller = gctrl;
-        // this.main_window = this.global_controller.mainWindow_controller.main_window;
-    }
+    // CanvasController(GlobalController gctrl) {
+    //     this.global_controller = gctrl;
+    //     // this.main_window = this.global_controller.mainWindow_controller.main_window;
+    // }
 
 
-    public Canvas createCanvas() {
-        canvas = new Canvas(global_controller);
+    public static Canvas createCanvas() {
+        canvas = new Canvas();
 
         return canvas;
     }
 
 
-    public void mousePressed(MouseEvent e) {
-        global_controller.setStatusBarText("CanvasController");
-
-        global_controller.addPetriNetElement();
+    public static void mousePressed(MouseEvent e) {
+        controller.MainWindowController.setStatusBarText("CanvasController");
+        controller.PetriNetController.addPetriNetElement();
 
         canvas.repaint();
 

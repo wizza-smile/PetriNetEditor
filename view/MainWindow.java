@@ -12,7 +12,7 @@ import javax.swing.JToolBar.*;
 
 public class MainWindow extends JFrame {//implements Scrollable
 
-    GlobalController global_controller;
+    // GlobalController global_controller;
 
     Color editorBackgroundColor = new Color(224, 224, 255);
 
@@ -21,9 +21,9 @@ public class MainWindow extends JFrame {//implements Scrollable
     Canvas canvas;
     JScrollPane canvasPane;
 
-    public MainWindow(GlobalController gctrl) {
-        this.global_controller = gctrl;
-    }
+    // public MainWindow(GlobalController gctrl) {
+    //     this.global_controller = gctrl;
+    // }
 
     public void init() {
         this.setTitle("PetriNetEditor");

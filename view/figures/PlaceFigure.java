@@ -15,10 +15,11 @@ import java.awt.geom.RectangularShape;
  *
  * @author viewllem
  */
-public class PlaceFigure implements BaseFigure {
+public class PlaceFigure extends BaseFigure {
 
     Place place;
 
+    protected Point2D position;
     protected boolean selected = false;
     protected boolean highlighted = false;
     protected Color fillColor = new Color(255, 255, 255);
@@ -41,15 +42,19 @@ public class PlaceFigure implements BaseFigure {
         // this.ellipse = generateEllipse();
     }
 
+    public Point2D getPosition() {
 
-    public boolean contains(Point2D position) {
-        return this.ellipse.contains(position);
+        return position;
     }
 
+    // public boolean contains(Point2D position) {
+    //     return this.ellipse.contains(position);
+    // }
 
-    public RectangularShape getBounds() {
-        return new Ellipse2D.Double(place.position.getX() - DIAMETER / 2, place.position.getY() - DIAMETER / 2, DIAMETER, DIAMETER);
-    }
+
+    // public RectangularShape getBounds() {
+    //     return new Ellipse2D.Double(place.position.getX() - DIAMETER / 2, place.position.getY() - DIAMETER / 2, DIAMETER, DIAMETER);
+    // }
 
 
     public void draw(Graphics2D g) {

@@ -10,10 +10,10 @@ import javax.swing.*;
 
 public class GlobalController {
 
-    PetriNet petriNet;
 
-    public MainWindowController mainWindow_controller;
-    public CanvasController canvas_controller;
+    // public static PetriNetController petrinet_controller;
+    // public static MainWindowController mainWindow_controller;
+    // public static CanvasController canvas_controller;
 
 
     /** Application mode*/
@@ -36,41 +36,18 @@ public class GlobalController {
 
 
 
-    public void startApplication() {
-        petriNet = new PetriNet(this);
+    public static void startApplication() {
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                GlobalController.this.mainWindow_controller = new MainWindowController(GlobalController.this);
-                GlobalController.this.mainWindow_controller.startMainWindow();
+                controller.PetriNetController.createPetriNet();
 
-                GlobalController.this.canvas_controller = new CanvasController(GlobalController.this);
-                GlobalController.this.mainWindow_controller.injectCanvas(canvas_controller.createCanvas());
+                controller.MainWindowController.startMainWindow();
+
+                Canvas canvas = controller.CanvasController.createCanvas();
+                controller.MainWindowController.injectCanvas(canvas);
             }
         });
-    }
-
-
-    public PetriNet getPetriNet() {
-        return petriNet;
-    }
-
-    // public void dispatchEvent(int type, EventObject e) {
-    //     switch (type) {
-    //         case CANVAS_MOUSE_PRESSED:
-    //             canvas_controller.mousePressed((MouseEvent)e);
-    //         default:
-    //             break;
-    //     }
-
-    // }
-
-    public void addPetriNetElement() {
-        petriNet.addElement();
-    }
-
-    public void setStatusBarText(String s) {
-        mainWindow_controller.setStatusBarText(s);
     }
 
 

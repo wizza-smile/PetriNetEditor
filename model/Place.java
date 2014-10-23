@@ -6,7 +6,7 @@ import java.awt.geom.Point2D;
 
 public class Place implements PetriNetElement {
     // public static String classname = "Place";
-    public String label = "LABEL_TEXT";
+    public String label;
     public Point2D position;
     private String placeId;
 
@@ -31,15 +31,23 @@ public class Place implements PetriNetElement {
         return clonedPlace;
     }
 
-    public Object clone() {
-        Place clonedPlace = new Place(placeId, position);
 
-        return clonedPlace;
+    public void setLabel(String label) {
+        if (this.label == "") {
+            this.label = label;
+            this.paintLabelFigure();
+        }
     }
+
 
     public String getLabel() {
         return label;
     }
+
+    public void paintLabelFigure() {
+        return;
+    }
+
 
     public BaseFigure getFigure(){
         PlaceFigure placeFigure = new PlaceFigure(this);

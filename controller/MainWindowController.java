@@ -7,15 +7,15 @@ import javax.swing.*;
 
 public class MainWindowController {
 
-    GlobalController global_controller;
-    MainWindow main_window;
+    // GlobalController global_controller;
+    static MainWindow main_window;
 
-    MainWindowController(GlobalController gctrl) {
-        this.global_controller = gctrl;
-    }
+    // MainWindowController(GlobalController gctrl) {
+    //     this.global_controller = gctrl;
+    // }
 
-    public void startMainWindow() {
-        main_window = new MainWindow(global_controller);
+    public static void startMainWindow() {
+        main_window = new MainWindow();
         main_window.init();
         main_window.setVisible(true);
     }
@@ -25,12 +25,12 @@ public class MainWindowController {
     //     return MainWindowController.this.main_window;
     // }
 
-    public void injectCanvas(Canvas canvas) {
-        this.main_window.injectCanvas(canvas);
+    public static void injectCanvas(Canvas canvas) {
+        main_window.injectCanvas(canvas);
     }
 
 
-    public void setStatusBarText(String s) {
+    public static void setStatusBarText(String s) {
         main_window.setStatusBarText(s);
     }
 

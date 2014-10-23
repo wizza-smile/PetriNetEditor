@@ -16,55 +16,17 @@ import javax.swing.*;
 
 
 
-// import model.Arc;
-// import model.InputArc;
-// import model.NetObject;
-// import model.OutputArc;
-// import model.Place;
-// import model.Simulation;
-// import model.Transition;
-//
-// import java.awt.Color;
-// import java.awt.Graphics2D;
-// import java.awt.HeadlessException;
-// import java.awt.RenderingHints;
-// import java.awt.image.BufferedImage;
-// import java.util.ArrayList;
-// import java.util.HashMap;
-// import java.util.Iterator;
-// import java.util.StringTokenizer;
-// import java.util.logging.Level;
-// import java.util.logging.Logger;
-// import javax.swing.JOptionPane;
-
-
 public class Canvas extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
 
-    GlobalController global_controller;
-    // CanvasController canvas_controller;
-    // private MainWindow main_window;
-
-    // /** An arc Figure*/
-    // private AbstractArcFigure arcFigure;
-    // /** The background grid*/
     private Grid grid;
-    // /** Set to true to show grid. False otherwise*/
     private boolean enabledGrid = true;
 
-    // /** Creates new form Canvas */
-    public Canvas(GlobalController gctrl) {
-        global_controller = gctrl;
 
-
-        // this.main_window = main_window;
-        // canvas_controller = main_window.global_controller.getCanvasController();
-
+    public Canvas() {
         this.setOpaque(false);
         this.addMouseListener(this);
     }
 
-    /** Method that paints all the figures and the grid*/
-    @Override
     public void paintComponent(Graphics graphics) {
         java.awt.Graphics2D g2 = (java.awt.Graphics2D) graphics;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -76,7 +38,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
 
         // Draw Net Objects Places, Transitions and Arcs
-        Iterator it = global_controller.getPetriNet().getElements().values().iterator();
+        Iterator it =  controller.PetriNetController.getPetriNet().getElements().values().iterator();
         while (it.hasNext()) {
 
             ((PetriNetElement)it.next()).getFigure().draw(g2);
@@ -97,7 +59,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
         // selectionManager.updateBounds();
 
-        global_controller.setStatusBarText("PAINT");
+        controller.MainWindowController.setStatusBarText("PAINT");
 
     }
 
@@ -108,11 +70,11 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     }
 
     public void mousePressed(MouseEvent e) {
-        global_controller.canvas_controller.mousePressed(e);//, snapPointToGrid(e.getPoint())
+        controller.CanvasController.mousePressed(e);//, snapPointToGrid(e.getPoint())
 
         //repaint();
 
-        global_controller.setStatusBarText("MOUSE Pressed " + e.getY());
+        controller.MainWindowController.setStatusBarText("MOUSE Pressed " + e.getY());
     }
 
     public void mouseReleased(MouseEvent e) {
