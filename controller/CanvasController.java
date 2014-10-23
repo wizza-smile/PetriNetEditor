@@ -10,16 +10,7 @@ import javax.swing.*;
 
 public class CanvasController {
 
-    // GlobalController global_controller;
-    // ContainedElements containedElements;
-
     static Canvas canvas;
-    // MainWindow main_window;
-
-    // CanvasController(GlobalController gctrl) {
-    //     this.global_controller = gctrl;
-    //     // this.main_window = this.global_controller.mainWindow_controller.main_window;
-    // }
 
 
     public static Canvas createCanvas() {
@@ -30,8 +21,17 @@ public class CanvasController {
 
 
     public static void mousePressed(MouseEvent e) {
-        controller.MainWindowController.setStatusBarText("CanvasController");
-        controller.PetriNetController.addPetriNetElement();
+
+        switch (GlobalController.mode) {
+            case  GlobalController.MODE_PLACE:
+                PetriNetController.addPetriNetElement();
+                break;
+            default:
+                System.out.println("MOUSE PRESSSSSS");
+                break;
+        }
+
+
 
         canvas.repaint();
 

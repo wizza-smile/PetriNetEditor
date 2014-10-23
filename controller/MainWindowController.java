@@ -7,12 +7,8 @@ import javax.swing.*;
 
 public class MainWindowController {
 
-    // GlobalController global_controller;
     static MainWindow main_window;
 
-    // MainWindowController(GlobalController gctrl) {
-    //     this.global_controller = gctrl;
-    // }
 
     public static void startMainWindow() {
         main_window = new MainWindow();
@@ -20,10 +16,6 @@ public class MainWindowController {
         main_window.setVisible(true);
     }
 
-    // public MainWindow getMainWindow() {
-    //     System.out.println("get MAINWINDOEW");
-    //     return MainWindowController.this.main_window;
-    // }
 
     public static void injectCanvas(Canvas canvas) {
         main_window.injectCanvas(canvas);
@@ -32,6 +24,28 @@ public class MainWindowController {
 
     public static void setStatusBarText(String s) {
         main_window.setStatusBarText(s);
+    }
+
+
+    public static void executeButtonBarAction(String button_id) {
+        switch (button_id) {
+            case "create_new":
+                System.out.println("CREATE NEW");
+                break;
+            case "exit":
+                System.exit(0);
+                break;
+            case "arrow_mode":
+                System.out.println("arrow_mode");
+                GlobalController.mode = GlobalController.MODE_ARROW;
+                break;
+            case "place_mode":
+                GlobalController.mode = GlobalController.MODE_PLACE;
+                break;
+
+        }
+
+        return;
     }
 
 }

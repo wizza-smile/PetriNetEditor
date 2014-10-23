@@ -4,11 +4,13 @@ import view.figures.*;
 
 import java.awt.geom.Point2D;
 
-public class Place implements PetriNetElement {
-    // public static String classname = "Place";
+public class Place extends BaseElement implements PetriNetElement {
+
     public String label;
-    public Point2D position;
+
     private String placeId;
+
+    private int tokenCount;
 
     Place(String placeId, Point2D position) {
         this.placeId = placeId;
@@ -40,6 +42,10 @@ public class Place implements PetriNetElement {
     }
 
 
+    public int getTokenCount() {
+        return tokenCount;
+    }
+
     public String getLabel() {
         return label;
     }
@@ -54,6 +60,11 @@ public class Place implements PetriNetElement {
 
         return placeFigure;
     };
+
+
+
+
+
 
 
 }

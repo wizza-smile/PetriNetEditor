@@ -70,11 +70,11 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     }
 
     public void mousePressed(MouseEvent e) {
-        controller.CanvasController.mousePressed(e);//, snapPointToGrid(e.getPoint())
+        CanvasController.mousePressed(e);//, snapPointToGrid(e.getPoint())
 
         //repaint();
 
-        controller.MainWindowController.setStatusBarText("MOUSE Pressed " + e.getY());
+        MainWindowController.setStatusBarText("MOUSE Pressed " + e.getY());
     }
 
     public void mouseReleased(MouseEvent e) {

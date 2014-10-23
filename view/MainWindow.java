@@ -12,8 +12,6 @@ import javax.swing.JToolBar.*;
 
 public class MainWindow extends JFrame {//implements Scrollable
 
-    // GlobalController global_controller;
-
     Color editorBackgroundColor = new Color(224, 224, 255);
 
     JPanel panel;
@@ -21,9 +19,7 @@ public class MainWindow extends JFrame {//implements Scrollable
     Canvas canvas;
     JScrollPane canvasPane;
 
-    // public MainWindow(GlobalController gctrl) {
-    //     this.global_controller = gctrl;
-    // }
+
 
     public void init() {
         this.setTitle("PetriNetEditor");
@@ -36,7 +32,7 @@ public class MainWindow extends JFrame {//implements Scrollable
         JMenuBar menubar = createMenuBar();
         this.setJMenuBar(menubar);
 
-        JToolBar toolbar = createToolBar();
+        JToolBar toolbar = new ButtonBar();// createToolBar();
         this.add(toolbar, BorderLayout.NORTH);
 
         statusbar = createStatusBar();
@@ -105,46 +101,78 @@ public class MainWindow extends JFrame {//implements Scrollable
     }
 
 
-    private JToolBar createToolBar() {
 
-        JToolBar toolbar = new JToolBar(JToolBar.HORIZONTAL);
-        toolbar.setBackground(Color.DARK_GRAY);
+}
 
-        ImageIcon newi = new ImageIcon(this.getClass().getResource("images/new.png"));
-        ImageIcon open = new ImageIcon(this.getClass().getResource("images/open.png"));
-        ImageIcon save = new ImageIcon(this.getClass().getResource("images/save.png"));
+
+
+
+
+class ButtonBar extends JToolBar {
+
+
+    public Object[][] fileButtons = new Object[][]{
+        {"create_new"},
+        {"open"},
+        {"save"},
+        {"exit"}
+    };
+
+    public Object[][] modeButtons = new Object[][]{
+        {"arrow_mode"},
+        {"place_mode"}
+    };
+
+    ButtonBar() {
+        super(JToolBar.HORIZONTAL);
+
+        this.setFloatable(false);
+        this.setAlignmentX(0);
+        this.setBackground(Color.DARK_GRAY);
+
+
+        addButtonBlock(fileButtons);
         Separator jSeparator = new Separator();
-        ImageIcon exit = new ImageIcon(this.getClass().getResource("images/exit.png"));
+        this.add(jSeparator);
+        addButtonBlock(modeButtons);
 
-        JButton newb = new JButton(newi);
-        JButton openb = new JButton(open);
-        openb.setBorderPainted(false);
-        JButton saveb = new JButton(save);
-        saveb.setBorderPainted(false);
-        JButton exitb = new JButton(exit);
-        exitb.setBorderPainted(false);
 
-        toolbar.add(newb);
-        toolbar.add(openb);
-        toolbar.add(saveb);
-        toolbar.add(jSeparator);
-        toolbar.add(exitb);
-        toolbar.setFloatable(false);
-        toolbar.setAlignmentX(0);
-        //toolbar.setRollover(true);
+    }
 
-        // Dimension tbSize = toolbar.getPreferredSize();
-        // tbSize.width = 300; //as you like
-        // toolbar.setPreferredSize(tbSize);
+    private void addButtonBlock(Object[][] block) {
+        for (Object[] button_info : block) {
+           this.add(createButton(button_info));
+        }
+    }
 
-        exitb.addActionListener(new ActionListener() {
+
+    private JButton createButton(Object[] button_info) {
+        ImageIcon icon = new ImageIcon(this.getClass().getResource("images/" + button_info[0] + ".png"));
+        JButton button = new JButton(icon);
+        button.setBorderPainted(false);
+
+        button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                System.exit(0);
+                MainWindowController.executeButtonBarAction((String) button_info[0]);
             }
         });
 
-        return toolbar;
+        return button;
     }
+
+    // private JButton createButton(String button_id) {
+    //     ImageIcon icon = new ImageIcon(this.getClass().getResource("images/" + button_id + ".png"));
+    //     JButton button = new JButton(icon);
+    //     button.setBorderPainted(false);
+
+    //     button.addActionListener(new ActionListener() {
+    //         public void actionPerformed(ActionEvent event) {
+    //             MainWindowController.executeButtonBarAction(button_id);
+    //         }
+    //     });
+
+    //     return button;
+    // }
 
 
 }

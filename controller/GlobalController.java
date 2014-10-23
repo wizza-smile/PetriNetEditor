@@ -19,9 +19,9 @@ public class GlobalController {
     /** Application mode*/
     public static int mode = 0;
     /** To enable figure selection*/
-    public static final int SELECTMODE = 0;
+    public static final int MODE_ARROW = 0;
     /** To add places */
-    public static final int PLACEMODE = 1;
+    public static final int MODE_PLACE = 1;
     /** To add transitions */
     public static final int TRANSITIONMODE = 2;
     /** To add arcs*/
@@ -40,12 +40,12 @@ public class GlobalController {
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                controller.PetriNetController.createPetriNet();
+                PetriNetController.createPetriNet();
 
-                controller.MainWindowController.startMainWindow();
+                MainWindowController.startMainWindow();
 
-                Canvas canvas = controller.CanvasController.createCanvas();
-                controller.MainWindowController.injectCanvas(canvas);
+                Canvas canvas = CanvasController.createCanvas();
+                MainWindowController.injectCanvas(canvas);
             }
         });
     }

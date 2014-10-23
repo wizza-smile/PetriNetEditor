@@ -17,7 +17,7 @@ import java.awt.geom.Rectangle2D;
 public class TextFigure extends BaseFigure {
 
     protected String labelText;
-    // public Point2D position;
+    public Point2D position;
     private Point2D offsetToParent = new Point2D.Double(50, 0);
     private BaseFigure parent;
     private Rectangle2D rectangle;

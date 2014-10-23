@@ -17,23 +17,21 @@ import java.awt.geom.RectangularShape;
  */
 public class PlaceFigure extends BaseFigure {
 
-    Place place;
 
-    protected Point2D position;
-    protected boolean selected = false;
-    protected boolean highlighted = false;
-    protected Color fillColor = new Color(255, 255, 255);
-    protected Color strokeColor = new Color(0, 0, 0);
-    protected Color selectedColor = new Color(153, 153, 255);
-    protected Color highlightedColor = new Color(115, 230, 0);
 
     private String placeId;
+
     private Ellipse2D ellipse;
-    final public static int DIAMETER = Grid.cellSize;
+    private Ellipse2D tokenPoint;
+
+    final public static double DIAMETER = Grid.cellSize/1;
     //protected TokenSetFigure tokenFigure;
 
     public PlaceFigure(Place place) {
-        this.place = place;
+        this.element = place;
+
+
+
 
         // this.placeId = placeId;
         // this.position = position;
@@ -42,10 +40,10 @@ public class PlaceFigure extends BaseFigure {
         // this.ellipse = generateEllipse();
     }
 
-    public Point2D getPosition() {
-
-        return position;
+    public Place getPlace() {
+        return (Place)this.element;
     }
+
 
     // public boolean contains(Point2D position) {
     //     return this.ellipse.contains(position);
@@ -53,16 +51,23 @@ public class PlaceFigure extends BaseFigure {
 
 
     // public RectangularShape getBounds() {
-    //     return new Ellipse2D.Double(place.position.getX() - DIAMETER / 2, place.position.getY() - DIAMETER / 2, DIAMETER, DIAMETER);
+    //     return new Ellipse2D.Double(place.getPosition().getX() - DIAMETER / 2, place.getPosition().getY() - DIAMETER / 2, DIAMETER, DIAMETER);
     // }
 
 
     public void draw(Graphics2D g) {
         this.ellipse = generateEllipse();
         drawFill(g);
-        drawStroke(g);
+        drawBorder(g);
+
+        if (1==1 || this.getPlace().getTokenCount() == 1) {
+            this.tokenPoint = generateTokenPoint();
+            drawToken(g);
+        }
+
         // tokenFigure.draw(g);
     }
+
 
 
     public void drawFill(Graphics2D g) {
@@ -75,8 +80,8 @@ public class PlaceFigure extends BaseFigure {
     }
 
 
-    public void drawStroke(Graphics2D g) {
-        g.setStroke(new java.awt.BasicStroke(2f));
+    public void drawBorder(Graphics2D g) {
+        g.setStroke(new java.awt.BasicStroke());
         if (highlighted) {
             g.setPaint(highlightedColor);
         } else {
@@ -86,13 +91,41 @@ public class PlaceFigure extends BaseFigure {
     }
 
 
+
+
+
+    public void drawToken(Graphics2D g) {
+        g.setPaint(new Color(0, 0, 0));
+        g.fill(tokenPoint);
+
+        // System.out.println("PAINT TOKEN!");
+    }
+
+
+
+
+    public Ellipse2D generateTokenPoint() {
+        return new Ellipse2D.Double(
+            getPlace().getPosition().getX() - DIAMETER / 12,
+            getPlace().getPosition().getY() - DIAMETER / 12,
+            DIAMETER/6,
+            DIAMETER/6
+        );
+    }
+
+
     public Ellipse2D generateEllipse() {
-        return new Ellipse2D.Double(place.position.getX() - DIAMETER / 2, place.position.getY() - DIAMETER / 2, DIAMETER, DIAMETER);
+        return new Ellipse2D.Double(
+            getPlace().getPosition().getX() - DIAMETER / 2,
+            getPlace().getPosition().getY() - DIAMETER / 2,
+            DIAMETER,
+            DIAMETER
+        );
     }
 
 
     // public void setPosition(Point2D newPosition) {
-    //     place.position = newPosition;
+    //     place.getPosition() = newPosition;
     //     label.setRelativePosition(newPosition);
     //     tokenFigure.setRelativePosition(newPosition);
     // }
