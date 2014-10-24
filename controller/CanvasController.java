@@ -39,22 +39,6 @@ public class CanvasController {
         canvas.repaint();
 
 
-        // switch (global_controller.mode) {
-        //     case Global.PLACEMODE:
-        //         addFigure(Global.PLACEMODE);//, snapPointToGrid(e.getPoint())
-        //         main_window.setStatusBarText("addFigure");
-        //         break;
-        //     // case Global.TRANSITIONMODE:
-        //     //     addFigure(Global.TRANSITIONMODE, snapPointToGrid(e.getPoint()));
-        //     //     break;
-        //     // case Global.NORMALARCMODE:
-        //     //     addArc(e.getPoint());
-        //     //     break;
-
-        //     default:
-        //         break;
-        // }
-
     }
 
 

@@ -8,13 +8,8 @@ import javax.swing.*;
 
 public class PetriNetController {
 
-    // GlobalController global_controller;
-
     static PetriNet petriNet;
 
-    // PetriNetController(GlobalController gctrl) {
-    //     this.global_controller = gctrl;
-    // }
 
     public static void createPetriNet() {
         petriNet = new PetriNet();

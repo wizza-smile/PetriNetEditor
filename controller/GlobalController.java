@@ -11,11 +11,6 @@ import javax.swing.*;
 public class GlobalController {
 
 
-    // public static PetriNetController petrinet_controller;
-    // public static MainWindowController mainWindow_controller;
-    // public static CanvasController canvas_controller;
-
-
     /** Application mode*/
     public static int mode = 0;
     /** To enable figure selection*/

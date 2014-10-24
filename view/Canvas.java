@@ -38,7 +38,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
 
         // Draw Net Objects Places, Transitions and Arcs
-        Iterator it =  controller.PetriNetController.getPetriNet().getElements().values().iterator();
+        Iterator it = controller.PetriNetController.getPetriNet().getElements().values().iterator();
         while (it.hasNext()) {
 
             ((PetriNetElement)it.next()).getFigure().draw(g2);
@@ -71,8 +71,6 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
     public void mousePressed(MouseEvent e) {
         CanvasController.mousePressed(e);//, snapPointToGrid(e.getPoint())
-
-        //repaint();
 
         MainWindowController.setStatusBarText("MOUSE Pressed " + e.getY());
     }

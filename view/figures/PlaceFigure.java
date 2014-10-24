@@ -83,7 +83,7 @@ public class PlaceFigure extends BaseFigure {
 
     public void drawBorder(Graphics2D g) {
 
-        float dash1[] = {5f, 3};
+        float dash1[] = {5f, 3f};
         g.setStroke(new BasicStroke(2f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1f, dash1, 0f));
 
         if (highlighted) {

@@ -1,14 +1,10 @@
-/* Copyright viewllem Catala. www.viewllemcatala.com/petrinetsim. Licensed http://creativecommons.org/licenses/by-nc-sa/3.0/ */
 package view;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.GeneralPath;
 
-/**
- *
- * @author viewllem
- */
+
 public class Grid {
 
     /** Grid width.*/
@@ -26,13 +22,13 @@ public class Grid {
     /** Foreground grid.*/
     private GeneralPath foregroundGrid;
 
-    /** Constructor for a new Grid given a width and height.*/
+
     public Grid(int width, int height) {
         this.width = width;
         this.height = height;
     }
 
-    /** Generates a new grid with a predefined number of columns.*/
+
     public GeneralPath generateGrid(int numCells) {
         GeneralPath grid = new GeneralPath();
         for (float i = 0; i <= width; i += cellSize / numCells) {
@@ -48,7 +44,7 @@ public class Grid {
         return grid;
     }
 
-    /** Generates the background and foreground grids.*/
+
     public void drawGrid(Graphics2D g2) {
         if (backgroundGrid == null) {
             backgroundGrid = generateGrid(5);
