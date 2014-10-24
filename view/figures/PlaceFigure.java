@@ -18,8 +18,6 @@ import java.awt.geom.RectangularShape;
  */
 public class PlaceFigure extends BaseFigure {
 
-
-
     private String placeId;
 
     private Ellipse2D ellipse;
@@ -30,9 +28,6 @@ public class PlaceFigure extends BaseFigure {
 
     public PlaceFigure(Place place) {
         this.element = place;
-
-
-
 
         // this.placeId = placeId;
         // this.position = position;

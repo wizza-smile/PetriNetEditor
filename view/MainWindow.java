@@ -100,99 +100,85 @@ public class MainWindow extends JFrame {//implements Scrollable
         return statusLabel;
     }
 
-
-
 }
-
 
 
 
 
 class ButtonBar extends JToolBar {
 
-    //{buttonId, setBorderPainted}
+    //{buttonId, tooltipText}
     public Object[][] fileButtons = new Object[][]{
-        {"create_new", "new", true, 40},
-        {"open", "open", true, 40},
-        {"save", "save", true, 40},
-        {"exit", "exit", true, 40}
+        {"create_new", "new"},
+        {"open", "open"},
+        {"save", "save"},
+        {"exit", "exit"}
     };
 
     public Object[][] modeButtons = new Object[][]{
-        {"select_mode", "select", false, 60},
-        {"place_mode", "Place", false, 60},
-        {"transition_mode", "Transition", false, 60},
-        {"arc_mode", "Arc", false, 60}
+        {"select_mode", "select"},
+        {"place_mode", "Place"},
+        {"transition_mode", "Transition"},
+        {"arc_mode", "Arc"}
     };
 
     ButtonBar() {
         super(JToolBar.HORIZONTAL);
 
+        //set display parameter for each block of buttons
+        Object[] blockParams;
+
         this.setFloatable(false);
         this.setAlignmentX(0);
         this.setBackground(Color.DARK_GRAY);
         this.setMargin(new Insets(3,5,5,5));
-        // this.setLayout(null);
 
-        addButtonBlock(fileButtons, false);
+        blockParams = new Object[]{"file", 40};
+        addButtonBlock(fileButtons, blockParams);
+
         Separator jSeparator = new Separator();
         this.add(jSeparator);
-        addButtonBlock(modeButtons, true);
+
+        blockParams = new Object[]{"mode", 60};
+        addButtonBlock(modeButtons, blockParams);
 
         // this.setRollover(true);
     }
 
-    private void addButtonBlock(Object[][] block, Boolean separator) {
+    private void addButtonBlock(Object[][] block, Object[] blockParams) {
         for (Object[] button_info : block) {
-           if (!separator || separator) {
-                this.addSeparator(new Dimension(8, 1));
-           }
-           this.add(createButton(button_info, separator));
+           this.addSeparator(new Dimension(8, 1));
+           this.add(createButton(button_info, blockParams));
         }
     }
 
-
-    private JButton createButton(Object[] button_info, Boolean separator) {
+    private JButton createButton(Object[] button_info, Object[] blockParams) {
         ImageIcon icon = new ImageIcon(this.getClass().getResource("images/" + button_info[0] + ".png"));
         JButton button = new JButton(icon);
+        final Object[] final_button_info = button_info;
+
         button.setToolTipText((String)button_info[1]);
 
-        if (!separator) {
+        if ((String)blockParams[0] == "file") {
             button.setBorder(new LineBorder(Color.RED, 2));
             button.setBorderPainted(true);
             button.setBackground(new Color( 255,0,0,120 ));
             button.setContentAreaFilled(true);
-
         }
+
         button.setOpaque(true);
 
-
-        button.setMaximumSize(new Dimension((int)button_info[3], 30));
-        button.setPreferredSize(new Dimension((int)button_info[3], 30));
+        button.setMaximumSize(new Dimension((int)blockParams[1], 30));
+        button.setPreferredSize(new Dimension((int)blockParams[1], 30));
 
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                MainWindowController.executeButtonBarAction((String) button_info[0]);
+                MainWindowController.executeButtonBarAction((String)final_button_info[0]);
             }
         });
 
         return button;
     }
-
-    // private JButton createButton(String button_id) {
-    //     ImageIcon icon = new ImageIcon(this.getClass().getResource("images/" + button_id + ".png"));
-    //     JButton button = new JButton(icon);
-    //     button.setBorderPainted(false);
-
-    //     button.addActionListener(new ActionListener() {
-    //         public void actionPerformed(ActionEvent event) {
-    //             MainWindowController.executeButtonBarAction(button_id);
-    //         }
-    //     });
-
-    //     return button;
-    // }
-
 
 }
 

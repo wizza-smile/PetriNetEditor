@@ -8,50 +8,35 @@ import java.awt.geom.Point2D;
 
 public class PetriNet {
 
-    // GlobalController global_controller;
-
     /** Figures that are painted and represent the Petri Net */
-    private HashMap<String, PetriNetElement> elements = new HashMap();
+    private HashMap<String, PetriNetElement> elements = new HashMap<String, PetriNetElement>();
 
-    // public PetriNet(GlobalController gctrl) {
-    //     this.global_controller = gctrl;
-    // }
 
+    //returnes a deep copy of contained elements
     public HashMap<String, PetriNetElement> getElements() {
-
-        // Map<Integer, Integer> map = new HashMap<Integer, Integer>();
-        // for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
-        //     System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-        // }
-
-        HashMap<String, PetriNetElement> outputElements = new HashMap();
+        HashMap<String, PetriNetElement> outputElements = new HashMap<String, PetriNetElement>();
 
         Iterator it = elements.entrySet().iterator();
         while (it.hasNext()) {
-            Map.Entry<String, PetriNetElement> pairs = (Map.Entry)it.next();
-            // System.out.println(pairs.getKey() + " = " + pairs.getValue());
+            Map.Entry pairs = (Map.Entry)it.next();
 
-            //HIER CLONEN
-
-            outputElements.put((String)pairs.getKey(), pairs.getValue().cloneElement());//place.getId()
+            outputElements.put((String)pairs.getKey(), ((PetriNetElement)pairs.getValue()).cloneElement());
         }
-
-
-        // Iterator it = elements.values().iterator();
-        // while (it.hasNext()) {
-        //     AbstractFigure element = (AbstractFigure) it.next();
-        //     element.draw(g2);
-        // }
 
         return outputElements;
     }
 
-    /** Adds a figure to the PetriNet model*/
-    public void addElement() {//int element, Point2D position
 
-        String placeId = "ONE";
-        Place place = new Place(placeId, new Point2D.Double(100, 100));//place.getId(), position
-        elements.put(placeId, place);//place.getId()
+    public void addElement(Point2D position, int type) {
+
+        if (PetriNetController.ELEMENT_PLACE == type) {
+            String placeId = "ONE" + position.getX();
+            Place place = new Place(placeId, new Point2D.Double(position.getX(), position.getY()));
+
+            elements.put(placeId, place);
+        }
+
+
         // elements.put(placeId + "label", place.getLabel());
 
         // switch (element) {

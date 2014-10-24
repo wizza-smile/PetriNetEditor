@@ -7,7 +7,9 @@ import java.awt.geom.Point2D;
 
 public abstract class BaseFigure {
     //the element the figure represents
-    BaseElement element;
+    PetriNetElement element;
+
+    protected Point2D offset;
 
     protected boolean selected = false;
     protected boolean highlighted = false;
@@ -18,18 +20,20 @@ public abstract class BaseFigure {
     protected Color highlightedColor = new Color(115, 230, 0);
 
 
-
-    public BaseElement getElement() {
-        return this.element;
-    }
-
-    public void draw(Graphics2D g) {}
+    public abstract void draw(Graphics2D g);
 
 
-    public Point2D getPosition() {
+    //getter / setter
+    public Point2D getPosition() { return getElement().getPosition(); }
+    public void setPosition(Point2D position) { getElement().setPosition(position); }
 
-        return element.getPosition();
-    }
+    public Point2D getOffset() { return offset; }
+    public void setOffset(Point2D offset) { this.offset = offset; }
+
+
+    public PetriNetElement getElement() { return element; }
+
+
 
 }
 

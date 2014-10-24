@@ -4,7 +4,7 @@ import view.figures.*;
 
 import java.awt.geom.Point2D;
 
-public class Place extends BaseElement implements PetriNetElement {
+public class Place extends PetriNetElement {
 
     public String label;
 

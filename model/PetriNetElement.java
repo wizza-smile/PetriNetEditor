@@ -2,12 +2,20 @@ package model;
 
 import view.figures.*;
 
+import java.awt.geom.Point2D;
 
-public interface PetriNetElement {
+public abstract class PetriNetElement {
 
-    public PetriNetElement cloneElement();
+    protected Point2D position;
 
-    public BaseFigure getFigure();
+    //abstract methods
+    public abstract PetriNetElement cloneElement();
+    public abstract BaseFigure getFigure();
+
+    //implemented methods
+    public Point2D getPosition() { return position; }
+    public void setPosition(Point2D position) { this.position = position; }
+
 
 }
 

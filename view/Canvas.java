@@ -25,6 +25,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     public Canvas() {
         this.setOpaque(false);
         this.addMouseListener(this);
+        this.addMouseMotionListener(this);
     }
 
     public void paintComponent(Graphics graphics) {
@@ -59,7 +60,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
         // selectionManager.updateBounds();
 
-        controller.MainWindowController.setStatusBarText("PAINT");
+        //MainWindowController.setStatusBarText("PAINT");
 
     }
 
@@ -76,6 +77,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     }
 
     public void mouseReleased(MouseEvent e) {
+        MainWindowController.setStatusBarText("mouseReleased " + e.getY());
     }
 
     public void mouseEntered(MouseEvent e) {
@@ -85,6 +87,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     }
 
     public void mouseDragged(MouseEvent e) {
+        CanvasController.mouseDragged(e);
     }
 
     public void mouseMoved(MouseEvent e) {
