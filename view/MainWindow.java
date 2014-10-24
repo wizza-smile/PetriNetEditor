@@ -112,17 +112,17 @@ class ButtonBar extends JToolBar {
 
     //{buttonId, setBorderPainted}
     public Object[][] fileButtons = new Object[][]{
-        {"create_new", "new", false, 30},
-        {"open", "open", false, 40},
-        {"save", "save", false, 40},
-        {"exit", "exit", false, 40}
+        {"create_new", "new", true, 40},
+        {"open", "open", true, 40},
+        {"save", "save", true, 40},
+        {"exit", "exit", true, 40}
     };
 
     public Object[][] modeButtons = new Object[][]{
-        {"select_mode", "select", true, 60},
-        {"place_mode", "Place", true, 60},
-        {"transition_mode", "Transition", true, 60},
-        {"arc_mode", "Arc", true, 60}
+        {"select_mode", "select", false, 60},
+        {"place_mode", "Place", false, 60},
+        {"transition_mode", "Transition", false, 60},
+        {"arc_mode", "Arc", false, 60}
     };
 
     ButtonBar() {
@@ -139,27 +139,33 @@ class ButtonBar extends JToolBar {
         this.add(jSeparator);
         addButtonBlock(modeButtons, true);
 
-
+        // this.setRollover(true);
     }
 
-    private void addButtonBlock(Object[][] block, Boolean seperator) {
+    private void addButtonBlock(Object[][] block, Boolean separator) {
         for (Object[] button_info : block) {
-           if (seperator) {
-                this.addSeparator(new Dimension(13, 1));
+           if (!separator || separator) {
+                this.addSeparator(new Dimension(8, 1));
            }
-           this.add(createButton(button_info));
+           this.add(createButton(button_info, separator));
         }
     }
 
 
-    private JButton createButton(Object[] button_info) {
+    private JButton createButton(Object[] button_info, Boolean separator) {
         ImageIcon icon = new ImageIcon(this.getClass().getResource("images/" + button_info[0] + ".png"));
         JButton button = new JButton(icon);
         button.setToolTipText((String)button_info[1]);
-        button.setBorderPainted((Boolean)button_info[2]);
 
-        // button.setContentAreaFilled(true);
-        // button.setBackground(Color.RED);
+        if (!separator) {
+            button.setBorder(new LineBorder(Color.RED, 2));
+            button.setBorderPainted(true);
+            button.setBackground(new Color( 255,0,0,120 ));
+            button.setContentAreaFilled(true);
+
+        }
+        button.setOpaque(true);
+
 
         button.setMaximumSize(new Dimension((int)button_info[3], 30));
         button.setPreferredSize(new Dimension((int)button_info[3], 30));
