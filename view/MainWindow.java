@@ -112,15 +112,17 @@ class ButtonBar extends JToolBar {
 
     //{buttonId, setBorderPainted}
     public Object[][] fileButtons = new Object[][]{
-        {"create_new", false},
-        {"open", false},
-        {"save", false},
-        {"exit", false}
+        {"create_new", "new", false, 30},
+        {"open", "open", false, 40},
+        {"save", "save", false, 40},
+        {"exit", "exit", false, 40}
     };
 
     public Object[][] modeButtons = new Object[][]{
-        {"arrow_mode", true},
-        {"place_mode", true}
+        {"select_mode", "select", true, 60},
+        {"place_mode", "Place", true, 60},
+        {"transition_mode", "Transition", true, 60},
+        {"arc_mode", "Arc", true, 60}
     };
 
     ButtonBar() {
@@ -129,7 +131,8 @@ class ButtonBar extends JToolBar {
         this.setFloatable(false);
         this.setAlignmentX(0);
         this.setBackground(Color.DARK_GRAY);
-        this.setMargin(new Insets(5,5,5,5));
+        this.setMargin(new Insets(3,5,5,5));
+        // this.setLayout(null);
 
         addButtonBlock(fileButtons, false);
         Separator jSeparator = new Separator();
@@ -152,7 +155,14 @@ class ButtonBar extends JToolBar {
     private JButton createButton(Object[] button_info) {
         ImageIcon icon = new ImageIcon(this.getClass().getResource("images/" + button_info[0] + ".png"));
         JButton button = new JButton(icon);
-        button.setBorderPainted((Boolean)button_info[1]);
+        button.setToolTipText((String)button_info[1]);
+        button.setBorderPainted((Boolean)button_info[2]);
+
+        // button.setContentAreaFilled(true);
+        // button.setBackground(Color.RED);
+
+        button.setMaximumSize(new Dimension((int)button_info[3], 30));
+        button.setPreferredSize(new Dimension((int)button_info[3], 30));
 
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
