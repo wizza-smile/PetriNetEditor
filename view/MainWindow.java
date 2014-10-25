@@ -39,6 +39,7 @@ public class MainWindow extends JFrame {//implements Scrollable
         this.add(statusbar, BorderLayout.SOUTH);
 
         canvasPane = createCanvasPane();
+        // canvasPane.setSize(200, 200);
         this.add(canvasPane, BorderLayout.CENTER);
     }
 
@@ -49,9 +50,10 @@ public class MainWindow extends JFrame {//implements Scrollable
 
 
     private JScrollPane createCanvasPane() {
-        canvasPane = new JScrollPane(canvas, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        canvasPane = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         canvasPane.setViewportBorder(BorderFactory.createLineBorder(Color.GRAY));
         canvasPane.getVerticalScrollBar().setUnitIncrement(12);
+        canvasPane.getHorizontalScrollBar().setUnitIncrement(12);
         canvasPane.getViewport().setBackground(editorBackgroundColor);
 
         return canvasPane;

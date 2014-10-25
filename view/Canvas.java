@@ -23,6 +23,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
 
     public Canvas() {
+        //this.setPreferredSize(new Dimension(800,800));
         this.setOpaque(false);
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
@@ -39,7 +40,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
 
         // Draw Net Objects Places, Transitions and Arcs
-        Iterator it = controller.PetriNetController.getPetriNet().getElements().values().iterator();
+        Iterator it = PetriNetController.getPetriNet().getElements().values().iterator();
         while (it.hasNext()) {
 
             ((PetriNetElement)it.next()).getFigure().draw(g2);
@@ -62,8 +63,14 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
         //MainWindowController.setStatusBarText("PAINT");
 
+        CanvasController.computeAndSetCanvasSize();
     }
 
+
+
+    public void setCanvasSize() {
+        this.setPreferredSize(new Dimension(800, 800));
+    }
 
 
     public void mouseClicked(MouseEvent e) {

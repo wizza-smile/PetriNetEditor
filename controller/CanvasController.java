@@ -22,6 +22,11 @@ public class CanvasController {
     }
 
 
+    public static void computeAndSetCanvasSize() {
+        canvas.setCanvasSize();
+    }
+
+
     public static void mousePressed(MouseEvent e) {
 
         mousePressOrigin = new Point2D.Double(e.getX(), e.getY());

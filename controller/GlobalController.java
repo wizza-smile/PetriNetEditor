@@ -4,6 +4,7 @@ import model.*;
 import view.*;
 
 import java.util.*;
+import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
@@ -35,7 +36,10 @@ public class GlobalController {
 
                 MainWindowController.startMainWindow();
 
-                Canvas canvas = CanvasController.createCanvas();
+                view.Canvas canvas = CanvasController.createCanvas();
+                canvas.setSize(new Dimension(200, 200));
+                // canvas.setSize(new Dimension(200, 200));
+                // // canvas.setWidth(200);
                 MainWindowController.injectCanvas(canvas);
             }
         });
