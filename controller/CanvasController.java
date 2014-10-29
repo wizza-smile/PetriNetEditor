@@ -19,7 +19,7 @@ public class CanvasController {
 
     static view.Canvas canvas;
     static Point2D mousePressPoint;
-    static Point2D mouseReleasePoint;
+    static Point2D currentMousePoint;
 
 
     public static view.Canvas createCanvas() {
@@ -35,11 +35,7 @@ public class CanvasController {
 
 
     public static void mousePressed(MouseEvent e) {
-        MainWindowController.setStatusBarText("MOUSE Pressed " + e.getY());
-
         mousePressPoint = new Point2D.Double(e.getX(), e.getY());
-
-        //BaseFigure figure = canvas.selectFigure(e.getPoint());
 
         switch (GlobalController.mode) {
             case GlobalController.MODE_SELECT:
@@ -59,11 +55,11 @@ public class CanvasController {
 
 
     public static void mouseDragged(MouseEvent e) {
-        MainWindowController.setStatusBarText("mouseDragged " + e.getY() + "/" + e.getX() + " origin " + mousePressPoint.getY() + "/" + mousePressPoint.getX());
+        currentMousePoint = new Point2D.Double(e.getX(), e.getY());
 
         switch (GlobalController.mode) {
             case  GlobalController.MODE_SELECT:
-                //computeAndDrawSelectionLayer();
+                SelectionController.updateSelection();
                 break;
             default:
                 // MainWindowController.setStatusBarText("MOUSE DRAGGED");
@@ -75,7 +71,7 @@ public class CanvasController {
 
 
     public static void mouseReleased(MouseEvent e) {
-        mouseReleasePoint = new Point2D.Double(e.getX(), e.getY());
+        currentMousePoint = new Point2D.Double(e.getX(), e.getY());
 
         switch (GlobalController.mode) {
             case GlobalController.MODE_SELECT:
@@ -88,7 +84,6 @@ public class CanvasController {
                 System.out.println("MOUSE mouseReleased");
                 break;
         }
-
 
         canvas.repaint();
     }

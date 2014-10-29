@@ -18,23 +18,23 @@ public class SelectionController {
 
 
     public static void updateSelection() {
-        double width = Math.abs(CanvasController.mousePressPoint.getX() - CanvasController.mouseReleasePoint.getX());
-        double height = Math.abs(CanvasController.mousePressPoint.getY() - CanvasController.mouseReleasePoint.getY());
-        double x = Math.min(CanvasController.mousePressPoint.getX(), CanvasController.mouseReleasePoint.getX());
-        double y = Math.min(CanvasController.mousePressPoint.getY(), CanvasController.mouseReleasePoint.getY());
+        double currentX = CanvasController.currentMousePoint.getX() > 0 ? CanvasController.currentMousePoint.getX() : 0;
+        double currentY = CanvasController.currentMousePoint.getY() > 0 ? CanvasController.currentMousePoint.getY() : 0;
+
+        double width = Math.abs(CanvasController.mousePressPoint.getX() - currentX);
+        double height = Math.abs(CanvasController.mousePressPoint.getY() - currentY);
+        double x = Math.min(CanvasController.mousePressPoint.getX(), currentX);
+        double y = Math.min(CanvasController.mousePressPoint.getY(), currentY);
 
         selectionRectangle = new Rectangle2D.Double(x, y, width, height);
 
-
-        System.out.printf("%f, %f, %f, %f \n", x, y, width, height );
+        // System.out.printf("%f, %f, %f, %f \n", x, y, width, height );
 
         Iterator it = PetriNetController.getPetriNet().getElements().values().iterator();
         while (it.hasNext()) {
             PetriNetElement element = (PetriNetElement)it.next();
-            // MainWindowController.setStatusBarText("INTERSECTION");
             boolean selected = element.getFigure().intersects(selectionRectangle);
             if (selected) {
-                System.out.println("MOUSE mouseReleased");
                 MainWindowController.setStatusBarText("INTERSECTION");
             }
         }

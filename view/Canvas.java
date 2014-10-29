@@ -38,7 +38,6 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
             grid.drawGrid(g2);
         }
 
-        SelectionController.drawSelectionFigure(g2);
 
         // Draw Net Objects Places, Transitions and Arcs
         Iterator it = PetriNetController.getPetriNet().getElements().values().iterator();
@@ -64,6 +63,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
         //MainWindowController.setStatusBarText("PAINT");
 
+        SelectionController.drawSelectionFigure(g2);
         CanvasController.computeAndSetCanvasSize();
     }
 

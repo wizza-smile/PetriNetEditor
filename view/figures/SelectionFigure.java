@@ -11,11 +11,11 @@ public class SelectionFigure {
     static Rectangle2D rectangle;
 
     protected static Color strokeColor = new Color(0, 255, 0);
-    protected static Color fillColor = new Color(255, 0, 255);
+    protected static Color fillColor = new Color(255, 0, 255, 50);
 
     public static void draw(Graphics2D g) {
         rectangle = SelectionController.selectionRectangle.getBounds();
-        // drawFill(g);
+        drawFill(g);
         drawStroke(g);
     }
 
