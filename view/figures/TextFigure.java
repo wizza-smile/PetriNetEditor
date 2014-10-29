@@ -39,6 +39,10 @@ public class TextFigure extends BaseFigure {
     // }
 
 
+    public boolean intersects(Rectangle2D r) {
+        return false;
+    };
+
     public void draw(Graphics2D g) {
         drawStroke(g);
     }

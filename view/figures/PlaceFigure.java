@@ -8,9 +8,7 @@ import view.Grid;
 import java.awt.*;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.RectangularShape;
+import java.awt.geom.*;
 
 /**
  *
@@ -28,12 +26,12 @@ public class PlaceFigure extends BaseFigure {
 
     public PlaceFigure(Place place) {
         this.element = place;
+        this.ellipse = generateEllipse();
 
         // this.placeId = placeId;
         // this.position = position;
         // this.label = new TextFigure(this);
         // this.tokenFigure = new TokenSetFigure(this);
-        // this.ellipse = generateEllipse();
     }
 
     public Place getPlace() {
@@ -41,9 +39,13 @@ public class PlaceFigure extends BaseFigure {
     }
 
 
-    // public boolean contains(Point2D position) {
-    //     return this.ellipse.contains(position);
-    // }
+    public boolean contains(Point2D position) {
+        return this.ellipse.contains(position);
+    }
+
+    public boolean intersects(Rectangle2D rect) {
+        return this.ellipse.intersects(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+    }
 
 
     // public RectangularShape getBounds() {

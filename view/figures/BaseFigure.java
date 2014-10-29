@@ -3,7 +3,7 @@ package view.figures;
 import model.*;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
+import java.awt.geom.*;
 
 public abstract class BaseFigure {
     //the element the figure represents
@@ -21,6 +21,8 @@ public abstract class BaseFigure {
 
 
     public abstract void draw(Graphics2D g);
+
+    public abstract boolean intersects(Rectangle2D r);
 
 
     //getter / setter
