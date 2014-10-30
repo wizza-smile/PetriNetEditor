@@ -4,6 +4,7 @@ import model.*;
 import view.*;
 import view.figures.*;
 
+import java.util.*;
 import java.lang.Math;
 
 
@@ -13,6 +14,8 @@ import java.awt.geom.*;
 
 
 import javax.swing.*;
+import javax.swing.SwingUtilities;
+
 
 
 public class CanvasController {
@@ -34,26 +37,47 @@ public class CanvasController {
     }
 
 
+    public static void mouseClicked(MouseEvent e) {
+        //on dbl-click: clear selection and select figure under pointer, if any
+        if (e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e)) {
+            SelectionController.clearSelection();
+            SelectionController.selectFigureUnderMousePointer(mousePressPoint);
+            GlobalController.mode = GlobalController.MODE_SELECT;
+        }
+    }
+
+
     public static void mousePressed(MouseEvent e) {
         mousePressPoint = new Point2D.Double(e.getX(), e.getY());
-
-        switch (GlobalController.mode) {
-            case GlobalController.MODE_SELECT:
-                //check if element is under
-                //if not:
-                //remove current selection
-                //if yes:
-                //  a. element is selcted
-                //  b. element is not selected
-                System.out.println("MODE_SELECT");
-                break;
-            case GlobalController.MODE_PLACE:
-                System.out.println("MODE_PLACE");
-                PetriNetController.addPetriNetElement(mousePressPoint, PetriNetController.ELEMENT_PLACE);
-                break;
-            default:
-                System.out.println("MOUSE PRESSSSSS");
-                break;
+        if (SwingUtilities.isLeftMouseButton(e)) {
+            switch (GlobalController.mode) {
+                case GlobalController.MODE_SELECT:
+                    //check if selected elementFigure is under mouse pointer
+                    //if yes: start dragging selection
+                    //if not: remove current selection
+                    ArrayList<String> selectedElements_ids = SelectionController.getSelectedElementsIds();
+                    boolean clearSelection = true;
+                    for (String id : selectedElements_ids ) {
+                        if (PetriNetController.getElementById(id).getFigure().contains(mousePressPoint)) {
+                            //user wants to drag selected elements!
+                            clearSelection = false;
+                            GlobalController.mode = GlobalController.MODE_DRAG_SELECTION;
+                            break;
+                        }
+                    }
+                    if(clearSelection) {
+                        SelectionController.clearSelection();
+                        SelectionController.selectFigureUnderMousePointer(mousePressPoint);
+                    }
+                    SelectionController.setOffsetToSelectedElements(mousePressPoint);
+                    break;
+                case GlobalController.MODE_PLACE:
+                    PetriNetController.addPetriNetElement(mousePressPoint, PetriNetController.ELEMENT_PLACE);
+                    break;
+                default:
+                    System.out.println("MOUSE PRESSSSSS");
+                    break;
+            }
         }
 
         canvas.repaint();
@@ -62,14 +86,19 @@ public class CanvasController {
 
     public static void mouseDragged(MouseEvent e) {
         currentMousePoint = new Point2D.Double(e.getX(), e.getY());
-
-        switch (GlobalController.mode) {
-            case  GlobalController.MODE_SELECT:
-                SelectionController.updateSelection();
-                break;
-            default:
-                // MainWindowController.setStatusBarText("MOUSE DRAGGED");
-                break;
+        if (SwingUtilities.isLeftMouseButton(e)) {
+            switch (GlobalController.mode) {
+                case  GlobalController.MODE_SELECT:
+                    SelectionController.updateSelection();
+                    break;
+                case GlobalController.MODE_DRAG_SELECTION:
+                    System.out.println("dragging MODE_DRAG_SELECTION");
+                    // GlobalController.mode = GlobalController.MODE_SELECT;
+                    break;
+                default:
+                    MainWindowController.setStatusBarText("MOUSE DRAGGED");
+                    break;
+            }
         }
 
         canvas.repaint();
@@ -81,7 +110,10 @@ public class CanvasController {
 
         switch (GlobalController.mode) {
             case GlobalController.MODE_SELECT:
-                SelectionController.updateSelection();
+                // SelectionController.updateSelection();
+                break;
+            case GlobalController.MODE_DRAG_SELECTION:
+                GlobalController.mode = GlobalController.MODE_SELECT;
                 break;
             case GlobalController.MODE_PLACE:
                 //

@@ -10,10 +10,12 @@ public class Place extends PetriNetElement {
 
     private int tokenCount;
 
-    Place(String placeId, Point2D position) {
+    public Place(String placeId, Point2D position) {
         this.setId(placeId);
         this.position = position;
         this.label = "LABEL";
+        //cache a figure
+        this.getFigure();
         // this.tokenFigure = new TokenSetFigure(this);
         // this.ellipse = generateEllipse();
     }
@@ -22,6 +24,7 @@ public class Place extends PetriNetElement {
         this.setId(source.getId());
         this.position = source.position;
         this.label    = source.label;
+        this.figure   = source.figure;
     }
 
     //clone source place

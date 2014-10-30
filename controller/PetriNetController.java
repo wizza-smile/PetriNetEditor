@@ -1,7 +1,10 @@
 package controller;
 
+
 import model.*;
 import view.*;
+
+import java.util.*;
 
 import java.awt.geom.Point2D;
 import javax.swing.*;
@@ -13,7 +16,7 @@ public class PetriNetController {
     public final static int ELEMENT_TRANSITION = 1;
     public final static int ELEMENT_ARC = 2;
 
-    static PetriNet petriNet;
+    static private PetriNet petriNet;
 
 
     public static void createPetriNet() {
@@ -25,12 +28,30 @@ public class PetriNetController {
     }
 
     public static void addPetriNetElement(Point2D position, int type) {
-        petriNet.addElement(position, type);
+        Integer next_element_id = petriNet.getNextElementId();
+        String elementId;
+        PetriNetElement element;
+
+        switch (type) {
+            case PetriNetController.ELEMENT_PLACE:
+                elementId = "p_" + next_element_id.toString();
+                element = new Place(elementId, position);
+                break;
+            default:
+                return;
+        }
+
+        petriNet.addElement(elementId, element);
     }
 
-    public static void addSelectedElementId(String elementId) {
-        petriNet.addSelectedElementId(elementId);
+
+
+
+
+    public static PetriNetElement getElementById(String elementId) {
+        return petriNet.getElementById(elementId);
     }
+
 
 
 

@@ -11,9 +11,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.*;
 
 
-public class PlaceFigure extends BaseFigure {
-
-    private String placeId;
+public class PlaceFigure extends BaseFigure implements Selectable {
 
     private Ellipse2D ellipse;
     private Ellipse2D tokenPoint;
@@ -35,6 +33,13 @@ public class PlaceFigure extends BaseFigure {
         return (Place)this.element;
     }
 
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    // public boolean isSelected() {
+    //     return selected;
+    // }
 
     public boolean contains(Point2D position) {
         return this.ellipse.contains(position);
@@ -51,7 +56,6 @@ public class PlaceFigure extends BaseFigure {
 
 
     public void draw(Graphics2D g) {
-        this.ellipse = generateEllipse();
         drawFill(g);
         drawBorder(g);
 

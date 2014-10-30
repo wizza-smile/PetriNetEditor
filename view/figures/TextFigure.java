@@ -27,10 +27,10 @@ public class TextFigure extends BaseFigure {
         this.parent = parent;
     }
 
-    // @Override
-    // public boolean contains(Point2D position) {
-    //     return this.rectangle.contains(position);
-    // }
+
+    public boolean contains(Point2D position) {
+        return this.rectangle.contains(position);
+    }
 
 
     // public Point2D getPosition() {
@@ -42,6 +42,7 @@ public class TextFigure extends BaseFigure {
     public boolean intersects(Rectangle2D r) {
         return false;
     };
+
 
     public void draw(Graphics2D g) {
         drawStroke(g);

@@ -14,12 +14,9 @@ public class GlobalController {
 
     public static int mode = 0;
     public static final int MODE_SELECT = 0;
-    public static final int MODE_PLACE = 1;
-    public static final int TRANSITIONMODE = 2;
-    /** To add arcs*/
-    public static final int NORMALARCMODE = 3;
-    /** When simulation occurs */
-    public static final int SIMULATIONMODE = 4;
+    public static final int MODE_DRAG_SELECTION = 1;
+    public static final int MODE_PLACE = 2;
+
 
 
     // EVENTS

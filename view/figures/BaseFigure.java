@@ -7,7 +7,8 @@ import java.awt.geom.*;
 
 public abstract class BaseFigure {
     //the element the figure represents
-    PetriNetElement element;
+    protected String elementId;
+    protected PetriNetElement element;
 
     protected Point2D offset;
 
@@ -15,14 +16,15 @@ public abstract class BaseFigure {
     protected boolean highlighted = false;
 
     protected Color strokeColor = new Color(0, 0, 0);
-    protected Color fillColor = new Color(255, 255, 255);
-    protected Color selectedColor = new Color(153, 153, 255);
+    protected Color fillColor = new Color(255, 255, 255, 195);
+    protected Color selectedColor = new Color(55, 183, 55, 195);
     protected Color highlightedColor = new Color(115, 230, 0);
 
 
     public abstract void draw(Graphics2D g);
 
     public abstract boolean intersects(Rectangle2D r);
+    public abstract boolean contains(Point2D position);
 
 
     //getter / setter
@@ -30,12 +32,18 @@ public abstract class BaseFigure {
     public void setPosition(Point2D position) { getElement().setPosition(position); }
 
     public Point2D getOffset() { return offset; }
-    public void setOffset(Point2D offset) { this.offset = offset; }
+
+    public void setOffsetToPoint(Point2D point) {
+        Double offset_x = this.getPosition().getX() - point.getX();
+        Double offset_y = this.getPosition().getY() - point.getY();
+
+        this.offset = new Point2D.Double(offset_x, offset_x);
+    }
 
 
     public PetriNetElement getElement() { return element; }
+    public String getId() { return element.getId(); }
 
 
 
 }
-
