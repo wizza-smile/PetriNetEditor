@@ -1,4 +1,4 @@
-/* Copyright viewllem Catala. www.viewllemcatala.com/petrinetsim. Licensed http://creativecommons.org/licenses/by-nc-sa/3.0/ */
+
 package view.figures;
 
 import model.*;
@@ -10,10 +10,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.*;
 
-/**
- *
- * @author viewllem
- */
+
 public class PlaceFigure extends BaseFigure {
 
     private String placeId;

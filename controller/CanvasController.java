@@ -39,6 +39,12 @@ public class CanvasController {
 
         switch (GlobalController.mode) {
             case GlobalController.MODE_SELECT:
+                //check if element is under
+                //if not:
+                //remove current selection
+                //if yes:
+                //  a. element is selcted
+                //  b. element is not selected
                 System.out.println("MODE_SELECT");
                 break;
             case GlobalController.MODE_PLACE:

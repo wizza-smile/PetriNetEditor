@@ -7,10 +7,16 @@ import java.util.*;
 import java.awt.geom.Point2D;
 
 public class PetriNet {
+    //counts id's for PetriNetElements
+    private static int id_counter = 0;
 
-    /** Figures that are painted and represent the Petri Net */
     private HashMap<String, PetriNetElement> elements = new HashMap<String, PetriNetElement>();
+    private ArrayList<String> selectedElements_ids = new ArrayList<String>();
 
+
+    public int getNextElementId() {
+        return ++this.id_counter;
+    }
 
     //returnes a deep copy of contained elements
     public HashMap<String, PetriNetElement> getElements() {
@@ -28,13 +34,21 @@ public class PetriNet {
 
 
     public void addElement(Point2D position, int type) {
+        Integer next_element_id = this.getNextElementId();
+        String elementId;
+        PetriNetElement element;
 
-        if (PetriNetController.ELEMENT_PLACE == type) {
-            String placeId = "ONE" + position.getX();
-            Place place = new Place(placeId, new Point2D.Double(position.getX(), position.getY()));
-
-            elements.put(placeId, place);
+        switch (type) {
+            case PetriNetController.ELEMENT_PLACE:
+                elementId = "p_" + next_element_id.toString();
+                element = new Place(elementId, new Point2D.Double(position.getX(), position.getY()));
+                break;
+            default:
+                return;
         }
+
+        elements.put(elementId, element);
+
 
 
         // elements.put(placeId + "label", place.getLabel());
@@ -88,6 +102,11 @@ public class PetriNet {
         // }
     }
 
-
+    //select element, if not already selected
+    public void addSelectedElementId(String elementId) {
+        if (!selectedElements_ids.contains(elementId)) {
+            selectedElements_ids.add(elementId);
+        }
+    }
 
 }

@@ -16,7 +16,7 @@ public class SelectionController {
     public static Rectangle2D selectionRectangle;
 
 
-
+    //will select all petriNetElements that are intersecting with the selection rectangle.
     public static void updateSelection() {
         double currentX = CanvasController.currentMousePoint.getX() > 0 ? CanvasController.currentMousePoint.getX() : 0;
         double currentY = CanvasController.currentMousePoint.getY() > 0 ? CanvasController.currentMousePoint.getY() : 0;
@@ -35,7 +35,7 @@ public class SelectionController {
             PetriNetElement element = (PetriNetElement)it.next();
             boolean selected = element.getFigure().intersects(selectionRectangle);
             if (selected) {
-                MainWindowController.setStatusBarText("INTERSECTION");
+                PetriNetController.addSelectedElementId(element.getId());
             }
         }
 

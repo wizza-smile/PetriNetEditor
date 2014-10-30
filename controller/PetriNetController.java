@@ -28,4 +28,10 @@ public class PetriNetController {
         petriNet.addElement(position, type);
     }
 
+    public static void addSelectedElementId(String elementId) {
+        petriNet.addSelectedElementId(elementId);
+    }
+
+
+
 }
