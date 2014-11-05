@@ -17,7 +17,7 @@ public abstract class BaseFigure {
 
     protected Color strokeColor = new Color(0, 0, 0);
     protected Color fillColor = new Color(255, 255, 255, 195);
-    protected Color selectedColor = new Color(55, 183, 55, 195);
+    protected Color selectedColor = new Color(183, 55, 55, 40);
     protected Color highlightedColor = new Color(115, 230, 0);
 
 
@@ -25,6 +25,7 @@ public abstract class BaseFigure {
 
     public abstract boolean intersects(Rectangle2D r);
     public abstract boolean contains(Point2D position);
+    public abstract void updatePosition();
 
 
     //getter / setter
@@ -37,7 +38,7 @@ public abstract class BaseFigure {
         Double offset_x = this.getPosition().getX() - point.getX();
         Double offset_y = this.getPosition().getY() - point.getY();
 
-        this.offset = new Point2D.Double(offset_x, offset_x);
+        this.offset = new Point2D.Double(offset_x, offset_y);
     }
 
 

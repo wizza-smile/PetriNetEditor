@@ -92,8 +92,14 @@ public class CanvasController {
                     SelectionController.updateSelection();
                     break;
                 case GlobalController.MODE_DRAG_SELECTION:
-                    System.out.println("dragging MODE_DRAG_SELECTION");
-                    // GlobalController.mode = GlobalController.MODE_SELECT;
+                    //move all selected Elements to mouse position/ consider offset
+                    ArrayList<String> selectedElements_ids = SelectionController.getSelectedElementsIds();
+                    boolean clearSelection = true;
+                    for (String id : selectedElements_ids ) {
+                        BaseFigure figure = PetriNetController.getElementById(id).getFigure();
+                        Point2D offset = figure.getOffset();
+                        figure.setPosition( new Point2D.Double(currentMousePoint.getX()+offset.getX(), currentMousePoint.getY()+offset.getY()) );
+                    }
                     break;
                 default:
                     MainWindowController.setStatusBarText("MOUSE DRAGGED");
@@ -110,7 +116,7 @@ public class CanvasController {
 
         switch (GlobalController.mode) {
             case GlobalController.MODE_SELECT:
-                // SelectionController.updateSelection();
+                SelectionController.removeSelectionRectangle();
                 break;
             case GlobalController.MODE_DRAG_SELECTION:
                 GlobalController.mode = GlobalController.MODE_SELECT;

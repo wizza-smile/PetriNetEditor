@@ -38,6 +38,11 @@ public class TextFigure extends BaseFigure {
     //     return position;
     // }
 
+    public void updatePosition() {
+
+    }
+
+
 
     public boolean intersects(Rectangle2D r) {
         return false;

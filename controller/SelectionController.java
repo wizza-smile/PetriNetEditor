@@ -85,6 +85,11 @@ public class SelectionController {
 
 
 
+    public static void removeSelectionRectangle() {
+        selectionRectangle = null;
+    }
+
+
     public static void removeSelectedFigure(BaseFigure figure) {
         selectedElements_ids.remove(figure.getId());
         ((Selectable)figure).setSelected(false);

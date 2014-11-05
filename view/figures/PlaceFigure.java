@@ -126,6 +126,11 @@ public class PlaceFigure extends BaseFigure implements Selectable {
     }
 
 
+    public void updatePosition() {
+        this.ellipse = generateEllipse();
+    }
+
+
     // public void setPosition(Point2D newPosition) {
     //     place.getPosition() = newPosition;
     //     label.setRelativePosition(newPosition);
