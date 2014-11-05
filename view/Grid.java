@@ -6,7 +6,7 @@ import java.awt.geom.*;
 
 public class Grid {
 
-    static Point2D gridOriginReferencePoint;
+    static Point2D gridOriginReferencePoint = new Point2D.Double(.0,.0);
 
     /** Grid width.*/
     private int width;
@@ -25,22 +25,30 @@ public class Grid {
 
 
     public Grid(int width, int height) {
-        setReferencePoint(new Point2D.Double(.0,.0));
+        // setReferencePoint();
         this.width = width;
         this.height = height;
     }
 
     public static void setReferencePoint(Point2D p) {
-        gridOriginReferencePoint = p;
+        System.out.println("SET OFFSET" + p.getX());
+        Grid.gridOriginReferencePoint = p;
     }
+
+    public static void addToReferencePoint(Point2D p) {
+        Point2D new_point = new Point2D.Double(Grid.gridOriginReferencePoint.getX()-p.getX(), Grid.gridOriginReferencePoint.getY()-p.getY());
+        Grid.gridOriginReferencePoint = new_point;
+    }
+
 
     public GeneralPath generateGrid(int numCells) {
         GeneralPath grid = new GeneralPath();
 
-        float off_x = (float)gridOriginReferencePoint.getX();
+        float off_x = (float)Grid.gridOriginReferencePoint.getX();
+        float off_y = (float)Grid.gridOriginReferencePoint.getX();
         System.out.println("OFFSTE GRID " + off_x);
 
-        for (float i = 0-off_x; i <= width; i += cellSize / numCells) {
+        for (float i = 0+off_x; i <= width; i += cellSize / numCells) {
             grid.moveTo(i, 2);
             grid.lineTo(i, height);
         }

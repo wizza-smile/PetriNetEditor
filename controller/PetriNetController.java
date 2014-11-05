@@ -61,7 +61,7 @@ public class PetriNetController {
             Point2D position = elem.getPosition();
             Point2D new_position = new Point2D.Double(position.getX()+x_off, position.getY()+y_off);
             elem.setPosition(new_position);
-            CanvasController.setGridReferencePoint(new Point2D.Double(x_off, y_off));
+            CanvasController.addToGridReferencePoint(new Point2D.Double(x_off, y_off));
         }
 
         //adjust ScrollPosition of Viewport

@@ -38,8 +38,11 @@ public class CanvasController {
     }
 
     public static void setGridReferencePoint(Point2D p) {
-        System.out.println("SET OFFSET" +p.getX());
         Grid.setReferencePoint(p);
+    }
+
+    public static void addToGridReferencePoint(Point2D p) {
+        Grid.addToReferencePoint(p);
     }
 
 
