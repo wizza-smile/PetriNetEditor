@@ -3,12 +3,15 @@ package view.figures;
 
 import model.*;
 import view.Grid;
+import controller.*;
+
+import java.lang.Math;
 
 
 import java.awt.*;
-import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.geom.*;
+
+import javax.swing.*;
 
 
 public class PlaceFigure extends BaseFigure implements Selectable {
@@ -20,8 +23,8 @@ public class PlaceFigure extends BaseFigure implements Selectable {
     //protected TokenSetFigure tokenFigure;
 
     public PlaceFigure(Place place) {
-        this.element = place;
-        this.ellipse = generateEllipse();
+        this.element = (PetriNetElement)place;
+        setEllipse(generateEllipse());
 
         // this.placeId = placeId;
         // this.position = position;
@@ -117,6 +120,18 @@ public class PlaceFigure extends BaseFigure implements Selectable {
 
 
     public Ellipse2D generateEllipse() {
+        //check if position is inside canvas/viewport
+        //if not move the net diagonally, so that this Element is fully inside
+        Double minX = getPlace().getPosition().getX() - DIAMETER / 2;
+        Double minY = getPlace().getPosition().getY() - DIAMETER / 2;
+
+        if (minX < 0 || minY < 0) {
+            Double x_off = minX < 0 ? Math.abs(minX) : 0;
+            Double y_off = minY < 0 ? Math.abs(minY) : 0;
+
+            PetriNetController.moveAllElementDownDiagonally(x_off, y_off);
+        }
+
         return new Ellipse2D.Double(
             getPlace().getPosition().getX() - DIAMETER / 2,
             getPlace().getPosition().getY() - DIAMETER / 2,
@@ -127,7 +142,13 @@ public class PlaceFigure extends BaseFigure implements Selectable {
 
 
     public void updatePosition() {
-        this.ellipse = generateEllipse();
+        setEllipse(generateEllipse());
+    }
+
+
+
+    public void setEllipse(Ellipse2D e) {
+        this.ellipse = e;
     }
 
 

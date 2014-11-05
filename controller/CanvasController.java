@@ -20,7 +20,8 @@ import javax.swing.SwingUtilities;
 
 public class CanvasController {
 
-    static view.Canvas canvas;
+    static private view.Canvas canvas;
+    // static private view.Grid grid;
     static Point2D mousePressPoint;
     static Point2D currentMousePoint;
 
@@ -34,6 +35,11 @@ public class CanvasController {
 
     public static void computeAndSetCanvasSize() {
         canvas.setCanvasSize(new Dimension(800, 800));
+    }
+
+    public static void setGridReferencePoint(Point2D p) {
+        System.out.println("SET OFFSET" +p.getX());
+        Grid.setReferencePoint(p);
     }
 
 

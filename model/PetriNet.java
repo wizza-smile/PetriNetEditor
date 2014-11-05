@@ -21,17 +21,17 @@ public class PetriNet {
 
     //returnes a deep copy of contained elements
     public HashMap<String, PetriNetElement> getElements() {
-        // return elements;
-        HashMap<String, PetriNetElement> outputElements = new HashMap<String, PetriNetElement>();
+        return elements;
+        // HashMap<String, PetriNetElement> outputElements = new HashMap<String, PetriNetElement>();
 
-        Iterator it = elements.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pairs = (Map.Entry)it.next();
+        // Iterator it = elements.entrySet().iterator();
+        // while (it.hasNext()) {
+        //     Map.Entry pairs = (Map.Entry)it.next();
 
-            outputElements.put((String)pairs.getKey(), ((PetriNetElement)pairs.getValue()).cloneElement());
-        }
+        //     outputElements.put((String)pairs.getKey(), ((PetriNetElement)pairs.getValue()).cloneElement());
+        // }
 
-        return outputElements;
+        // return outputElements;
     }
 
 

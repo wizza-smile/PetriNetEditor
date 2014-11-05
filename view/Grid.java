@@ -1,11 +1,12 @@
 package view;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.geom.GeneralPath;
+import java.awt.*;
+import java.awt.geom.*;
 
 
 public class Grid {
+
+    static Point2D gridOriginReferencePoint;
 
     /** Grid width.*/
     private int width;
@@ -24,14 +25,22 @@ public class Grid {
 
 
     public Grid(int width, int height) {
+        setReferencePoint(new Point2D.Double(.0,.0));
         this.width = width;
         this.height = height;
     }
 
+    public static void setReferencePoint(Point2D p) {
+        gridOriginReferencePoint = p;
+    }
 
     public GeneralPath generateGrid(int numCells) {
         GeneralPath grid = new GeneralPath();
-        for (float i = 0; i <= width; i += cellSize / numCells) {
+
+        float off_x = (float)gridOriginReferencePoint.getX();
+        System.out.println("OFFSTE GRID " + off_x);
+
+        for (float i = 0-off_x; i <= width; i += cellSize / numCells) {
             grid.moveTo(i, 2);
             grid.lineTo(i, height);
         }

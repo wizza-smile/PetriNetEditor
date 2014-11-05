@@ -7,7 +7,7 @@ import javax.swing.*;
 
 public class MainWindowController {
 
-    static MainWindow main_window;
+    public static MainWindow main_window;
 
 
     public static void startMainWindow() {

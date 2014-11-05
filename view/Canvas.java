@@ -18,12 +18,12 @@ import javax.swing.*;
 
 public class Canvas extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
 
-    private Grid grid;
-    private boolean enabledGrid = true;
+    public Grid grid;
+    boolean enabledGrid = true;
 
 
     public Canvas() {
-        //this.setPreferredSize(new Dimension(800,800));
+        //this.setPreferredSize(new Dim
         this.setOpaque(false);
         this.addMouseListener(this);
         this.addMouseMotionListener(this);

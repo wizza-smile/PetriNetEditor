@@ -28,6 +28,7 @@ public abstract class PetriNetElement {
     public void setId(String elementId) { this.elementId = elementId; }
 
     public Point2D getPosition() { return position; }
+
     public void setPosition(Point2D position) {
         this.position = position;
         //update figure position!

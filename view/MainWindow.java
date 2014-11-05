@@ -17,7 +17,7 @@ public class MainWindow extends JFrame {//implements Scrollable
     JPanel panel;
     JLabel statusbar;
     Canvas canvas;
-    JScrollPane canvasPane;
+    public JScrollPane canvasPane;
 
 
 
