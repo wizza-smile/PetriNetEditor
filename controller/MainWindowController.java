@@ -2,6 +2,9 @@ package controller;
 
 import view.*;
 
+import java.awt.*;
+import java.awt.geom.*;
+
 import javax.swing.*;
 
 
@@ -16,14 +19,22 @@ public class MainWindowController {
         main_window.setVisible(true);
     }
 
+    public static MainWindow getMainWindow() {
+        return main_window;
+    }
 
-    public static void injectCanvas(Canvas canvas) {
+
+    public static void injectCanvas(view.Canvas canvas) {
         main_window.injectCanvas(canvas);
     }
 
 
     public static void setStatusBarText(String s) {
         main_window.setStatusBarText(s);
+    }
+
+    public static Dimension getViewportSize() {
+        return main_window.canvasPane.getViewport().getSize();
     }
 
 

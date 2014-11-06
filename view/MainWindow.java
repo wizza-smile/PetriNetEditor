@@ -40,6 +40,7 @@ public class MainWindow extends JFrame {//implements Scrollable
 
         canvasPane = createCanvasPane();
         // canvasPane.setSize(200, 200);
+
         this.add(canvasPane, BorderLayout.CENTER);
     }
 

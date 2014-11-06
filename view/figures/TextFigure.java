@@ -33,6 +33,11 @@ public class TextFigure extends BaseFigure {
     }
 
 
+    public Point2D getLowerRightCorner() {
+        Point2D lrc = new Point2D.Double(0,0);
+
+        return lrc;
+    }
     // public Point2D getPosition() {
 
     //     return position;

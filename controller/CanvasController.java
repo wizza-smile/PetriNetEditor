@@ -24,6 +24,7 @@ public class CanvasController {
     // static private view.Grid grid;
     static Point2D mousePressPoint;
     static Point2D currentMousePoint;
+    public static boolean shrink = false;
 
 
     public static view.Canvas createCanvas() {
@@ -33,8 +34,37 @@ public class CanvasController {
     }
 
 
+    public static void cleanUpCanvas() {
+        PetriNetController.computePetriNetUpperLeftAndLowerRightCorner();
+        computeAndSetCanvasSize();
+        PetriNetController.fixPetriNetElementPositions();
+    }
+
+
     public static void computeAndSetCanvasSize() {
-        canvas.setCanvasSize(new Dimension(800, 800));
+        System.out.println("netDimension");
+        System.out.println(PetriNetController.getPetriNet().netDimension.toString());
+        System.out.println("getViewportSize");
+        System.out.println(MainWindowController.getViewportSize().toString());
+        Double width, height;
+
+        width = Math.max(MainWindowController.getViewportSize().getWidth(), PetriNetController.getPetriNet().netDimension.getWidth());
+        height = Math.max(MainWindowController.getViewportSize().getHeight(), PetriNetController.getPetriNet().netDimension.getHeight());
+
+        canvas.setCanvasSize(new Dimension(width.intValue(), height.intValue()));
+        canvas.revalidate();
+
+
+        // Double width, height;
+        // Dimension referenceSize = min_ref ? canvas.getMinSize() : canvas.getSize();
+
+        // System.out.println(min_ref);
+        // System.out.println(PetriNetController.getPetriNet().lowerRightCorner.getX() + " CS "+ referenceSize.getWidth());
+
+        // width = Math.max( referenceSize.getWidth(), PetriNetController.getPetriNet().lowerRightCorner.getX()+10 );
+        // height = Math.max( referenceSize.getHeight(), PetriNetController.getPetriNet().lowerRightCorner.getY()+10 );
+        // Dimension canvasSize = new Dimension(width.intValue(), height.intValue());
+        // canvas.setCanvasSize(canvasSize);
     }
 
     public static void setGridReferencePoint(Point2D p) {
@@ -95,6 +125,7 @@ public class CanvasController {
 
     public static void mouseDragged(MouseEvent e) {
         currentMousePoint = new Point2D.Double(e.getX(), e.getY());
+        // MainWindowController.setStatusBarText("F " + currentMousePoint.getX());
         if (SwingUtilities.isLeftMouseButton(e)) {
             switch (GlobalController.mode) {
                 case  GlobalController.MODE_SELECT:

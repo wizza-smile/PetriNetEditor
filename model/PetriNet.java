@@ -5,11 +5,17 @@ import view.figures.*;
 
 import java.util.*;
 
-import java.awt.geom.Point2D;
+import java.awt.*;
+import java.awt.geom.*;
 
 public class PetriNet {
     //counts id's for PetriNetElements
     private static int id_counter = 0;
+
+    public Point2D upper_left = new Point.Double(0,0);
+    public Point2D lower_right = new Point.Double(0,0);
+    public Dimension netDimension = new Dimension(0, 0);
+    public Point2D lowerRightCorner = new Point2D.Double(0, 0);
 
     private HashMap<String, PetriNetElement> elements = new HashMap<String, PetriNetElement>();
 

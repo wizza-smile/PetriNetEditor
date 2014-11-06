@@ -1,10 +1,12 @@
 package view.figures;
 
 import model.*;
+import controller.*;
 
 import java.awt.*;
 import java.awt.geom.*;
 
+///SELECTABLE FIGURES   PLACE / TRANSIITONS
 public abstract class BaseFigure {
     //the element the figure represents
     protected String elementId;
@@ -21,12 +23,15 @@ public abstract class BaseFigure {
     protected Color highlightedColor = new Color(115, 230, 0);
 
 
-    public abstract void draw(Graphics2D g);
-
     public abstract boolean intersects(Rectangle2D r);
     public abstract boolean contains(Point2D position);
+    public abstract Point2D getLowerRightCorner();
     public abstract void updatePosition();
 
+
+    public void draw(Graphics2D g) {
+        PetriNetController.checkLowerRightCorner(this.getLowerRightCorner());
+    }
 
     //getter / setter
     public Point2D getPosition() { return getElement().getPosition(); }

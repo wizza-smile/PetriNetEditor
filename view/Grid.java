@@ -31,7 +31,6 @@ public class Grid {
     }
 
     public static void setReferencePoint(Point2D p) {
-        System.out.println("SET OFFSET" + p.getX());
         Grid.gridOriginReferencePoint = p;
     }
 
@@ -45,15 +44,14 @@ public class Grid {
         GeneralPath grid = new GeneralPath();
 
         float off_x = (float)Grid.gridOriginReferencePoint.getX();
-        float off_y = (float)Grid.gridOriginReferencePoint.getX();
-        System.out.println("OFFSTE GRID " + off_x);
+        float off_y = (float)Grid.gridOriginReferencePoint.getY();
 
-        for (float i = 0+off_x; i <= width; i += cellSize / numCells) {
+        for (float i = 0-(cellSize + (off_x%cellSize)); i <= width; i += cellSize / numCells) {
             grid.moveTo(i, 2);
             grid.lineTo(i, height);
         }
 
-        for (float i = 0; i <= height; i += cellSize / numCells) {
+        for (float i = 0-(cellSize + (off_y%cellSize)); i <= height; i += cellSize / numCells) {
             grid.moveTo(2, i);
             grid.lineTo(width, i);
         }

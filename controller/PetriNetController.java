@@ -53,25 +53,96 @@ public class PetriNetController {
     }
 
 
+    public static void checkLowerRightCorner(Point2D p) {
+        petriNet.lowerRightCorner.setLocation(
+            Math.max(petriNet.lowerRightCorner.getX(), p.getX()),
+            Math.max(petriNet.lowerRightCorner.getY(), p.getY())
+        );
+
+        // System.out.println(petriNet.lowerRightCorner.getX());
+    }
+
+
+
+    public static void computePetriNetUpperLeftAndLowerRightCorner() {
+        Point2D upper_left = new Point2D.Double(0, 0);
+        Point2D lower_right = new Point2D.Double(0, 0);
+        boolean initialized = false;
+        Iterator it = petriNet.getElements().values().iterator();
+        while (it.hasNext()) {
+            PetriNetElement elem = (PetriNetElement)it.next();
+            Point2D position = elem.getPosition();
+
+            if (initialized) {
+                upper_left.setLocation(Math.min(upper_left.getX(), position.getX()), Math.min(upper_left.getY(), position.getY()));
+                lower_right.setLocation(Math.max(lower_right.getX(), position.getX()), Math.max(lower_right.getY(), position.getY()));
+            } else {
+                upper_left = new Point2D.Double(position.getX(), position.getY());
+                lower_right = new Point2D.Double(position.getX(), position.getY());
+                initialized = true;
+            }
+        }
+        petriNet.upper_left = upper_left;
+        petriNet.lower_right = lower_right;
+        petriNet.netDimension.setSize(lower_right.getX() - upper_left.getX(), lower_right.getY() - upper_left.getY());
+    }
+
+
+    public static void fixPetriNetElementPositions() {
+//es muss etwas unternommen werden, wenn ein Element durch scrollen nicht mehr erreicht werden kann.
+//dann muss dieses Element verschoben werden bis es erreicht werden kann, und alle elemente mit ihm??
+
+        Double fix_x = petriNet.upper_left.getX() < 0 ? petriNet.upper_left.getX() : 0;
+        Double fix_y = petriNet.upper_left.getY() < 0 ? petriNet.upper_left.getY() : 0;
+        if (fix_x < 0 || fix_y < 0) {
+            //position fixing is needed
+            Iterator it = petriNet.getElements().values().iterator();
+            while (it.hasNext()) {
+                PetriNetElement elem = (PetriNetElement)it.next();
+                Point2D position = elem.getPosition();
+                elem.setPosition(new Point2D.Double(position.getX()-fix_x, position.getY()-fix_y));
+            }
+
+
+            // //adjust ScrollPosition of Viewport
+            // JScrollPane scrollPane = MainWindowController.main_window.canvasPane;
+            // Point2D position = scrollPane.getViewport().getViewPosition();
+            // Point newViewportPoint = new Point((int)Math.round(position.getX()) + fix_x.intValue(), (int)Math.round(position.getY()) + fix_y.intValue());
+            // // Point newViewportPoint = new Point(100, 100);
+
+            // scrollPane.getViewport().setViewPosition( newViewportPoint );
+
+
+        }
+
+    }
 
     public static void moveAllElementDownDiagonally(Double x_off, Double y_off) {
-        Iterator it = PetriNetController.getPetriNet().getElements().values().iterator();
+
+        Iterator it = petriNet.getElements().values().iterator();
         while (it.hasNext()) {
             PetriNetElement elem = (PetriNetElement)it.next();
             Point2D position = elem.getPosition();
             Point2D new_position = new Point2D.Double(position.getX()+x_off, position.getY()+y_off);
             elem.setPosition(new_position);
-            CanvasController.addToGridReferencePoint(new Point2D.Double(x_off, y_off));
         }
+        CanvasController.addToGridReferencePoint(new Point2D.Double(x_off, y_off));
 
         //adjust ScrollPosition of Viewport
         JScrollPane scrollPane = MainWindowController.main_window.canvasPane;
         Point2D position = scrollPane.getViewport().getViewPosition();
 
+        System.out.println(x_off);
+
         x_off = x_off + position.getX();
         y_off = y_off + position.getY();
 
+        System.out.println(position.getX());
+
         scrollPane.getViewport().setViewPosition( new Point(x_off.intValue(), y_off.intValue()) );
+
+        System.out.println(scrollPane.getViewport().getViewPosition().getX());
+
     }
 
 

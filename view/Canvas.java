@@ -20,6 +20,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
     public Grid grid;
     boolean enabledGrid = true;
+    Dimension minSize = new Dimension(300, 250);
 
 
     public Canvas() {
@@ -30,26 +31,32 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     }
 
     public void paintComponent(Graphics graphics) {
+        CanvasController.cleanUpCanvas();
+
+
+
+        // CanvasController.computeAndSetCanvasSize(CanvasController.shrink);
+        // // for ( StackTraceElement trace : Thread.currentThread().getStackTrace() )
+        // System.out.println( "paintComponent" );
+
+
         java.awt.Graphics2D g2 = (java.awt.Graphics2D) graphics;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        grid = new Grid(this.getWidth(), this.getHeight());
-        if (this.enabledGrid) {
-            grid.drawGrid(g2);
-        }
+        // grid = new Grid(this.getWidth(), this.getHeight());
+        // if (this.enabledGrid) {
+        //     grid.drawGrid(g2);
+        // }
 
+        // PetriNetController.getPetriNet().lowerRightCorner.setLocation(0,0);
+        // // CanvasController.shrink = false;
+        // System.out.println("SHRINK FALSE");
 
         // Draw Net Objects Places, Transitions and Arcs
         Iterator it = PetriNetController.getPetriNet().getElements().values().iterator();
         while (it.hasNext()) {
-
-            ((PetriNetElement)it.next()).getFigure().draw(g2);
-
-      /*      if (it.next() instanceof Place) {
-                System.out.println("ITS A PLACE");
-            }*/
-
-            // switch ( )
+            PetriNetElement elem = (PetriNetElement)it.next();
+            elem.getFigure().draw(g2);
 
             // AbstractFigure element = (AbstractFigure) Class.forName(it.next().classname + "Figure").newInstance();
             // element.draw(g2);
@@ -59,14 +66,19 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         //     // arcFigure.draw(g2);
         // }
 
-        // selectionManager.updateBounds();
-
         //MainWindowController.setStatusBarText("PAINT");
 
         SelectionController.drawSelectionFigure(g2);
-        CanvasController.computeAndSetCanvasSize();
+
+
+        // System.out.println("FINITO");
     }
 
+
+
+    public Dimension getMinSize() {
+        return minSize;
+    }
 
 
     public void setCanvasSize(Dimension dim) {
