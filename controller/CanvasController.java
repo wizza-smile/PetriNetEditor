@@ -22,6 +22,8 @@ public class CanvasController {
 
     static private view.Canvas canvas;
     // static private view.Grid grid;
+    static Point viewPortPosition;
+
     static Point2D mousePressPoint;
     static Point2D currentMousePoint;
     public static boolean shrink = false;
@@ -35,36 +37,69 @@ public class CanvasController {
 
 
     public static void cleanUpCanvas() {
+        // //save viewport position!
+        // viewPortPosition = MainWindowController.getViewport().getViewPosition();
+
         PetriNetController.computePetriNetUpperLeftAndLowerRightCorner();
-        computeAndSetCanvasSize();
+
+        //viewport relative to upper left petrinnetcorner
+        // System.out.println(PetriNetController.getPetriNet().upper_left.getX());
+
+
+        // System.out.println(MainWindowController.getViewport().setViewPosition.getX());
+
         PetriNetController.fixPetriNetElementPositions();
+
+        computeAndSetCanvasSize();
+
+        Double newViewportPosX = (-1)*Math.min(PetriNetController.getPetriNet().upper_left.getX(),0);
+        Double newViewportPosY = (-1)*Math.min(PetriNetController.getPetriNet().upper_left.getY(),0);
+
+        System.out.println("NEW VIEWPORT");
+        System.out.println(newViewportPosX + ", " + newViewportPosY);
+
+
+        // MainWindowController.getViewport().setViewPosition( new Point(newViewportPosX.intValue(), newViewportPosY.intValue()) );
+
     }
 
 
     public static void computeAndSetCanvasSize() {
-        System.out.println("netDimension");
-        System.out.println(PetriNetController.getPetriNet().netDimension.toString());
-        System.out.println("getViewportSize");
-        System.out.println(MainWindowController.getViewportSize().toString());
-        Double width, height;
+        Double width, height, upper_left_x, upper_left_y, lower_right_x, lower_right_y;
 
-        width = Math.max(MainWindowController.getViewportSize().getWidth(), PetriNetController.getPetriNet().netDimension.getWidth());
-        height = Math.max(MainWindowController.getViewportSize().getHeight(), PetriNetController.getPetriNet().netDimension.getHeight());
+        MainWindowController.computeViewportLowerRight();
+
+        upper_left_x = Math.min(MainWindowController.viewport_upper_left.getX(), PetriNetController.getPetriNet().upper_left.getX());
+        upper_left_y = Math.min(MainWindowController.viewport_upper_left.getY(), PetriNetController.getPetriNet().upper_left.getY());
+
+        lower_right_x = Math.max(MainWindowController.viewport_lower_right.getX(), PetriNetController.getPetriNet().lower_right.getX());
+        lower_right_y = Math.max(MainWindowController.viewport_lower_right.getY(), PetriNetController.getPetriNet().netDimension.getHeight());
+
+        width = lower_right_x - upper_left_x;
+        height = lower_right_y - upper_left_y;
+
+        Dimension canvasDimension = new Dimension(width.intValue(), height.intValue());
 
         canvas.setCanvasSize(new Dimension(width.intValue(), height.intValue()));
         canvas.revalidate();
 
 
-        // Double width, height;
-        // Dimension referenceSize = min_ref ? canvas.getMinSize() : canvas.getSize();
+        System.out.println("\n viewport_upper_left.getX \n");
+        System.out.println(MainWindowController.viewport_upper_left.getX());
 
-        // System.out.println(min_ref);
-        // System.out.println(PetriNetController.getPetriNet().lowerRightCorner.getX() + " CS "+ referenceSize.getWidth());
+        System.out.println("viewportDimension");
+        System.out.println(MainWindowController.getViewport().getSize().toString());
+        System.out.println("canvasDimension");
+        System.out.println(canvasDimension.toString());
+        System.out.println("netDimension");
+        System.out.println(PetriNetController.getPetriNet().netDimension.toString());
 
-        // width = Math.max( referenceSize.getWidth(), PetriNetController.getPetriNet().lowerRightCorner.getX()+10 );
-        // height = Math.max( referenceSize.getHeight(), PetriNetController.getPetriNet().lowerRightCorner.getY()+10 );
-        // Dimension canvasSize = new Dimension(width.intValue(), height.intValue());
-        // canvas.setCanvasSize(canvasSize);
+        // System.out.println("getViewportSize");
+        //
+        // System.out.println(MainWindowController.getViewport().getSize().toString());
+        // System.out.println("getViewportPosition");
+        // System.out.println(MainWindowController.getViewport().getViewPosition().getX());
+
     }
 
     public static void setGridReferencePoint(Point2D p) {

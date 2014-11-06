@@ -67,6 +67,7 @@ public class PlaceFigure extends BaseFigure implements Selectable {
     }
 
     public void draw(Graphics2D g) {
+        setEllipse(generateEllipse());
         drawFill(g);
         drawBorder(g);
         if (1==1 || this.getPlace().getTokenCount() == 1) {
@@ -156,7 +157,7 @@ public class PlaceFigure extends BaseFigure implements Selectable {
 
 
     public void updatePosition() {
-        setEllipse(generateEllipse());
+        // setEllipse(generateEllipse());
     }
 
 
