@@ -21,8 +21,7 @@ import javax.swing.SwingUtilities;
 public class CanvasController {
 
     static private view.Canvas canvas;
-    // static private view.Grid grid;
-    static Point viewPortPosition;
+
 
     static Point2D mousePressPoint;
     static Point2D currentMousePoint;
@@ -37,29 +36,14 @@ public class CanvasController {
 
 
     public static void cleanUpCanvas() {
-        // //save viewport position!
-        // viewPortPosition = MainWindowController.getViewport().getViewPosition();
 
-        PetriNetController.computePetriNetUpperLeftAndLowerRightCorner();
-
-        //viewport relative to upper left petrinnetcorner
-        // System.out.println(PetriNetController.getPetriNet().upper_left.getX());
+        canvas.setCanvasSize(new Dimension(1000, 1000));
 
 
-        // System.out.println(MainWindowController.getViewport().setViewPosition.getX());
+        // PetriNetController.computePetriNetUpperLeftAndLowerRightCorner();
+        // PetriNetController.fixPetriNetElementPositions();
+        // computeAndSetCanvasSize();
 
-        PetriNetController.fixPetriNetElementPositions();
-
-        computeAndSetCanvasSize();
-
-        Double newViewportPosX = (-1)*Math.min(PetriNetController.getPetriNet().upper_left.getX(),0);
-        Double newViewportPosY = (-1)*Math.min(PetriNetController.getPetriNet().upper_left.getY(),0);
-
-        System.out.println("NEW VIEWPORT");
-        System.out.println(newViewportPosX + ", " + newViewportPosY);
-
-
-        // MainWindowController.getViewport().setViewPosition( new Point(newViewportPosX.intValue(), newViewportPosY.intValue()) );
 
     }
 
