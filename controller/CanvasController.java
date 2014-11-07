@@ -40,10 +40,11 @@ public class CanvasController {
 
 
     public static void cleanUpCanvas() {
+        System.out.println("cleanUpCanvas true");
 
         PetriNetController.computePetriNetUpperLeftAndLowerRightCorner();
         // MainWindowController.computeViewportUpperLeftLowerRight();
-        if (GlobalController.MODE_DRAG_SELECTION != GlobalController.mode && PetriNetController.getPetriNet().getElementCount() > 0) {
+        if ( PetriNetController.getPetriNet().getElementCount() > 0) {
             checkIfElementsAreOutsideCanvas();
             checkIfElementsAreInsideViewport();
         }
@@ -51,6 +52,7 @@ public class CanvasController {
         // remove superfluous areas
 
         MainWindowController.setStatusBarText(MainWindowController.getViewport().getViewPosition().getX() + " " + MainWindowController.getViewport().getViewPosition().getY());
+
     }
 
 
@@ -106,6 +108,7 @@ public class CanvasController {
 
 
         if (width_off != 0 || height_off != 0) {
+
             //ENLARGE CANVAS SIZE
             Dimension cd = canvas.getPreferredSize();
             cd.setSize(cd.getWidth()+width_off, cd.getHeight()+height_off);
@@ -129,6 +132,7 @@ public class CanvasController {
 
             //scroll to new position
             MainWindowController.getViewport().scrollRectToVisible(rect);
+
         }
 
 
@@ -275,12 +279,15 @@ public class CanvasController {
 
     public static void mouseReleased(MouseEvent e) {
         currentMousePoint = new Point2D.Double(e.getX(), e.getY());
-
+        // GlobalController.STOP_PAINT = false;
         switch (GlobalController.mode) {
             case GlobalController.MODE_SELECT:
                 SelectionController.removeSelectionRectangle();
                 break;
             case GlobalController.MODE_DRAG_SELECTION:
+                CanvasController.cleanUpCanvas();
+                // GlobalController.STOP_PAINT = true;
+                // System.out.println("STOPPANT true");
                 GlobalController.mode = GlobalController.MODE_SELECT;
                 break;
             case GlobalController.MODE_PLACE:
@@ -290,7 +297,8 @@ public class CanvasController {
                 break;
         }
 
-
+        System.out.println("release true");
+        // if (!GlobalController.STOP_PAINT)
         canvas.repaint();
     }
 

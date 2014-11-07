@@ -18,6 +18,7 @@ public class GlobalController {
     public static final int MODE_PLACE = 2;
 
 
+    public static boolean STOP_PAINT = false;
 
     // EVENTS
     public static final int CANVAS_MOUSE_PRESSED = 0;

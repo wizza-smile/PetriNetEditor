@@ -31,12 +31,15 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     }
 
     public void paintComponent(Graphics graphics) {
-        System.out.println("STAR  REPAINT");
+
+
 
         // this.setVisible(false);
-        CanvasController.cleanUpCanvas();
+        // if (GlobalController.STOP_PAINT) return;
 
 
+
+        System.out.println("STAR  REPAINT");
 
 
         // CanvasController.computeAndSetCanvasSize(CanvasController.shrink);
@@ -73,6 +76,8 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         //MainWindowController.setStatusBarText("PAINT");
 
         SelectionController.drawSelectionFigure(g2);
+
+
 
         // this.setVisible(true);
         // System.out.println("FINITO");
