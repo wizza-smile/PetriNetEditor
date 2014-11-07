@@ -161,16 +161,23 @@ public class CanvasController {
             Dimension cd = canvas.getPreferredSize();
             width = viewport_contains_petrinet_x ? MainWindowController.getViewport().getSize().getWidth() : cd.getWidth();
             height = viewport_contains_petrinet_y ? MainWindowController.getViewport().getSize().getHeight() : cd.getHeight();
+
+            Double width_diff = cd.getWidth() - width;
+            Double height_diff = cd.getHeight() - height;
+
             cd.setSize(width, height);
             canvas.setPreferredSize(cd);
 
 
             //IF ELEMENTS FALL OUT OF CANVAS DUE TO CANVAS RESIZING (RIGHT OR DOWN):
             //MOVE THEM INTO VIEWPORT!
-            Double move_x = viewport_contains_petrinet_x ? Math.max(PetriNetController.getPetriNet().lower_right.getX() - MainWindowController.getViewport().getSize().getWidth(), 0) : 0;
-            Double move_y = viewport_contains_petrinet_y ? Math.max(PetriNetController.getPetriNet().lower_right.getY() - MainWindowController.getViewport().getSize().getHeight(), 0) : 0;
-            if (move_x != 0 || move_y != 0) {
-                PetriNetController.moveAllElements(-move_x, -move_y);
+            boolean move_x = viewport_contains_petrinet_x ? MainWindowController.getViewport().getViewPosition().getX() > 0 : false;
+            boolean move_y = viewport_contains_petrinet_y ? MainWindowController.getViewport().getViewPosition().getY() > 0 : false;
+
+            //move left or up
+            if (move_x || move_y) {
+                System.out.println(" MOVE X LEFT" +move_x);
+                PetriNetController.moveAllElements(-width_diff, -height_diff);
             }
 
             canvas.revalidate();

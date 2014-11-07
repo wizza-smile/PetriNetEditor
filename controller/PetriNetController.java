@@ -83,13 +83,13 @@ public class PetriNetController {
                 initialized = true;
             }
         }
+        //ADD PADDING
+        upper_left.setLocation(upper_left.getX() - PETRINET_PADDING, upper_left.getY() - PETRINET_PADDING);
+        lower_right.setLocation(lower_right.getX() + PETRINET_PADDING, lower_right.getY() + PETRINET_PADDING);
 
         petriNet.upper_left = upper_left;
         petriNet.lower_right = lower_right;
 
-        // //ADD PADDING
-        // upper_left.setLocation(upper_left.getX() - PETRINET_PADDING, upper_left.getY() - PETRINET_PADDING);
-        // lower_right.setLocation(lower_right.getX() + PETRINET_PADDING, lower_right.getY() + PETRINET_PADDING);
 
 
         petriNet.netDimension.setSize(lower_right.getX() - upper_left.getX(), lower_right.getY() - upper_left.getY());
