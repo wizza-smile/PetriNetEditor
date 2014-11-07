@@ -40,7 +40,7 @@ public class MainWindowController {
         return main_window.canvasPane.getViewport();
     }
 
-    public static void computeViewportLowerRight() {
+    public static void computeViewportUpperLeftLowerRight() {
         viewport_upper_left = new Point2D.Double(getViewport().getViewPosition().getX(), getViewport().getViewPosition().getY());
         viewport_lower_right = new Point2D.Double(getViewport().getSize().getWidth() + getViewport().getViewPosition().getX(), getViewport().getSize().getHeight() + getViewport().getViewPosition().getY());
     }

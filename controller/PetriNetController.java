@@ -18,6 +18,8 @@ public class PetriNetController {
     public final static int ELEMENT_TRANSITION = 1;
     public final static int ELEMENT_ARC = 2;
 
+    public final static int PETRINET_PADDING = 70;
+
     static private PetriNet petriNet;
 
 
@@ -82,8 +84,15 @@ public class PetriNetController {
                 initialized = true;
             }
         }
+
         petriNet.upper_left = upper_left;
         petriNet.lower_right = lower_right;
+
+        // //ADD PADDING
+        // upper_left.setLocation(upper_left.getX() - PETRINET_PADDING, upper_left.getY() - PETRINET_PADDING);
+        // lower_right.setLocation(lower_right.getX() + PETRINET_PADDING, lower_right.getY() + PETRINET_PADDING);
+
+
         petriNet.netDimension.setSize(lower_right.getX() - upper_left.getX(), lower_right.getY() - upper_left.getY());
     }
 
@@ -94,7 +103,7 @@ public class PetriNetController {
         Double fix_y = PetriNetController.getPetriNet().upper_left.getY() < 0 ? PetriNetController.getPetriNet().upper_left.getY() : 0;
 
         if (fix_x < 0 || fix_y < 0) {
-            moveAllElementDownDiagonally(fix_x, fix_y);
+            // moveAllElementDownDiagonally(fix_x, fix_y);
 
 
 
@@ -144,18 +153,19 @@ public class PetriNetController {
 
     }
 
-    public static void moveAllElementDownDiagonally(Double x_off, Double y_off) {
+    public static void moveAllElements(Double x, Double y) {
 
         Iterator it = petriNet.getElements().values().iterator();
         while (it.hasNext()) {
             PetriNetElement elem = (PetriNetElement)it.next();
             Point2D position = elem.getPosition();
-            Point2D new_position = new Point2D.Double(position.getX()-x_off, position.getY()-y_off);
+            Point2D new_position = new Point2D.Double(position.getX()+x, position.getY()+y);
             elem.setPosition(new_position);
         }
+        System.out.println("MOVIN FINISHED");
+
+        CanvasController.movinFinished();
         // CanvasController.addToGridReferencePoint(new Point2D.Double(x_off, y_off));
-
-
     }
 
 

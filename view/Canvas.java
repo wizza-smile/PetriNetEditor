@@ -24,14 +24,18 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
 
     public Canvas() {
-        //this.setPreferredSize(new Dim
+        this.setCanvasSize(MainWindowController.getViewport().getSize());
         this.setOpaque(false);
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
     }
 
     public void paintComponent(Graphics graphics) {
+        System.out.println("STAR  REPAINT");
+
+        // this.setVisible(false);
         CanvasController.cleanUpCanvas();
+
 
 
 
@@ -70,7 +74,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
         SelectionController.drawSelectionFigure(g2);
 
-
+        // this.setVisible(true);
         // System.out.println("FINITO");
     }
 
@@ -84,6 +88,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     public void setCanvasSize(Dimension dim) {
         this.setPreferredSize(dim);
     }
+
 
 
     public void mouseClicked(MouseEvent e) {

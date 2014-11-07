@@ -11,6 +11,7 @@ import java.awt.geom.*;
 public class PetriNet {
     //counts id's for PetriNetElements
     private static int id_counter = 0;
+    private static int element_counter = 0;
 
     public Point2D upper_left = new Point.Double(0,0);
     public Point2D lower_right = new Point.Double(0,0);
@@ -23,6 +24,10 @@ public class PetriNet {
 
     public int getNextElementId() {
         return ++this.id_counter;
+    }
+
+    public int getElementCount() {
+        return element_counter;
     }
 
     //returnes a deep copy of contained elements
@@ -43,6 +48,7 @@ public class PetriNet {
 
     public void addElement(String elementId, PetriNetElement element) {
         elements.put(elementId, element);
+        element_counter++;
     }
 
     public PetriNetElement getElementById(String elementId) {
