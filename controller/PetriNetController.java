@@ -165,7 +165,7 @@ public class PetriNetController {
         System.out.println("MOVIN FINISHED");
 
         CanvasController.movinFinished();
-        // CanvasController.addToGridReferencePoint(new Point2D.Double(x_off, y_off));
+        CanvasController.addToGridReferencePoint(new Point2D.Double(x, y));
     }
 
 

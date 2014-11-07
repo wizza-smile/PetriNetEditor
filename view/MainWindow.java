@@ -42,6 +42,7 @@ public class MainWindow extends JFrame {//implements Scrollable
         // canvasPane.setSize(200, 200);
 
         this.add(canvasPane, BorderLayout.CENTER);
+
     }
 
 
@@ -102,6 +103,7 @@ public class MainWindow extends JFrame {//implements Scrollable
 
         return statusLabel;
     }
+
 
 }
 
@@ -182,6 +184,11 @@ class ButtonBar extends JToolBar {
 
         return button;
     }
+
+
+
+
+
 
 }
 

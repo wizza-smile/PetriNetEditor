@@ -47,13 +47,14 @@ public class CanvasController {
             checkIfElementsAreOutsideCanvas();
             checkIfElementsAreInsideViewport();
         }
+        // if (mode) //mode changed from moving/dragging
 
 
         // computeAndSetCanvasSize();
         // PetriNetController.fixPetriNetElementPositions();
         // adjustViewportViewposition()
         // canvas.setCanvasSize(new Dimension(1000, 1000));
-
+        MainWindowController.setStatusBarText(MainWindowController.getViewport().getViewPosition().getX() + " " + MainWindowController.getViewport().getViewPosition().getY());
 
 
 
@@ -63,8 +64,8 @@ public class CanvasController {
         Double width_off = .0;
         Double height_off = .0;
 
-        boolean move_elements_direction_x = true;//true == direction right / elements are too far left
-        boolean move_elements_direction_y = true;//true == direction down / elements are too far up
+        boolean move_elements_direction_x = false;//if elements are too far left
+        boolean move_elements_direction_y = false;//if elements are too far up
 
         //X-AXIS
         Rectangle2D canvas_x_span = new Rectangle2D.Double(0, 0, getCanvasSize().getWidth(), 1);
@@ -76,9 +77,9 @@ public class CanvasController {
             if (PetriNetController.getPetriNet().upper_left.getX() < 0) {
                 //elements are too left
                 width_off = (-1) * PetriNetController.getPetriNet().upper_left.getX();
+                move_elements_direction_x = true;
             } else {
                 //elements are too right
-                move_elements_direction_x = false;
                 width_off = PetriNetController.getPetriNet().lower_right.getX() - getCanvasSize().getWidth();
             }
 
@@ -93,10 +94,10 @@ public class CanvasController {
         if (!canvas_contains_petrinet_y) {
             if (PetriNetController.getPetriNet().upper_left.getY() < 0) {
                 //elements are too high
+                move_elements_direction_y = true;
                 height_off = (-1) * PetriNetController.getPetriNet().upper_left.getY();
             } else {
                 //elements are too low
-                move_elements_direction_y = false;
                 height_off = PetriNetController.getPetriNet().lower_right.getY() - getCanvasSize().getHeight();
             }
         }
@@ -108,23 +109,17 @@ public class CanvasController {
             cd.setSize(cd.getWidth()+width_off, cd.getHeight()+height_off);
             canvas.setPreferredSize(cd);
 
-            // width_off = move_elements_direction_x ? -width_off : width_off;
-            // height_off = move_elements_direction_y ? -height_off : height_off;
-
+            //IF ELEMENTS ARE TOO HIGH OR LEFT:
+            //MOVE ALL ELEMENTS INTO CANVAS
             if (move_elements_direction_x || move_elements_direction_y) {
-                //move all elements to relative position
-                System.out.println(width_off + " " + height_off);
                 PetriNetController.moveAllElements(move_elements_direction_x ? width_off : 0, move_elements_direction_y ? height_off : 0);
             }
 
-            //compute new scroll position
-            // Double scrollToX = MainWindowController.getViewport().getViewPosition().getX();
-            // Double scrollToY = MainWindowController.getViewport().getViewPosition().getY();
+            //compute new viewport scroll position (viewposition)
             Double scrollToX = move_elements_direction_x ? width_off : MainWindowController.getViewport().getViewPosition().getX();
             Double scrollToY = move_elements_direction_y ? height_off : MainWindowController.getViewport().getViewPosition().getY();
             Double scrollToWidth = MainWindowController.getViewport().getExtentSize().getWidth();
             Double scrollToHeight = MainWindowController.getViewport().getExtentSize().getHeight();
-
 
             Rectangle rect = new Rectangle(scrollToX.intValue(), scrollToY.intValue(), scrollToWidth.intValue(), scrollToHeight.intValue());
             System.out.println(rect);
@@ -165,10 +160,10 @@ public class CanvasController {
         boolean viewport_contains_petrinet_y = viewport_y_span.contains(petrinet_y_span);
 
 
-        //SET CANVAS SIZE TO VIEWPORT SIZE
-        System.out.println("SET CANVAS SIZE TO VIEPORT \n\n");
-
+        //SET CANVAS SIZE TO VIEWPORT SIZE ON MATCHING AXIS'
         if (viewport_contains_petrinet_x || viewport_contains_petrinet_y) {
+            System.out.println("SET CANVAS SIZE TO VIEPORT \n\n");
+
             Dimension cd = canvas.getPreferredSize();
             width = viewport_contains_petrinet_x ? MainWindowController.getViewport().getSize().getWidth() : cd.getWidth();
             height = viewport_contains_petrinet_y ? MainWindowController.getViewport().getSize().getHeight() : cd.getHeight();
@@ -176,11 +171,11 @@ public class CanvasController {
             canvas.setPreferredSize(cd);
 
 
-            // System.out.println("ADD " + PetriNetController.getPetriNet().lower_right.getX() + " " + MainWindowController.getViewport().getSize().getWidth());
+            //IF ELEMENTS FALL OUT OF CANVAS DUE TO CANVAS RESIZING (RIGHT OR DOWN):
+            //MOVE THEM INTO VIEWPORT!
             Double move_x = viewport_contains_petrinet_x ? Math.max(PetriNetController.getPetriNet().lower_right.getX() - MainWindowController.getViewport().getSize().getWidth(), 0) : 0;
             Double move_y = viewport_contains_petrinet_y ? Math.max(PetriNetController.getPetriNet().lower_right.getY() - MainWindowController.getViewport().getSize().getHeight(), 0) : 0;
             if (move_x != 0 || move_y != 0) {
-                System.out.println("ACC " + move_x + " " + move_y);
                 PetriNetController.moveAllElements(-move_x, -move_y);
             }
 
@@ -188,65 +183,6 @@ public class CanvasController {
         }
     }
 
-    //minimum: viewport size
-    public static void computeAndSetCanvasSize() {
-        Double width, height, upper_left_x, upper_left_y, lower_right_x, lower_right_y;
-
-        Double petrinet_offset_x = PetriNetController.getPetriNet().upper_left.getX();
-
-
-        width = Math.max(MainWindowController.getViewport().getSize().getWidth(), PetriNetController.getPetriNet().netDimension.getWidth() + PetriNetController.PETRINET_PADDING);
-        height = Math.max(MainWindowController.getViewport().getSize().getHeight(), PetriNetController.getPetriNet().netDimension.getHeight() + PetriNetController.PETRINET_PADDING);
-
-        Dimension canvasDimension = new Dimension(width.intValue(), height.intValue());
-
-
-        canvas.setCanvasSize(canvasDimension);
-        canvas.revalidate();
-
-        System.out.println("\n viewportDimension");
-        System.out.println(MainWindowController.getViewport().getSize().toString());
-        System.out.println("canvasDimension");
-        System.out.println(canvasDimension.toString());
-        System.out.println("netDimension");
-        System.out.println(PetriNetController.getPetriNet().netDimension.toString());
-
-
-        // MainWindowController.computeViewportUpperLeftLowerRight();
-
-        // upper_left_x = Math.min(MainWindowController.viewport_upper_left.getX(), PetriNetController.getPetriNet().upper_left.getX());
-        // upper_left_y = Math.min(MainWindowController.viewport_upper_left.getY(), PetriNetController.getPetriNet().upper_left.getY());
-
-        // lower_right_x = Math.max(MainWindowController.viewport_lower_right.getX(), PetriNetController.getPetriNet().lower_right.getX());
-        // lower_right_y = Math.max(MainWindowController.viewport_lower_right.getY(), PetriNetController.getPetriNet().netDimension.getHeight());
-
-
-
-
-        // width = lower_right_x - upper_left_x;
-        // height = lower_right_y - upper_left_y;
-
-        // Dimension canvasDimension = new Dimension(width.intValue(), height.intValue());
-
-        // canvas.setCanvasSize(canvasDimension);
-        // canvas.revalidate();
-
-
-        // System.out.println("\n lower_right_x \n");
-        // System.out.println(upper_left_x);
-
-        // System.out.println("viewportDimension");
-        // System.out.println(MainWindowController.getViewport().getSize().toString());
-        // System.out.println("canvasDimension");
-        // System.out.println(canvasDimension.toString());
-
-        // System.out.println("getViewportSize");
-        //
-        // System.out.println(MainWindowController.getViewport().getSize().toString());
-        // System.out.println("getViewportPosition");
-        // System.out.println(MainWindowController.getViewport().getViewPosition().getX());
-
-    }
 
     public static void setGridReferencePoint(Point2D p) {
         Grid.setReferencePoint(p);
@@ -350,9 +286,9 @@ public class CanvasController {
                 //
                 break;
             default:
-                System.out.println("MOUSE mouseReleased");
                 break;
         }
+
 
         canvas.repaint();
     }
