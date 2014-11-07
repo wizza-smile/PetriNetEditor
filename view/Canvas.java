@@ -47,10 +47,10 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         java.awt.Graphics2D g2 = (java.awt.Graphics2D) graphics;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // grid = new Grid(this.getWidth(), this.getHeight());
-        // if (this.enabledGrid) {
-        //     grid.drawGrid(g2);
-        // }
+        grid = new Grid(this.getWidth(), this.getHeight());
+        if (this.enabledGrid) {
+            grid.drawGrid(g2);
+        }
 
         // PetriNetController.getPetriNet().lowerRightCorner.setLocation(0,0);
         // // CanvasController.shrink = false;

@@ -64,7 +64,7 @@ public class CanvasController {
         Rectangle2D canvas_x_span = new Rectangle2D.Double(0, 0, getCanvasSize().getWidth(), 1);
         Rectangle2D petrinet_x_span = new Rectangle2D.Double(PetriNetController.getPetriNet().upper_left.getX(), 0, Math.max(PetriNetController.getPetriNet().netDimension.getWidth(), 1), 1);
 
-        if (!canvas_x_span.contains(petrinet_x_span) && !elements_outside_canvas_x && GlobalController.MODE_DRAG_SELECTION != GlobalController.mode) {
+        if (!canvas_x_span.contains(petrinet_x_span) && !elements_outside_canvas_x && GlobalController.MODE_DRAG_SELECTION != GlobalController.mode) {//
 
             elements_outside_canvas_x = true;
 
@@ -76,19 +76,22 @@ public class CanvasController {
             cd.setSize(cd.getWidth()+width_off, cd.getHeight());
             canvas.setPreferredSize(cd);
 
-            canvas.setVisible(false);
+            // canvas.setVisible(false);
             System.out.println(cd.toString());
 
             System.out.println(" revalidate ");
-            canvas.revalidate();
-            canvas.setVisible(true);
-            PetriNetController.moveAllElements(width_off, .0);
+
 
             Double scrollToWidth = MainWindowController.getViewport().getExtentSize().getWidth();
             Double scrollToHeight = MainWindowController.getViewport().getExtentSize().getHeight();
             Rectangle rect = new Rectangle(width_off.intValue(), 0, scrollToWidth.intValue(), scrollToHeight.intValue());
             System.out.println(" scrollRectToVisible ");
+
+            canvas.revalidate();
+            // canvas.setVisible(true);
+
             MainWindowController.getViewport().scrollRectToVisible(rect);
+            PetriNetController.moveAllElements(width_off, .0);
 
 
             // MainWindowController.getViewport().setViewPosition(new Point(width_off.intValue(), 0));
@@ -127,10 +130,8 @@ public class CanvasController {
             System.out.println(MainWindowController.getViewport().getViewPosition().toString());
 
             elements_in_viewport_x = true;
-            // elements_outside_canvas_x = false;
-            //Elemente verschieben
-            // Double width_off = canvas.getPreferredSize().getWidth() - MainWindowController.getViewport().getSize().getWidth();
-            PetriNetController.moveAllElements(-7.0, .0);
+
+            // PetriNetController.moveAllElements(-7.0, .0);
 
 
             // System.out.println(width_off);
