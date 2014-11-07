@@ -61,7 +61,6 @@ public class PetriNetController {
             Math.max(petriNet.lowerRightCorner.getY(), p.getY())
         );
 
-        // System.out.println(petriNet.lowerRightCorner.getX());
     }
 
 
@@ -97,64 +96,34 @@ public class PetriNetController {
     }
 
 
-    public static void fixPetriNetElementPositions() {
+    // public static void fixPetriNetElementPositions() {
 
-        Double fix_x = PetriNetController.getPetriNet().upper_left.getX() < 0 ? PetriNetController.getPetriNet().upper_left.getX() : 0;
-        Double fix_y = PetriNetController.getPetriNet().upper_left.getY() < 0 ? PetriNetController.getPetriNet().upper_left.getY() : 0;
+    //     Double fix_x = PetriNetController.getPetriNet().upper_left.getX() < 0 ? PetriNetController.getPetriNet().upper_left.getX() : 0;
+    //     Double fix_y = PetriNetController.getPetriNet().upper_left.getY() < 0 ? PetriNetController.getPetriNet().upper_left.getY() : 0;
 
-        if (fix_x < 0 || fix_y < 0) {
-            // moveAllElementDownDiagonally(fix_x, fix_y);
-
-
-
-            Point2D position = MainWindowController.getViewport().getViewPosition();
-
-            // System.out.println(x_off);
-
-            Double x_off = (-1) * fix_x;
-            Double y_off = (-1) * fix_y;
+    //     if (fix_x < 0 || fix_y < 0) {
+    //         // moveAllElementDownDiagonally(fix_x, fix_y);
 
 
-            // MainWindowController.getViewport().setViewPosition( new Point(x_off.intValue(), y_off.intValue()) );
 
-            System.out.println("SETET VIEWPORT POS");
-            System.out.println(MainWindowController.getViewport().getViewPosition().getX());
+    //         Point2D position = MainWindowController.getViewport().getViewPosition();
 
-        }
+    //         // System.out.println(x_off);
 
-        // System.out.println(fix_x);
-
-
-// //es muss etwas unternommen werden, wenn ein Element durch scrollen nicht mehr erreicht werden kann.
-// //dann muss dieses Element verschoben werden bis es erreicht werden kann, und alle elemente mit ihm??
-
-//         Double fix_x = petriNet.upper_left.getX() < 0 ? petriNet.upper_left.getX() : 0;
-//         Double fix_y = petriNet.upper_left.getY() < 0 ? petriNet.upper_left.getY() : 0;
-//         if (fix_x < 0 || fix_y < 0) {
-//             //position fixing is needed
-//             Iterator it = petriNet.getElements().values().iterator();
-//             while (it.hasNext()) {
-//                 PetriNetElement elem = (PetriNetElement)it.next();
-//                 Point2D position = elem.getPosition();
-//                 elem.setPosition(new Point2D.Double(position.getX()-fix_x, position.getY()-fix_y));
-//             }
+    //         Double x_off = (-1) * fix_x;
+    //         Double y_off = (-1) * fix_y;
 
 
-//             // //adjust ScrollPosition of Viewport
-//             // JScrollPane scrollPane = MainWindowController.main_window.canvasPane;
-//             // Point2D position = scrollPane.getViewport().getViewPosition();
-//             // Point newViewportPoint = new Point((int)Math.round(position.getX()) + fix_x.intValue(), (int)Math.round(position.getY()) + fix_y.intValue());
-//             // // Point newViewportPoint = new Point(100, 100);
+    //         // MainWindowController.getViewport().setViewPosition( new Point(x_off.intValue(), y_off.intValue()) );
 
-//             // scrollPane.getViewport().setViewPosition( newViewportPoint );
+    //         System.out.println("SETET VIEWPORT POS");
+    //         System.out.println(MainWindowController.getViewport().getViewPosition().getX());
 
+    //     }
 
-//         }
-
-    }
+    // }
 
     public static void moveAllElements(Double x, Double y) {
-
         Iterator it = petriNet.getElements().values().iterator();
         while (it.hasNext()) {
             PetriNetElement elem = (PetriNetElement)it.next();
@@ -162,15 +131,9 @@ public class PetriNetController {
             Point2D new_position = new Point2D.Double(position.getX()+x, position.getY()+y);
             elem.setPosition(new_position);
         }
-        System.out.println("MOVIN FINISHED");
-
-        CanvasController.movinFinished();
+        /* update grid reference point, so that the illusion of stable grid is kept */
         CanvasController.addToGridReferencePoint(new Point2D.Double(x, y));
     }
-
-
-
-
 
 
 

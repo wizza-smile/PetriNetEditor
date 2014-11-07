@@ -48,36 +48,36 @@ public class CanvasController {
             checkIfElementsAreInsideViewport();
         }
         // if (mode) //mode changed from moving/dragging
+        // remove superfluous areas
 
-
-        // computeAndSetCanvasSize();
-        // PetriNetController.fixPetriNetElementPositions();
-        // adjustViewportViewposition()
-        // canvas.setCanvasSize(new Dimension(1000, 1000));
         MainWindowController.setStatusBarText(MainWindowController.getViewport().getViewPosition().getX() + " " + MainWindowController.getViewport().getViewPosition().getY());
-
-
-
     }
 
+
     public static void checkIfElementsAreOutsideCanvas() {
+        /* how far is the is the petrinet outside of canvas */
         Double width_off = .0;
         Double height_off = .0;
 
-        boolean move_elements_direction_x = false;//if elements are too far left
-        boolean move_elements_direction_y = false;//if elements are too far up
+        /* if elements are too far left resp. up, move them into canvas */
+        boolean move_elements_x = false;//if elements are too far left
+        boolean move_elements_y = false;//if elements are too far up
 
+        /////////////
         //X-AXIS
+
+        /* 1px flat rectangles on x-axis over the span of canvas resp. petrinet */
         Rectangle2D canvas_x_span = new Rectangle2D.Double(0, 0, getCanvasSize().getWidth(), 1);
         Rectangle2D petrinet_x_span = new Rectangle2D.Double(PetriNetController.getPetriNet().upper_left.getX(), 0, Math.max(PetriNetController.getPetriNet().netDimension.getWidth(), 1), 1);
 
+        /* check if petrinet lies within canvas on x-axis */
         boolean canvas_contains_petrinet_x = canvas_x_span.contains(petrinet_x_span);
 
         if (!canvas_contains_petrinet_x) {
             if (PetriNetController.getPetriNet().upper_left.getX() < 0) {
                 //elements are too left
                 width_off = (-1) * PetriNetController.getPetriNet().upper_left.getX();
-                move_elements_direction_x = true;
+                move_elements_x = true;
             } else {
                 //elements are too right
                 width_off = PetriNetController.getPetriNet().lower_right.getX() - getCanvasSize().getWidth();
@@ -85,7 +85,9 @@ public class CanvasController {
 
         }
 
+        ////////////
         //Y-AXIS
+        /* do the same as we did for x-axis */
         Rectangle2D canvas_y_span = new Rectangle2D.Double(0, 0, 1, getCanvasSize().getHeight());
         Rectangle2D petrinet_y_span = new Rectangle2D.Double(0, PetriNetController.getPetriNet().upper_left.getY(), 1, PetriNetController.getPetriNet().netDimension.getHeight());
 
@@ -94,7 +96,7 @@ public class CanvasController {
         if (!canvas_contains_petrinet_y) {
             if (PetriNetController.getPetriNet().upper_left.getY() < 0) {
                 //elements are too high
-                move_elements_direction_y = true;
+                move_elements_y = true;
                 height_off = (-1) * PetriNetController.getPetriNet().upper_left.getY();
             } else {
                 //elements are too low
@@ -111,18 +113,16 @@ public class CanvasController {
 
             //IF ELEMENTS ARE TOO HIGH OR LEFT:
             //MOVE ALL ELEMENTS INTO CANVAS
-            if (move_elements_direction_x || move_elements_direction_y) {
-                PetriNetController.moveAllElements(move_elements_direction_x ? width_off : 0, move_elements_direction_y ? height_off : 0);
+            if (move_elements_x || move_elements_y) {
+                PetriNetController.moveAllElements(move_elements_x ? width_off : 0, move_elements_y ? height_off : 0);
             }
 
             //compute new viewport scroll position (viewposition)
-            Double scrollToX = move_elements_direction_x ? width_off : MainWindowController.getViewport().getViewPosition().getX();
-            Double scrollToY = move_elements_direction_y ? height_off : MainWindowController.getViewport().getViewPosition().getY();
+            Double scrollToX = move_elements_x ? width_off : MainWindowController.getViewport().getViewPosition().getX();
+            Double scrollToY = move_elements_y ? height_off : MainWindowController.getViewport().getViewPosition().getY();
             Double scrollToWidth = MainWindowController.getViewport().getExtentSize().getWidth();
             Double scrollToHeight = MainWindowController.getViewport().getExtentSize().getHeight();
-
             Rectangle rect = new Rectangle(scrollToX.intValue(), scrollToY.intValue(), scrollToWidth.intValue(), scrollToHeight.intValue());
-            System.out.println(rect);
 
             //REVALIDATE new canvas size
             canvas.revalidate();
@@ -132,12 +132,6 @@ public class CanvasController {
         }
 
 
-    }
-
-
-    public static void movinFinished() {
-        System.out.println("MOVIN AFTER FINISHED mNEXT");
-        System.out.println(MainWindowController.getViewport().getViewPosition().toString());
     }
 
 
