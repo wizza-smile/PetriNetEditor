@@ -177,7 +177,7 @@ public class CanvasController {
             //move left or up
             if (move_x || move_y) {
                 System.out.println(" MOVE X LEFT" +move_x);
-                PetriNetController.moveAllElements(-width_diff, -height_diff);
+                PetriNetController.moveAllElements(-MainWindowController.getViewport().getViewPosition().getX(), -MainWindowController.getViewport().getViewPosition().getY());
             }
 
             canvas.revalidate();
