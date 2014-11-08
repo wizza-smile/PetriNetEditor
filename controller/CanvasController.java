@@ -105,12 +105,11 @@ public class CanvasController {
                             break;
                         }
                     }
-                    if (GlobalController.mode == GlobalController.MODE_DRAG_SELECTION) {
-                      SelectionController.setOffsetToSelectedElements(mousePressPoint);
-                    } else {
+                    if (GlobalController.mode != GlobalController.MODE_DRAG_SELECTION) {
                         SelectionController.clearSelection();
                         SelectionController.selectFigureUnderMousePointer(mousePressPoint);
                     }
+                    SelectionController.setOffsetToSelectedElements(mousePressPoint);
                     break;
                 case GlobalController.MODE_PLACE:
                     PetriNetController.addPetriNetElement(mousePressPoint, PetriNetController.ELEMENT_PLACE);

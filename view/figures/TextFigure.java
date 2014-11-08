@@ -10,10 +10,7 @@ import java.awt.font.TextLayout;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-/**
- *
- * @author Guillem
- */
+
 public class TextFigure extends BaseFigure {
 
     protected String labelText;

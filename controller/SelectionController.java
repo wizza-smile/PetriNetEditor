@@ -96,7 +96,7 @@ public class SelectionController {
         ((Selectable)figure).setSelected(false);
     }
 
-    //clone return array
+
     public static ArrayList<String> getSelectedElementsIds() {
         return selectedElements_ids;
     }
