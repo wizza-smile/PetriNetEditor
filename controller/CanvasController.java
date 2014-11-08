@@ -200,11 +200,11 @@ public class CanvasController {
             boolean move_x = viewport_contains_petrinet_x ? MainWindowController.getViewport().getViewPosition().getX() > 0 : false;
             boolean move_y = viewport_contains_petrinet_y ? MainWindowController.getViewport().getViewPosition().getY() > 0 : false;
 
-            //move left or up
+            //move left and/or up
             if (move_x || move_y) {
                 System.out.println(" MOVE after canvas shrink | left or up");
                 System.out.println(MainWindowController.getViewport().getViewPosition().getX()+" x|y "+MainWindowController.getViewport().getViewPosition().getY());
-                PetriNetController.moveAllElements(-MainWindowController.getViewport().getViewPosition().getX(), -MainWindowController.getViewport().getViewPosition().getY());
+                PetriNetController.moveAllElements(move_x?-MainWindowController.getViewport().getViewPosition().getX():0, move_y?-MainWindowController.getViewport().getViewPosition().getY():0);
             }
 
             canvas.revalidate();
