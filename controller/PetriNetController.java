@@ -23,6 +23,7 @@ public class PetriNetController {
     static private PetriNet petriNet;
 
 
+
     public static void createPetriNet() {
         petriNet = new PetriNet();
     }
@@ -55,19 +56,13 @@ public class PetriNetController {
     }
 
 
-    public static void checkLowerRightCorner(Point2D p) {
-        petriNet.lowerRightCorner.setLocation(
-            Math.max(petriNet.lowerRightCorner.getX(), p.getX()),
-            Math.max(petriNet.lowerRightCorner.getY(), p.getY())
-        );
+    public static Rectangle getPetriNetRectangle() {
+        Double width, height;
+        Double upper_left_x = .0;
+        Double upper_left_y = .0;
 
-    }
-
-
-
-    public static void computePetriNetUpperLeftAndLowerRightCorner() {
-        Point2D upper_left = new Point2D.Double(0, 0);
         Point2D lower_right = new Point2D.Double(0, 0);
+
         boolean initialized = false;
         Iterator it = petriNet.getElements().values().iterator();
         while (it.hasNext()) {
@@ -75,24 +70,25 @@ public class PetriNetController {
             Point2D position = elem.getPosition();
 
             if (initialized) {
-                upper_left.setLocation(Math.min(upper_left.getX(), position.getX()), Math.min(upper_left.getY(), position.getY()));
-                lower_right.setLocation(Math.max(lower_right.getX(), position.getX()), Math.max(lower_right.getY(), position.getY()));
+                upper_left_x = Math.min(upper_left_x, position.getX());
+                upper_left_y = Math.min(upper_left_y, position.getY());
             } else {
-                upper_left = new Point2D.Double(position.getX(), position.getY());
-                lower_right = new Point2D.Double(position.getX(), position.getY());
+                upper_left_x = position.getX();
+                upper_left_y = position.getY();
                 initialized = true;
             }
+            lower_right.setLocation(Math.max(lower_right.getX(), position.getX()), Math.max(lower_right.getY(), position.getY()));
         }
+
         //ADD PADDING
-        upper_left.setLocation(upper_left.getX() - PETRINET_PADDING, upper_left.getY() - PETRINET_PADDING);
+        upper_left_x = upper_left_x - PETRINET_PADDING;
+        upper_left_y = upper_left_y - PETRINET_PADDING;
         lower_right.setLocation(lower_right.getX() + PETRINET_PADDING, lower_right.getY() + PETRINET_PADDING);
 
-        petriNet.upper_left = upper_left;
-        petriNet.lower_right = lower_right;
+        width = lower_right.getX() - upper_left_x;
+        height = lower_right.getY() - upper_left_y;
 
-
-
-        petriNet.netDimension.setSize(lower_right.getX() - upper_left.getX(), lower_right.getY() - upper_left.getY());
+        return new Rectangle(upper_left_x.intValue(), upper_left_y.intValue(), width.intValue(), height.intValue());
     }
 
 

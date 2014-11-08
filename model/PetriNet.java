@@ -13,13 +13,7 @@ public class PetriNet {
     private static int id_counter = 0;
     private static int element_counter = 0;
 
-    public Point2D upper_left = new Point.Double(0,0);
-    public Point2D lower_right = new Point.Double(0,0);
-    public Dimension netDimension = new Dimension(0, 0);
-    public Point2D lowerRightCorner = new Point2D.Double(0, 0);
-
     private HashMap<String, PetriNetElement> elements = new HashMap<String, PetriNetElement>();
-
 
 
     public int getNextElementId() {

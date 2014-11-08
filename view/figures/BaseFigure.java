@@ -30,7 +30,7 @@ public abstract class BaseFigure {
 
 
     public void draw(Graphics2D g) {
-        PetriNetController.checkLowerRightCorner(this.getLowerRightCorner());
+        // PetriNetController.checkLowerRightCorner(this.getLowerRightCorner());
     }
 
     //getter / setter

@@ -75,9 +75,6 @@ public class PlaceFigure extends BaseFigure implements Selectable {
         }
         drawToken(g);
 
-
-        super.draw(g);
-
     }
 
 

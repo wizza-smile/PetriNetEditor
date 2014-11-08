@@ -11,8 +11,6 @@ import javax.swing.*;
 public class MainWindowController {
 
     public static MainWindow main_window;
-    public static Point2D viewport_upper_left;
-    public static Point2D viewport_lower_right;
 
 
     public static void startMainWindow() {
@@ -40,9 +38,17 @@ public class MainWindowController {
         return main_window.canvasPane.getViewport();
     }
 
-    public static void computeViewportUpperLeftLowerRight() {
-        viewport_upper_left = new Point2D.Double(getViewport().getViewPosition().getX(), getViewport().getViewPosition().getY());
-        viewport_lower_right = new Point2D.Double(getViewport().getSize().getWidth() + getViewport().getViewPosition().getX(), getViewport().getSize().getHeight() + getViewport().getViewPosition().getY());
+
+    public static Rectangle getViewportRectangle() {
+        Double upper_left_x = getViewport().getViewPosition().getX();
+        Double upper_left_y = getViewport().getViewPosition().getY();
+        Double lower_right_x = getViewport().getSize().getWidth() + getViewport().getViewPosition().getX();
+        Double lower_right_y = getViewport().getSize().getHeight() + getViewport().getViewPosition().getY();
+
+        Double width = lower_right_x - upper_left_x;
+        Double height = lower_right_y - upper_left_y;
+
+        return new Rectangle(upper_left_x.intValue(), upper_left_y.intValue(), width.intValue(), height.intValue());
     }
 
 
