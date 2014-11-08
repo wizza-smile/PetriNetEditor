@@ -96,32 +96,6 @@ public class PetriNetController {
     }
 
 
-    // public static void fixPetriNetElementPositions() {
-
-    //     Double fix_x = PetriNetController.getPetriNet().upper_left.getX() < 0 ? PetriNetController.getPetriNet().upper_left.getX() : 0;
-    //     Double fix_y = PetriNetController.getPetriNet().upper_left.getY() < 0 ? PetriNetController.getPetriNet().upper_left.getY() : 0;
-
-    //     if (fix_x < 0 || fix_y < 0) {
-    //         // moveAllElementDownDiagonally(fix_x, fix_y);
-
-
-
-    //         Point2D position = MainWindowController.getViewport().getViewPosition();
-
-    //         // System.out.println(x_off);
-
-    //         Double x_off = (-1) * fix_x;
-    //         Double y_off = (-1) * fix_y;
-
-
-    //         // MainWindowController.getViewport().setViewPosition( new Point(x_off.intValue(), y_off.intValue()) );
-
-    //         System.out.println("SETET VIEWPORT POS");
-    //         System.out.println(MainWindowController.getViewport().getViewPosition().getX());
-
-    //     }
-
-    // }
 
     public static void moveAllElements(Double x, Double y) {
         Iterator it = petriNet.getElements().values().iterator();

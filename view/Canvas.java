@@ -32,21 +32,6 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
     public void paintComponent(Graphics graphics) {
 
-
-
-        // this.setVisible(false);
-        // if (GlobalController.STOP_PAINT) return;
-
-
-
-        System.out.println("STAR  REPAINT");
-
-
-        // CanvasController.computeAndSetCanvasSize(CanvasController.shrink);
-        // // for ( StackTraceElement trace : Thread.currentThread().getStackTrace() )
-        // System.out.println( "paintComponent" );
-
-
         java.awt.Graphics2D g2 = (java.awt.Graphics2D) graphics;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -55,9 +40,6 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
             grid.drawGrid(g2);
         }
 
-        // PetriNetController.getPetriNet().lowerRightCorner.setLocation(0,0);
-        // // CanvasController.shrink = false;
-        // System.out.println("SHRINK FALSE");
 
         // Draw Net Objects Places, Transitions and Arcs
         Iterator it = PetriNetController.getPetriNet().getElements().values().iterator();
@@ -73,16 +55,12 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         //     // arcFigure.draw(g2);
         // }
 
-        //MainWindowController.setStatusBarText("PAINT");
 
         SelectionController.drawSelectionFigure(g2);
 
 
         MainWindowController.setStatusBarText(MainWindowController.getViewport().getViewPosition().getX() + " " + MainWindowController.getViewport().getViewPosition().getY());
 
-
-        // this.setVisible(true);
-        // System.out.println("FINITO");
     }
 
 
