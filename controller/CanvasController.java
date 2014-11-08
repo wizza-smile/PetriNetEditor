@@ -121,8 +121,8 @@ public class CanvasController {
             }
 
             //compute new viewport scroll position (viewposition)
-            Double scrollToX = move_elements_x ? width_off : MainWindowController.getViewport().getViewPosition().getX();
-            Double scrollToY = move_elements_y ? height_off : MainWindowController.getViewport().getViewPosition().getY();
+            Double scrollToX = move_elements_x ? width_off+MainWindowController.getViewport().getViewPosition().getX() : MainWindowController.getViewport().getViewPosition().getX();
+            Double scrollToY = move_elements_y ? height_off+MainWindowController.getViewport().getViewPosition().getY() : MainWindowController.getViewport().getViewPosition().getY();
             Double scrollToWidth = MainWindowController.getViewport().getExtentSize().getWidth();
             Double scrollToHeight = MainWindowController.getViewport().getExtentSize().getHeight();
             Rectangle rect = new Rectangle(scrollToX.intValue(), scrollToY.intValue(), scrollToWidth.intValue(), scrollToHeight.intValue());
@@ -160,7 +160,7 @@ public class CanvasController {
 
         //SET CANVAS SIZE TO VIEWPORT SIZE ON MATCHING AXIS'
         if (viewport_contains_petrinet_x || viewport_contains_petrinet_y) {
-            System.out.println("SET CANVAS SIZE TO VIEPORT \n\n");
+
 
             Dimension cd = canvas.getPreferredSize();
             width = viewport_contains_petrinet_x ? MainWindowController.getViewport().getSize().getWidth() : cd.getWidth();
@@ -168,6 +168,9 @@ public class CanvasController {
 
             Double width_diff = cd.getWidth() - width;
             Double height_diff = cd.getHeight() - height;
+
+            if (width_diff != 0 || height_diff != 0)
+                System.out.println("SET CANVAS SIZE TO VIEPORT \n\n");
 
             cd.setSize(width, height);
             canvas.setPreferredSize(cd);
