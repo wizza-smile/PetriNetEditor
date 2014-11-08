@@ -70,6 +70,7 @@ public class SelectionController {
             if (figure.contains(pointer) && figure instanceof Selectable) {
                 SelectionController.addSelectedFigure(figure);
                 GlobalController.mode = GlobalController.MODE_DRAG_SELECTION;
+                break;
             }
         }
     }
