@@ -44,8 +44,10 @@ public class CanvasController {
         //set Canvas Size to combinedViewportAndPetrinetRectangle Size
         canvas.setPreferredSize(new Dimension(cleanedCanvasWidth.intValue(), cleanedCanvasHeight.intValue()));
 
-        //move all elements by the offset of (0,0) and combinedViewportAndPetrinetRectangle upper left point
-        //so that all elements will be within new canvas size
+        /* move all elements by the offset of
+        a) point(0,0) and
+        b) combinedViewportAndPetrinetRectangle upper_left point
+        so that all elements will be within new canvas size */
         Double move_x = (-1) * combined_viewport_and_petrinet_rectangle.getX();
         Double move_y = (-1) * combined_viewport_and_petrinet_rectangle.getY();
 
@@ -57,7 +59,7 @@ public class CanvasController {
         //REVALIDATE new canvas size
         canvas.revalidate();
 
-        //if the viewport stayed inside canvas through the resizing (ie. it's position has not been adjusted automatically):
+        //if the viewport stayed inside canvas through the resizing (ie. it's position has not been adjusted automatically by revalidating):
         //adjust viewport position by the movement made
         //so that the illusion of a static viewport is created
         boolean scroll_y = cleanedCanvasHeight > MainWindowController.getViewport().getViewPosition().getY() + MainWindowController.getViewport().getHeight();
@@ -70,12 +72,12 @@ public class CanvasController {
     }
 
 
-
     //adjust the reference point from which the grid will be painted
     //should always be 0 or negative
     public static void addToGridReferencePoint(Point2D p) {
         Grid.addToReferencePoint(p);
     }
+
 
     public static Dimension getCanvasSize() {
         return canvas.getPreferredSize();
