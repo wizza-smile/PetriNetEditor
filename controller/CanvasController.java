@@ -41,12 +41,14 @@ public class CanvasController {
 
         Double cleanedCanvasWidth = combined_viewport_and_petrinet_rectangle.getWidth();
         Double cleanedCanvasHeight = combined_viewport_and_petrinet_rectangle.getHeight();
+        //set Canvas Size to combinedViewportAndPetrinetRectangle Size
         canvas.setPreferredSize(new Dimension(cleanedCanvasWidth.intValue(), cleanedCanvasHeight.intValue()));
 
+        //move all elements by the offset of (0,0) and combinedViewportAndPetrinetRectangle upper left point
+        //so that all elements will be within new canvas size
         Double move_x = (-1) * combined_viewport_and_petrinet_rectangle.getX();
         Double move_y = (-1) * combined_viewport_and_petrinet_rectangle.getY();
 
-        //move left and/or up
         if (move_x != 0 || move_y != 0) {
             System.out.println(" MOVE after canvas resize | left or up");
             PetriNetController.moveAllElements(move_x, move_y);
@@ -55,7 +57,8 @@ public class CanvasController {
         //REVALIDATE new canvas size
         canvas.revalidate();
 
-        //compute new viewport scroll position (viewposition)
+        //adjust viewport position by the movement made
+        //so that the illusion of a static viewport is created
         Double scrollToWidth = MainWindowController.getViewport().getExtentSize().getWidth();
         Double scrollToHeight = MainWindowController.getViewport().getExtentSize().getHeight();
         Rectangle scroll_rect = new Rectangle(move_x.intValue(), move_y.intValue(), scrollToWidth.intValue(), scrollToHeight.intValue());
@@ -64,10 +67,9 @@ public class CanvasController {
     }
 
 
-    public static void setGridReferencePoint(Point2D p) {
-        Grid.setReferencePoint(p);
-    }
 
+    //adjust the reference point from which the grid will be painted
+    //should always be 0 or negative
     public static void addToGridReferencePoint(Point2D p) {
         Grid.addToReferencePoint(p);
     }
@@ -92,24 +94,23 @@ public class CanvasController {
         if (SwingUtilities.isLeftMouseButton(e)) {
             switch (GlobalController.mode) {
                 case GlobalController.MODE_SELECT:
-                    //check if selected elementFigure is under mouse pointer
+                    //check if a selected elementFigure is under mouse pointer
                     //if yes: start dragging selection
                     //if not: remove current selection
                     ArrayList<String> selectedElements_ids = SelectionController.getSelectedElementsIds();
-                    boolean clearSelection = true;
                     for (String id : selectedElements_ids ) {
                         if (PetriNetController.getElementById(id).getFigure().contains(mousePressPoint)) {
                             //user wants to drag selected elements!
-                            clearSelection = false;
                             GlobalController.mode = GlobalController.MODE_DRAG_SELECTION;
                             break;
                         }
                     }
-                    if(clearSelection) {
+                    if (GlobalController.mode == GlobalController.MODE_DRAG_SELECTION) {
+                      SelectionController.setOffsetToSelectedElements(mousePressPoint);
+                    } else {
                         SelectionController.clearSelection();
                         SelectionController.selectFigureUnderMousePointer(mousePressPoint);
                     }
-                    SelectionController.setOffsetToSelectedElements(mousePressPoint);
                     break;
                 case GlobalController.MODE_PLACE:
                     PetriNetController.addPetriNetElement(mousePressPoint, PetriNetController.ELEMENT_PLACE);
@@ -126,7 +127,6 @@ public class CanvasController {
 
     public static void mouseDragged(MouseEvent e) {
         currentMousePoint = new Point2D.Double(e.getX(), e.getY());
-        // MainWindowController.setStatusBarText("F " + currentMousePoint.getX());
         if (SwingUtilities.isLeftMouseButton(e)) {
             switch (GlobalController.mode) {
                 case  GlobalController.MODE_SELECT:
@@ -154,15 +154,12 @@ public class CanvasController {
 
     public static void mouseReleased(MouseEvent e) {
         currentMousePoint = new Point2D.Double(e.getX(), e.getY());
-        // GlobalController.STOP_PAINT = false;
         switch (GlobalController.mode) {
             case GlobalController.MODE_SELECT:
                 SelectionController.removeSelectionRectangle();
                 break;
             case GlobalController.MODE_DRAG_SELECTION:
                 CanvasController.cleanUpCanvas();
-                // GlobalController.STOP_PAINT = true;
-                // System.out.println("STOPPANT true");
                 GlobalController.mode = GlobalController.MODE_SELECT;
                 break;
             case GlobalController.MODE_PLACE:
@@ -172,8 +169,6 @@ public class CanvasController {
                 break;
         }
 
-        System.out.println("release true");
-        // if (!GlobalController.STOP_PAINT)
         canvas.repaint();
     }
 
