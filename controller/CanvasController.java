@@ -26,6 +26,9 @@ public class CanvasController {
     public static boolean viewport_contains_petrinet_x = true;
     public static boolean viewport_contains_petrinet_y = true;
 
+    public static boolean scroll = false;
+    static Rectangle scroll_rect;
+
 
     static Point2D mousePressPoint;
     static Point2D currentMousePoint;
@@ -41,6 +44,7 @@ public class CanvasController {
 
     public static void cleanUpCanvas() {
         System.out.println("cleanUpCanvas true");
+        scroll = false;
 
         PetriNetController.computePetriNetUpperLeftAndLowerRightCorner();
         // MainWindowController.computeViewportUpperLeftLowerRight();
@@ -51,7 +55,19 @@ public class CanvasController {
         // if (mode) //mode changed from moving/dragging
         // remove superfluous areas
 
-        MainWindowController.setStatusBarText(MainWindowController.getViewport().getViewPosition().getX() + " " + MainWindowController.getViewport().getViewPosition().getY());
+        //REVALIDATE new canvas size
+        canvas.revalidate();
+        if (scroll) {
+
+
+            System.out.println("scrollRectToVisible");
+            //scroll to new position
+            MainWindowController.getViewport().scrollRectToVisible(scroll_rect);
+            System.out.println(scroll_rect);
+            System.out.println("Y: "+MainWindowController.getViewport().getViewPosition().getY() );
+        }
+
+
 
     }
 
@@ -118,20 +134,22 @@ public class CanvasController {
             //MOVE ALL ELEMENTS INTO CANVAS
             if (move_elements_x || move_elements_y) {
                 PetriNetController.moveAllElements(move_elements_x ? width_off : 0, move_elements_y ? height_off : 0);
+                System.out.println("enlarge ELEM MOVED down or right" );
+                System.out.println( (move_elements_x ? width_off : 0) +" "+(move_elements_y ? height_off : 0));
+
+
+                //compute new viewport scroll position (viewposition)
+                Double scrollToX = move_elements_x ? width_off : 0;
+                Double scrollToY = move_elements_y ? height_off : 0;
+                Double scrollToWidth = MainWindowController.getViewport().getExtentSize().getWidth();
+                Double scrollToHeight = MainWindowController.getViewport().getExtentSize().getHeight();
+                scroll_rect = new Rectangle(scrollToX.intValue(), scrollToY.intValue(), scrollToWidth.intValue(), scrollToHeight.intValue());
+
+                scroll = true;
+
             }
 
-            //compute new viewport scroll position (viewposition)
-            Double scrollToX = move_elements_x ? width_off+MainWindowController.getViewport().getViewPosition().getX() : MainWindowController.getViewport().getViewPosition().getX();
-            Double scrollToY = move_elements_y ? height_off+MainWindowController.getViewport().getViewPosition().getY() : MainWindowController.getViewport().getViewPosition().getY();
-            Double scrollToWidth = MainWindowController.getViewport().getExtentSize().getWidth();
-            Double scrollToHeight = MainWindowController.getViewport().getExtentSize().getHeight();
-            Rectangle rect = new Rectangle(scrollToX.intValue(), scrollToY.intValue(), scrollToWidth.intValue(), scrollToHeight.intValue());
 
-            //REVALIDATE new canvas size
-            canvas.revalidate();
-
-            //scroll to new position
-            MainWindowController.getViewport().scrollRectToVisible(rect);
 
         }
 
@@ -169,8 +187,9 @@ public class CanvasController {
             Double width_diff = cd.getWidth() - width;
             Double height_diff = cd.getHeight() - height;
 
-            if (width_diff != 0 || height_diff != 0)
-                System.out.println("SET CANVAS SIZE TO VIEPORT \n\n");
+            if (width_diff != 0 || height_diff != 0) {
+                System.out.println(width_diff+"width_diff |"+height_diff+" height_diff CHANGE CANVAS SIZE TO VIEPORT \n\n");
+            }
 
             cd.setSize(width, height);
             canvas.setPreferredSize(cd);
@@ -183,7 +202,8 @@ public class CanvasController {
 
             //move left or up
             if (move_x || move_y) {
-                System.out.println(" MOVE X LEFT" +move_x);
+                System.out.println(" MOVE after canvas shrink | left or up");
+                System.out.println(MainWindowController.getViewport().getViewPosition().getX()+" x|y "+MainWindowController.getViewport().getViewPosition().getY());
                 PetriNetController.moveAllElements(-MainWindowController.getViewport().getViewPosition().getX(), -MainWindowController.getViewport().getViewPosition().getY());
             }
 
