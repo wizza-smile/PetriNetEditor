@@ -57,11 +57,14 @@ public class CanvasController {
         //REVALIDATE new canvas size
         canvas.revalidate();
 
+        //if the viewport stayed inside canvas through the resizing (ie. it's position has not been adjusted automatically):
         //adjust viewport position by the movement made
         //so that the illusion of a static viewport is created
+        boolean scroll_y = cleanedCanvasHeight > MainWindowController.getViewport().getViewPosition().getY() + MainWindowController.getViewport().getHeight();
+        boolean scroll_x = cleanedCanvasWidth > MainWindowController.getViewport().getViewPosition().getX() + MainWindowController.getViewport().getWidth();
         Double scrollToWidth = MainWindowController.getViewport().getExtentSize().getWidth();
         Double scrollToHeight = MainWindowController.getViewport().getExtentSize().getHeight();
-        Rectangle scroll_rect = new Rectangle(move_x.intValue(), move_y.intValue(), scrollToWidth.intValue(), scrollToHeight.intValue());
+        Rectangle scroll_rect = new Rectangle(scroll_x ? move_x.intValue() : 0, scroll_y ? move_y.intValue() : 0, scrollToWidth.intValue(), scrollToHeight.intValue());
 
         MainWindowController.getViewport().scrollRectToVisible(scroll_rect);
     }
