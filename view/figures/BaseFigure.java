@@ -76,7 +76,7 @@ public abstract class BaseFigure {
 
 
 
-        AttributedString vanGogh = new AttributedString("If you have a paragraph of styled text that you would like to fit within a specific width, you can use the LineBreakMeasurer class.");
+        AttributedString vanGogh = new AttributedString(label);
 
         AttributedCharacterIterator paragraph = vanGogh.getIterator();
         int paragraphStart = paragraph.getBeginIndex();
