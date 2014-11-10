@@ -8,7 +8,10 @@ import controller.*;
 import java.lang.Math;
 
 
+
 import java.awt.*;
+
+// import java.awt.Graphics2D;
 import java.awt.geom.*;
 
 import javax.swing.*;
@@ -16,8 +19,11 @@ import javax.swing.*;
 
 public class PlaceFigure extends BaseFigure implements Selectable {
 
+
     private Ellipse2D ellipse;
     private Ellipse2D tokenPoint;
+
+
 
     final public static double DIAMETER = Grid.cellSize/1;
     //protected TokenSetFigure tokenFigure;
@@ -55,6 +61,7 @@ public class PlaceFigure extends BaseFigure implements Selectable {
     }
 
 
+
     // public RectangularShape getBounds() {
     //     return new Ellipse2D.Double(place.getPosition().getX() - DIAMETER / 2, place.getPosition().getY() - DIAMETER / 2, DIAMETER, DIAMETER);
     // }
@@ -67,16 +74,19 @@ public class PlaceFigure extends BaseFigure implements Selectable {
     }
 
     public void draw(Graphics2D g) {
+        // regenrate Ellipse token
         setEllipse(generateEllipse());
-        drawFill(g);
-        drawBorder(g);
         if (1==1 || this.getPlace().getTokenCount() == 1) {
             this.tokenPoint = generateTokenPoint();
         }
+
+        drawLabel(g);
+
+        drawFill(g);
+        drawBorder(g);
         drawToken(g);
 
     }
-
 
 
     public void drawFill(Graphics2D g) {
@@ -118,7 +128,7 @@ public class PlaceFigure extends BaseFigure implements Selectable {
 
     public Ellipse2D generateTokenPoint() {
         return new Ellipse2D.Double(
-            getPlace().getPosition().getX() - DIAMETER / 12,
+            getPlace().getPosition().getX() - DIAMETER / 12 + DIAMETER/16,
             getPlace().getPosition().getY() - DIAMETER / 12,
             DIAMETER/6,
             DIAMETER/6
@@ -127,10 +137,10 @@ public class PlaceFigure extends BaseFigure implements Selectable {
 
 
     public Ellipse2D generateEllipse() {
-        //check if position is inside canvas/viewport
-        //if not move the net diagonally, so that this Element is fully inside
-        Double minX = getPlace().getPosition().getX() - DIAMETER / 2;
-        Double minY = getPlace().getPosition().getY() - DIAMETER / 2;
+        // //check if position is inside canvas/viewport
+        // //if not move the net diagonally, so that this Element is fully inside
+        // Double minX = getPlace().getPosition().getX() - DIAMETER / 2;
+        // Double minY = getPlace().getPosition().getY() - DIAMETER / 2;
 
 
         // if (minX < 0 || minY < 0) {
@@ -147,7 +157,7 @@ public class PlaceFigure extends BaseFigure implements Selectable {
         return new Ellipse2D.Double(
             getPlace().getPosition().getX() - DIAMETER / 2,
             getPlace().getPosition().getY() - DIAMETER / 2,
-            DIAMETER,
+            DIAMETER+DIAMETER/8,
             DIAMETER
         );
     }
