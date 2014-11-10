@@ -66,6 +66,11 @@ public class CanvasController {
         boolean scroll_x = cleanedCanvasWidth > MainWindowController.getViewport().getViewPosition().getX() + MainWindowController.getViewport().getWidth();
         Double scrollToWidth = MainWindowController.getViewport().getExtentSize().getWidth();
         Double scrollToHeight = MainWindowController.getViewport().getExtentSize().getHeight();
+
+        //if the elements moved to the left or up, always adjust the viewport
+        scroll_x = move_x.intValue() < 0 ? true : scroll_x;
+        scroll_y = move_y.intValue() < 0 ? true : scroll_y;
+
         Rectangle scroll_rect = new Rectangle(scroll_x ? move_x.intValue() : 0, scroll_y ? move_y.intValue() : 0, scrollToWidth.intValue(), scrollToHeight.intValue());
 
         MainWindowController.getViewport().scrollRectToVisible(scroll_rect);
