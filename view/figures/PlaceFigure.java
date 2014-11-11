@@ -128,7 +128,7 @@ public class PlaceFigure extends BaseFigure implements Selectable {
 
     public Ellipse2D generateTokenPoint() {
         return new Ellipse2D.Double(
-            getPlace().getPosition().getX() - DIAMETER / 12 + DIAMETER/16,
+            getPlace().getPosition().getX() - DIAMETER / 12,
             getPlace().getPosition().getY() - DIAMETER / 12,
             DIAMETER/6,
             DIAMETER/6
@@ -157,7 +157,7 @@ public class PlaceFigure extends BaseFigure implements Selectable {
         return new Ellipse2D.Double(
             getPlace().getPosition().getX() - DIAMETER / 2,
             getPlace().getPosition().getY() - DIAMETER / 2,
-            DIAMETER+DIAMETER/8,
+            DIAMETER,
             DIAMETER
         );
     }

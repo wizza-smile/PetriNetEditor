@@ -42,6 +42,10 @@ public class PetriNetController {
                 elementId = "p_" + next_element_id.toString();
                 element = new Place(elementId, position);
                 break;
+            case PetriNetController.ELEMENT_TRANSITION:
+                elementId = "t_" + next_element_id.toString();
+                element = new Transition(elementId, position);
+                break;
             default:
                 return;
         }

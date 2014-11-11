@@ -68,6 +68,12 @@ public class MainWindowController {
             case "place_mode":
                 GlobalController.mode = GlobalController.MODE_PLACE;
                 break;
+            case "transition_mode":
+                GlobalController.mode = GlobalController.MODE_TRANSITION;
+                break;
+            case "arc_mode":
+                GlobalController.mode = GlobalController.MODE_ARC;
+                break;
 
         }
 

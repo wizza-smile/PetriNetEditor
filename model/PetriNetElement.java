@@ -15,7 +15,7 @@ public abstract class PetriNetElement {
     //abstract methods
     ////////////////////
 
-    public abstract PetriNetElement cloneElement();
+    // public abstract PetriNetElement cloneElement();
     //return associated figure Object
     public abstract BaseFigure getFigure();
 

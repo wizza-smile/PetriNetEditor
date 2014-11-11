@@ -40,6 +40,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
             grid.drawGrid(g2);
         }
 
+        System.out.println( "TEST" );
 
         // Draw Net Objects Places, Transitions and Arcs
         Iterator it = PetriNetController.getPetriNet().getElements().values().iterator();

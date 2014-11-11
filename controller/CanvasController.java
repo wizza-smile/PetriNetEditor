@@ -33,6 +33,7 @@ public class CanvasController {
     }
 
 
+    /* Resize the Canvas and move Elements and Viewport to create illusion of endless canvas */
     public static void cleanUpCanvas() {
         Rectangle petrinet_rectangle = PetriNetController.getPetriNetRectangle();
         Rectangle viewport_rectangle = MainWindowController.getViewportRectangle();
@@ -67,7 +68,7 @@ public class CanvasController {
         Double scrollToWidth = MainWindowController.getViewport().getExtentSize().getWidth();
         Double scrollToHeight = MainWindowController.getViewport().getExtentSize().getHeight();
 
-        //if the elements moved to the left or up, always adjust the viewport
+        //if the elements moved to the left or up, it is always necessary to adjust the viewport
         scroll_x = move_x.intValue() < 0 ? true : scroll_x;
         scroll_y = move_y.intValue() < 0 ? true : scroll_y;
 
@@ -123,6 +124,12 @@ public class CanvasController {
                     break;
                 case GlobalController.MODE_PLACE:
                     PetriNetController.addPetriNetElement(mousePressPoint, PetriNetController.ELEMENT_PLACE);
+                    break;
+                case GlobalController.MODE_TRANSITION:
+                    PetriNetController.addPetriNetElement(mousePressPoint, PetriNetController.ELEMENT_TRANSITION);
+                    break;
+                case GlobalController.MODE_ARC:
+                    System.out.println("MODE ARC");
                     break;
                 default:
                     System.out.println("MOUSE PRESSSSSS");

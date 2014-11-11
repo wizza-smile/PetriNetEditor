@@ -16,6 +16,8 @@ public class GlobalController {
     public static final int MODE_SELECT = 0;
     public static final int MODE_DRAG_SELECTION = 1;
     public static final int MODE_PLACE = 2;
+    public static final int MODE_TRANSITION = 3;
+    public static final int MODE_ARC = 4;
 
 
     public static boolean STOP_PAINT = false;
