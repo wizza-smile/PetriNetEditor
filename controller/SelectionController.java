@@ -36,10 +36,12 @@ public class SelectionController {
             PetriNetElement element = (PetriNetElement)it.next();
             BaseFigure figure = element.getFigure();
             boolean inSelectionRectangle = figure.intersects(selectionRectangle);
-            if (inSelectionRectangle && figure instanceof Selectable) {
-                SelectionController.addFigureToSelection(figure);
-            } else {
-                SelectionController.removeFigureFromSelection(figure);
+            if (figure instanceof Selectable) {
+                if (inSelectionRectangle) {
+                    SelectionController.addFigureToSelection(figure);
+                } else {
+                    SelectionController.removeFigureFromSelection(figure);
+                }
             }
         }
     }
@@ -77,10 +79,10 @@ public class SelectionController {
 
 
     public static void addFigureToSelection(BaseFigure figure) {
-        if (!selectedElements_ids.contains(figure.getId())) {
+        if (figure instanceof Selectable && !selectedElements_ids.contains(figure.getId())) {
             selectedElements_ids.add(figure.getId());
+            ((Selectable)figure).setSelected(true);
         }
-        ((Selectable)figure).setSelected(true);
     }
 
 
@@ -102,7 +104,8 @@ public class SelectionController {
 
     public static void clearSelection() {
         for (String id : selectedElements_ids ) {
-            ((Selectable)PetriNetController.getElementById(id).getFigure()).setSelected(false);
+            if (PetriNetController.getElementById(id).getFigure() instanceof Selectable)
+                ((Selectable)PetriNetController.getElementById(id).getFigure()).setSelected(false);
         }
         selectedElements_ids = new ArrayList<String>();
 

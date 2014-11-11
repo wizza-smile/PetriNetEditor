@@ -3,6 +3,7 @@ package controller;
 
 import model.*;
 import view.*;
+import view.figures.*;
 
 import java.util.*;
 
@@ -51,17 +52,21 @@ public class PetriNetController {
         }
 
         petriNet.addElement(elementId, element);
+        petriNet.place_transition_ids.add(elementId);
     }
 
     public static void addArc(String source_id) {
         Integer next_element_id = petriNet.getNextElementId();
-        String elementId;
+        String arcId;
         PetriNetElement element;
 
-        elementId = "a_" + next_element_id.toString();
-        Arc arc = new Arc(elementId, source_id);
+        arcId = "a_" + next_element_id.toString();
+        Arc arc = new Arc(arcId, source_id);
 
-        petriNet.addArc(arc);
+        Transition transition = (Transition)getElementById(source_id);
+        transition.addArcId(arc.getId());
+
+        petriNet.addArc(arcId, arc);
     }
 
 
@@ -79,9 +84,10 @@ public class PetriNetController {
         Point2D lower_right = new Point2D.Double(0, 0);
 
         boolean initialized = false;
-        Iterator it = petriNet.getElements().values().iterator();
-        while (it.hasNext()) {
-            PetriNetElement elem = (PetriNetElement)it.next();
+
+
+        for (String elem_id : PetriNetController.getPetriNet().place_transition_ids) {
+            PetriNetElement elem = PetriNetController.getElementById(elem_id);
             Point2D position = elem.getPosition();
 
             if (initialized) {
@@ -94,6 +100,7 @@ public class PetriNetController {
             }
             lower_right.setLocation(Math.max(lower_right.getX(), position.getX()), Math.max(lower_right.getY(), position.getY()));
         }
+
 
         //ADD PADDING
         upper_left_x = upper_left_x - PETRINET_PADDING;
@@ -109,13 +116,14 @@ public class PetriNetController {
 
 
     public static void moveAllElements(Double x, Double y) {
-        Iterator it = petriNet.getElements().values().iterator();
-        while (it.hasNext()) {
-            PetriNetElement elem = (PetriNetElement)it.next();
+
+        for (String elem_id : PetriNetController.getPetriNet().place_transition_ids) {
+            PetriNetElement elem = PetriNetController.getElementById(elem_id);
             Point2D position = elem.getPosition();
             Point2D new_position = new Point2D.Double(position.getX()+x, position.getY()+y);
             elem.setPosition(new_position);
         }
+
         /* update grid reference point, so that the illusion of stable grid is kept */
         CanvasController.addToGridReferencePoint(new Point2D.Double(x, y));
     }

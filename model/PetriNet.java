@@ -14,7 +14,8 @@ public class PetriNet {
     private static int element_counter = 0;
 
     private HashMap<String, PetriNetElement> elements = new HashMap<String, PetriNetElement>();
-    private ArrayList<Arc> arcs = new ArrayList<Arc>();
+    public ArrayList<String> place_transition_ids = new ArrayList<String>();
+    public ArrayList<String> arc_ids = new ArrayList<String>();
 
 
     public int getNextElementId() {
@@ -40,15 +41,20 @@ public class PetriNet {
         // return outputElements;
     }
 
-    //returnes a deep copy of contained elements
-    public ArrayList<Arc> getArcs() {
-        return arcs;
+
+    public ArrayList<String> getArcIds() {
+        return arc_ids;
     }
 
 
-    public void addArc(Arc arc) {
-        arcs.add(arc);
+
+
+
+    public void addArc(String elementId, PetriNetElement element) {
+        addElement(elementId, element);
+        arc_ids.add(elementId);
     }
+
 
 
     public void addElement(String elementId, PetriNetElement element) {

@@ -17,25 +17,23 @@ import java.awt.geom.*;
 import javax.swing.*;
 
 
-public class ArcFigure {
-
-    protected Arc arc;
+public class ArcFigure extends BaseFigure {
 
     public ArcFigure(Arc arc) {
-        this.arc = arc;
+        this.element = (PetriNetElement)arc;
     }
 
     public Arc getArc() {
-        return this.arc;
+        return (Arc)this.element;
     }
 
-    // public boolean contains(Point2D position) {
-    //     return this.transitionRectangle.contains(position);
-    // }
+    public boolean contains(Point2D position) {
+        return false;
+    }
 
-    // public boolean intersects(Rectangle2D rect) {
-    //     return this.transitionRectangle.intersects(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
-    // }
+    public boolean intersects(Rectangle2D rect) {
+        return false;
+    }
 
     public PetriNetElement getSourceElement() {
         return this.getArc().getSource();
@@ -50,18 +48,65 @@ public class ArcFigure {
         Point2D target_position;
         Point2D source_position = getSourceElement().getPosition();
 
+
         if (target_element == null) {
             target_position = CanvasController.getCurrentMousePoint();
+            CanvasController.arc_no_target_id = this.getId();
+
+            Line2D.Double line = new Line2D.Double(source_position, target_position);
+            g.setStroke(new java.awt.BasicStroke(1f));
+            g.setPaint(new Color(23, 0, 0));
+            g.draw(line);
+
         } else {
-            target_position = target_element.getPosition();
+            target_position = (Point2D)target_element.getPosition().clone();
+            Double x = .0; Double y = .0;
+
+            Double a = source_position.getX() - target_position.getX();
+            Double b = source_position.getY() - target_position.getY();
+
+            Double c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+            Double p = PlaceFigure.DIAMETER / (2*c);
+
+            x = target_position.getX() + p*a;
+            y = target_position.getY() + p*b;
+
+            Line2D.Double line = new Line2D.Double(source_position, target_position);
+
+            g.setStroke(new java.awt.BasicStroke(1f));
+            g.setPaint(new Color(203, 0, 0, 23));
+            g.draw(line);
+
+
+            target_position.setLocation(x, y);
+            line.setLine(source_position, target_position);
+            g.setStroke(new java.awt.BasicStroke(1f));
+            g.setPaint(new Color(23, 0, 0));
+            g.draw(line);
+
+            Polygon poly = new Polygon(
+                       new int[]{25, 50, 0},
+                       new int[]{0, 50, 50},
+                       3);
+            Double angle = 300.0;
+            // Polygon shape = new Polygon();
+            // shape.addPoint(...);
+            // ....
+            Rectangle bounds = poly.getBounds();
+            AffineTransform transform = new AffineTransform();
+            transform.rotate(Math.toRadians(angle), bounds.width / 2, bounds.height / 2);
+
+            Path2D path = new GeneralPath(poly);
+            Shape rotated = path.createTransformedShape( transform );
+
+
+            g.translate(target_position.getX(), target_position.getY());
+            g.setColor(Color.LIGHT_GRAY);
+            g.fill(bounds);
+            g.setColor(Color.RED);
+            g.fill(rotated);
+            g.translate(-target_position.getX(), -target_position.getY());
         }
-
-        Line2D.Double line = new Line2D.Double();
-        line.setLine(source_position, target_position);
-
-        g.setStroke(new java.awt.BasicStroke(1f));
-        g.setPaint(new Color(0, 0, 0));
-        g.draw(line);
 
         //intersectsLine(Line2D l)
         //System.out.println( "NO TARGET" );
@@ -69,6 +114,11 @@ public class ArcFigure {
         // System.out.println( sourceElement.getPosition().getX() );
 
     }
+
+
+
+
+
 
     public Point2D getIntersectionPoint(Line2D lineA, Line2D lineB) {
 

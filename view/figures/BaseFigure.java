@@ -17,8 +17,6 @@ public abstract class BaseFigure {
     protected String elementId;
     protected PetriNetElement element;
 
-    protected String label = "Label muss sein";
-
     protected Point2D offset;
 
     protected boolean selected = false;
@@ -36,7 +34,7 @@ public abstract class BaseFigure {
     public abstract boolean intersects(Rectangle2D r);
     public abstract boolean contains(Point2D position);
     // public abstract Point2D getLowerRightCorner();
-    public abstract void updatePosition();
+    //
 
 
     public void draw(Graphics2D g) {
@@ -46,6 +44,8 @@ public abstract class BaseFigure {
 
 
     public void drawLabel(Graphics2D g) {
+
+        String label = "Label muss sein";
 
         Font font = new Font(null, java.awt.Font.BOLD, 12);
         FontRenderContext fontRenderContext = g.getFontRenderContext();

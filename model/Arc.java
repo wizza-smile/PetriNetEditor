@@ -5,7 +5,7 @@ import controller.*;
 
 import java.awt.geom.Point2D;
 
-public class Arc {
+public class Arc extends PetriNetElement {
     protected String elementId;
     protected ArcFigure arcfigure;
 
@@ -16,11 +16,12 @@ public class Arc {
 
         this.source_id = source_id;
         //cache a figure
-        this.getArcFigure();
+        this.getFigure();
     }
 
+    public String getId() { return elementId; }
 
-    public ArcFigure getArcFigure() {
+    public ArcFigure getFigure() {
         if (arcfigure == null) {
             arcfigure = new ArcFigure(this);
         }

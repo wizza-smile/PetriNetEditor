@@ -2,6 +2,8 @@ package model;
 
 import view.figures.*;
 
+import java.util.*;
+
 import java.awt.geom.Point2D;
 
 public class Place extends PetriNetElement {
@@ -9,6 +11,8 @@ public class Place extends PetriNetElement {
     public String label;
 
     private int tokenCount;
+    private ArrayList<String> arc_ids = new ArrayList<String>();
+
 
     public Place(String elementId, Point2D position) {
         this.setId(elementId);
@@ -18,6 +22,10 @@ public class Place extends PetriNetElement {
         this.getFigure();
         // this.tokenFigure = new TokenSetFigure(this);
         // this.ellipse = generateEllipse();
+    }
+
+    public void addArcId(String arc_id) {
+        arc_ids.add(arc_id);
     }
 
 

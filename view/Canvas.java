@@ -41,19 +41,17 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         }
 
         //Draw all arcs first
-        for (Arc arc : PetriNetController.getPetriNet().getArcs()) {
-            arc.getArcFigure().draw(g2);
+        for (String arc_id : PetriNetController.getPetriNet().arc_ids) {
+            Arc arc = (Arc)PetriNetController.getElementById(arc_id);
+            arc.getFigure().draw(g2);
+            System.out.println( "WECKKAx" );
         }
 
-        // Draw Net Objects Places, Transitions and Arcs
-        Iterator it = PetriNetController.getPetriNet().getElements().values().iterator();
-        while (it.hasNext()) {
-            PetriNetElement elem = (PetriNetElement)it.next();
+        for (String elem_id : PetriNetController.getPetriNet().place_transition_ids) {
+            PetriNetElement elem = PetriNetController.getElementById(elem_id);
             elem.getFigure().draw(g2);
-
-            // AbstractFigure element = (AbstractFigure) Class.forName(it.next().classname + "Figure").newInstance();
-            // element.draw(g2);
         }
+
 
         // if (arcFigure != null) {
         //     // arcFigure.draw(g2);

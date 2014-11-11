@@ -25,6 +25,8 @@ public class CanvasController {
     static Point2D mousePressPoint;
     static Point2D currentMousePoint;
 
+    public static String arc_no_target_id;
+
 
     public static view.Canvas createCanvas() {
         canvas = new view.Canvas();
@@ -78,6 +80,23 @@ public class CanvasController {
     }
 
 
+    public static void handleMousePressedModeArc() {
+        //check if a transition is under mousepointer
+        BaseFigure figure = SelectionController.selectFigureUnderMousePointer(mousePressPoint);
+        //if not: do nothing
+        //if yes: create new arc with source = transition
+        if (figure != null && figure.getElement() instanceof Transition) {
+            PetriNetController.addArc(figure.getId());
+
+            GlobalController.mode = GlobalController.MODE_ARC_SELECT_TARGET;
+            System.out.println( "WREERE" );
+        }
+    }
+
+
+
+
+
     //adjust the reference point from which the grid will be painted
     //should always be 0 or negative
     public static void addToGridReferencePoint(Point2D p) {
@@ -120,7 +139,7 @@ public class CanvasController {
                         SelectionController.clearSelection();
 
                         BaseFigure figure = SelectionController.selectFigureUnderMousePointer(mousePressPoint);
-                        if (figure != null) {
+                        if (figure != null && figure instanceof Selectable) {
                             SelectionController.addFigureToSelection(figure);
                             GlobalController.mode = GlobalController.MODE_DRAG_SELECTION;
                         }
@@ -134,16 +153,20 @@ public class CanvasController {
                     PetriNetController.addPetriNetElement(mousePressPoint, PetriNetController.ELEMENT_TRANSITION);
                     break;
                 case GlobalController.MODE_ARC:
-                    //check if a transition is under mousepointer
+                    handleMousePressedModeArc();
+                    System.out.println( "MODE_ARC" );
+                    break;
+                case GlobalController.MODE_ARC_SELECT_TARGET:
+                    //check if a Place is under mousepointer
                     BaseFigure figure = SelectionController.selectFigureUnderMousePointer(mousePressPoint);
                     //if not: do nothing
-                    //if yes: create new arc with source = transition
-                    if (figure != null && figure.getElement() instanceof Transition) {
-                        PetriNetController.addArc(figure.getId());
-
-                        GlobalController.mode = GlobalController.MODE_ARC_SELECT_TARGET;
+                    //if yes: add arc to place
+                    if (figure != null && figure.getElement() instanceof Place) {
+                        ((Place)figure.getElement()).addArcId(arc_no_target_id);
+                        Arc arc = (Arc)PetriNetController.getElementById(arc_no_target_id);
+                        arc.selectTarget(figure.getId());
                     }
-                    System.out.println( "MODE_ARC" );
+                    System.out.println( "MODE_ARC_SELECT_TARGET" );
                     break;
                 default:
                     System.out.println("MOUSE PRESSSSSS");

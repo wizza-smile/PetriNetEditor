@@ -32,7 +32,7 @@ public abstract class PetriNetElement {
     public void setPosition(Point2D position) {
         this.position = position;
         //update figure position!
-        this.figure.updatePosition();
+        ((Selectable)this.figure).updatePosition();
     }
 
 
