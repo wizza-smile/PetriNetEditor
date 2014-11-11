@@ -66,12 +66,12 @@ public class PlaceFigure extends BaseFigure implements Selectable {
     //     return new Ellipse2D.Double(place.getPosition().getX() - DIAMETER / 2, place.getPosition().getY() - DIAMETER / 2, DIAMETER, DIAMETER);
     // }
 
-    public Point2D getLowerRightCorner() {
-        Point2D position = getPosition();
-        Point2D lrc = new Point2D.Double(position.getX() + DIAMETER/2, position.getY() + DIAMETER/2);
+    // public Point2D getLowerRightCorner() {
+    //     Point2D position = getPosition();
+    //     Point2D lrc = new Point2D.Double(position.getX() + DIAMETER/2, position.getY() + DIAMETER/2);
 
-        return lrc;
-    }
+    //     return lrc;
+    // }
 
     public void draw(Graphics2D g) {
         // regenrate Ellipse token

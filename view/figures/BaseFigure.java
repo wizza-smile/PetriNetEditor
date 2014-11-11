@@ -35,7 +35,7 @@ public abstract class BaseFigure {
 
     public abstract boolean intersects(Rectangle2D r);
     public abstract boolean contains(Point2D position);
-    public abstract Point2D getLowerRightCorner();
+    // public abstract Point2D getLowerRightCorner();
     public abstract void updatePosition();
 
 
