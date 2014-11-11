@@ -22,7 +22,7 @@ public class TransitionFigure extends BaseFigure implements Selectable {
 
     private Rectangle2D transitionRectangle;
 
-    final public static double DIMENSION = Grid.cellSize/1;
+    final public static double DIMENSION = Grid.cellSize/0.9;
 
 
 
@@ -90,9 +90,9 @@ public class TransitionFigure extends BaseFigure implements Selectable {
 
     public Rectangle2D generateTransitionRectangle() {
         return new Rectangle2D.Double(
-            getTransition().getPosition().getX() - DIMENSION / 2,
+            getTransition().getPosition().getX() - DIMENSION / 4,
             getTransition().getPosition().getY() - DIMENSION / 2,
-            DIMENSION,
+            DIMENSION/2,
             DIMENSION
         );
     }

@@ -53,6 +53,17 @@ public class PetriNetController {
         petriNet.addElement(elementId, element);
     }
 
+    public static void addArc(String source_id) {
+        Integer next_element_id = petriNet.getNextElementId();
+        String elementId;
+        PetriNetElement element;
+
+        elementId = "a_" + next_element_id.toString();
+        Arc arc = new Arc(elementId, source_id);
+
+        petriNet.addArc(arc);
+    }
+
 
 
     public static PetriNetElement getElementById(String elementId) {

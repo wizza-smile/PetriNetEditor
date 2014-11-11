@@ -107,7 +107,6 @@ public class CanvasController {
                 case GlobalController.MODE_SELECT:
                     //check if a selected elementFigure is under mouse pointer
                     //if yes: start dragging selection
-                    //if not: remove current selection
                     ArrayList<String> selectedElements_ids = SelectionController.getSelectedElementsIds();
                     for (String id : selectedElements_ids ) {
                         if (PetriNetController.getElementById(id).getFigure().contains(mousePressPoint)) {
@@ -116,9 +115,15 @@ public class CanvasController {
                             break;
                         }
                     }
+                    //if not: remove current selection and select figure under mouse pointer, if any.
                     if (GlobalController.mode != GlobalController.MODE_DRAG_SELECTION) {
                         SelectionController.clearSelection();
-                        SelectionController.selectFigureUnderMousePointer(mousePressPoint);
+
+                        BaseFigure figure = SelectionController.selectFigureUnderMousePointer(mousePressPoint);
+                        if (figure != null) {
+                            SelectionController.addFigureToSelection(figure);
+                            GlobalController.mode = GlobalController.MODE_DRAG_SELECTION;
+                        }
                     }
                     SelectionController.setOffsetToSelectedElements(mousePressPoint);
                     break;
@@ -129,7 +134,16 @@ public class CanvasController {
                     PetriNetController.addPetriNetElement(mousePressPoint, PetriNetController.ELEMENT_TRANSITION);
                     break;
                 case GlobalController.MODE_ARC:
-                    System.out.println("MODE ARC");
+                    //check if a transition is under mousepointer
+                    BaseFigure figure = SelectionController.selectFigureUnderMousePointer(mousePressPoint);
+                    //if not: do nothing
+                    //if yes: create new arc with source = transition
+                    if (figure != null && figure.getElement() instanceof Transition) {
+                        PetriNetController.addArc(figure.getId());
+
+                        GlobalController.mode = GlobalController.MODE_ARC_SELECT_TARGET;
+                    }
+                    System.out.println( "MODE_ARC" );
                     break;
                 default:
                     System.out.println("MOUSE PRESSSSSS");
@@ -188,5 +202,23 @@ public class CanvasController {
         canvas.repaint();
     }
 
+
+    public static void mouseMoved(MouseEvent e) {
+        currentMousePoint = new Point2D.Double(e.getX(), e.getY());
+        switch (GlobalController.mode) {
+            case  GlobalController.MODE_ARC_SELECT_TARGET:
+                // System.out.println( "ARC_TARGTE" );
+                break;
+            default:
+                break;
+        }
+
+        canvas.repaint();
+    }
+
+
+    public static Point2D getCurrentMousePoint() {
+        return currentMousePoint;
+    }
 
 }

@@ -18,6 +18,7 @@ public class GlobalController {
     public static final int MODE_PLACE = 2;
     public static final int MODE_TRANSITION = 3;
     public static final int MODE_ARC = 4;
+    public static final int MODE_ARC_SELECT_TARGET = 5;
 
 
     public static boolean STOP_PAINT = false;

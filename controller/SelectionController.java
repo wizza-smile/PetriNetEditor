@@ -37,9 +37,9 @@ public class SelectionController {
             BaseFigure figure = element.getFigure();
             boolean inSelectionRectangle = figure.intersects(selectionRectangle);
             if (inSelectionRectangle && figure instanceof Selectable) {
-                SelectionController.addSelectedFigure(figure);
+                SelectionController.addFigureToSelection(figure);
             } else {
-                SelectionController.removeSelectedFigure(figure);
+                SelectionController.removeFigureFromSelection(figure);
             }
         }
     }
@@ -61,23 +61,22 @@ public class SelectionController {
     }
 
 
-    //select element, if not already selected
-    public static void selectFigureUnderMousePointer(Point2D pointer) {
-        //select figure, if one is under pointer
+    //select figure, if one is under pointer
+    public static BaseFigure selectFigureUnderMousePointer(Point2D pointer) {
         Iterator it = PetriNetController.getPetriNet().getElements().values().iterator();
         while (it.hasNext()) {
             BaseFigure figure = ((PetriNetElement)it.next()).getFigure();
             if (figure.contains(pointer) && figure instanceof Selectable) {
-                SelectionController.addSelectedFigure(figure);
-                GlobalController.mode = GlobalController.MODE_DRAG_SELECTION;
-                break;
+
+                return figure;
             }
         }
+        return null;
     }
 
 
-    //select element, if not already selected
-    public static void addSelectedFigure(BaseFigure figure) {
+
+    public static void addFigureToSelection(BaseFigure figure) {
         if (!selectedElements_ids.contains(figure.getId())) {
             selectedElements_ids.add(figure.getId());
         }
@@ -91,7 +90,7 @@ public class SelectionController {
     }
 
 
-    public static void removeSelectedFigure(BaseFigure figure) {
+    public static void removeFigureFromSelection(BaseFigure figure) {
         selectedElements_ids.remove(figure.getId());
         ((Selectable)figure).setSelected(false);
     }
