@@ -27,8 +27,10 @@ public class ArcFigure extends BaseFigure {
     Line2D line;
 
     //gradient triangle
-    Double a, b, c, alpha;
-    boolean is_negativ_gradient;
+    Double a, b, c, alpha, gradient;
+    boolean is_negative_gradient;
+    boolean place_is_left;
+    boolean place_is_up;
 
 
     Point2D intersetion_place, intersection_transition;
@@ -74,6 +76,17 @@ public class ArcFigure extends BaseFigure {
 
         //the angle alpha // opposite to x length (a) in gradient triangle
         this.alpha = Math.abs(Math.asin(a/c)*180/Math.PI);
+
+    // determine the orientation of gradient triangle by considering who is up or left (target/source)
+    // to get the correct angle,
+
+        this.place_is_left = getPlace().getPosition().getX() < getTransition().getPosition().getX();
+        this.place_is_up = getPlace().getPosition().getY() < getTransition().getPosition().getY();
+        this.is_negative_gradient = (place_is_left ^ place_is_up) ? false : true;
+
+        this.gradient = is_negative_gradient ? -b/a : b/a;
+
+        System.out.println( gradient );
     }
 
     public void draw(Graphics2D g) {
@@ -106,190 +119,52 @@ public class ArcFigure extends BaseFigure {
             computeGradientTriangle();
 
 
-            // Double place_intersect_x = .0; Double place_intersect_y = .0;
-            // Point2D target_position = (Point2D)getPlace().getPosition().clone();
-            // Point2D source_position = getTransition().getPosition();
+
+            Double place_intersect_x = .0; Double place_intersect_y = .0;
+            Point2D target_position = (Point2D)getPlace().getPosition().clone();
+            Point2D source_position = getTransition().getPosition();
 
 
 
 
-        //     //PLACE is target
-        //     if (this.getTargetType() == Arc.TARGET_PLACE) {
-        //             //draw the arrow on place side
-
-        //             //determine the orientation of gradient triangle by considering who is up or left (target/source)
-        //             //to get the correct angle,
-        //             Double mx = target_position.getX() - source_position.getX();
-        //             Double my = target_position.getY() - source_position.getY();
-
-        //             Point factor_x_y = getFactor_X_Y(mx, my);
-        //             //angle by which to rotate the arrow
-        //             Double angle = getRotationAngle(mx, my, alpha);
-
-
-        //             //the rectangualar around the arrow needs repositioning, so that the arrow will always touch the intersection point
-        //             //is this true for transition as target ????
-        //             Double place_arrow_move_x = (ARROW_RADIUS/c) * a * factor_x_y.getX();
-        //             Double place_arrow_move_y = (ARROW_RADIUS/c) * b * factor_x_y.getY();
-
-
-        //             //relative factor of PlaceRadius to that distance
-        //             //the arc will be shortened by this amount on the Place side
-        //             //to determin the intersection with place
-        //             Double p = PlaceFigure.DIAMETER / (2*c);
-
-        //             //compute the position of intersection with Place
-        //             place_intersect_x = target_position.getX() + p*a*factor_x_y.getX();
-        //             place_intersect_y = target_position.getY() + p*b*factor_x_y.getY();
-
-
-        //             intersetion_place = new Point2D.Double(place_intersect_x, place_intersect_y);
-
-        // //END PLACE COMPUTATION
-
-
-        //             //DRAW ARROW
-        //             // //draw the shortened line
-        //             target_position.setLocation(intersetion_place);
-        //             // line.setLine(source_position, target_position);
-        //             // g.setStroke(new java.awt.BasicStroke(1f));
-        //             // g.setPaint(new Color(23, 0, 0));
-        //             // g.draw(line);
-
-
-
-
-        //             //compute the actual offset of place_arrow to (0,0)
-        //             Double offset_x = target_position.getX()-ARROW_RADIUS+place_arrow_move_x;
-        //             Double offset_y = target_position.getY()-ARROW_RADIUS+place_arrow_move_y;
-
-
-
-        //             //create the shape
-        //             int r = ARROW_RADIUS.intValue();
-        //             Polygon poly = new Polygon(
-        //                 new int[]{r, 2*r, 0},
-        //                 new int[]{0, 2*r, 2*r},
-        //                 3
-        //             );
-
-        //             Rectangle bounds = poly.getBounds();
-        //             AffineTransform transform = new AffineTransform();
-        //             transform.rotate(Math.toRadians(angle), bounds.width / 2, bounds.height / 2);
-
-        //             Path2D path = new GeneralPath(poly);
-        //             Shape rotated = path.createTransformedShape( transform );
-
-        //             g.translate(offset_x, offset_y);
-        //             // g.setColor(Color.LIGHT_GRAY);
-        //             // g.fill(bounds);
-        //             g.setColor(Color.BLACK);
-        //             g.fill(rotated);
-        //             g.translate(-offset_x, -offset_y);
-
-        //     }
-
-            //TRANSITION is target
-            //if (this.getTargetType() == Arc.TARGET_TRANSITION) {
-
-
-            Double transition_intersect_x = .0; Double transition_intersect_y = .0;
-            Point2D target_position = (Point2D)transition.getPosition().clone();
-            Point2D source_position = place.getPosition();
-
-                    //draw the arrow on transition side
+            //PLACE is target
+            if (this.getTargetType() == Arc.TARGET_PLACE) {
+                    //draw the arrow on place side
 
                     //determine the orientation of gradient triangle by considering who is up or left (target/source)
                     //to get the correct angle,
                     Double mx = target_position.getX() - source_position.getX();
                     Double my = target_position.getY() - source_position.getY();
-                    is_negativ_gradient = (mx < 0 && my < 0) || (mx > 0 && my > 0);
 
-
-                    Point factor_x_y = getFactor_X_Y(mx, my);
-
+                    Point factor_x_y = getFactor_X_Y(place_is_left);
                     //angle by which to rotate the arrow
-                    Double angle = getRotationAngle(mx, my, alpha);
+                    Double angle = getRotationAngle(place_is_left, alpha);
 
 
                     //the rectangualar around the arrow needs repositioning, so that the arrow will always touch the intersection point
                     //is this true for transition as target ????
-                    Double transition_arrow_move_x = (ARROW_RADIUS/c) * a * factor_x_y.getX();
-                    Double transition_arrow_move_y = (ARROW_RADIUS/c) * b * factor_x_y.getY();
+                    Double place_arrow_move_x = (ARROW_RADIUS/c) * a * factor_x_y.getX();
+                    Double place_arrow_move_y = (ARROW_RADIUS/c) * b * factor_x_y.getY();
 
 
+                    //relative factor of PlaceRadius to that distance
+                    //the arc will be shortened by this amount on the Place side
+                    //to determin the intersection with place
+                    Double p = PlaceFigure.DIAMETER / (2*c);
+
+                    //compute the position of intersection with Place
+                    place_intersect_x = target_position.getX() + p*a*factor_x_y.getX();
+                    place_intersect_y = target_position.getY() + p*b*factor_x_y.getY();
 
 
-
-                    //GET the four lines of transition rectangle
-                    Point2D[] corners = new Point2D[4];
-                    Rectangle2D transition_rectangle = ((TransitionFigure)transition.getFigure()).getTransitionRectangle();
-
-                    //upper_left_corner
-                    corners[0] = new Point2D.Double(
-                        transition_rectangle.getX(),
-                        transition_rectangle.getY()
-                    );
-                    //upper_right_corner
-                    corners[1] = new Point2D.Double(
-                        transition_rectangle.getX() + transition_rectangle.getWidth(),
-                        transition_rectangle.getY()
-                    );
-                    //lower_right_corner
-                    corners[2]  = new Point2D.Double(
-                        transition_rectangle.getX() + transition_rectangle.getWidth(),
-                        transition_rectangle.getY() + transition_rectangle.getHeight()
-                    );
-                    //lower_left_corner
-                    corners[3]  = new Point2D.Double(
-                        transition_rectangle.getX(),
-                        transition_rectangle.getY() + transition_rectangle.getHeight()
-                    );
-
-                    for (int i = 0; i < 4; i++) {
-                        Line2D.Double side = new Line2D.Double(corners[i], corners[(i+1)%4]);
-
-                        if (side.intersectsLine(line)) {
-                            Double gradient;
-                            if (a != 0) {
-                                Double gradient = is_negativ_gradient ? -b/a : b/a;
-                            }
-
-
-                            System.out.println( gradient );
-
-                            // boolean is_positiv_gradient = target_position.getY() - source_position.getY();
-
-                            //compute the position of intersection with Transition
-                            // transition_intersect_x = target_position.getX() + p*a*factor_x_y.getX();
-                            // transition_intersect_y = target_position.getY() + p*b*factor_x_y.getY();
-
-
-                            break;
-                        }
-                    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    intersection_transition = new Point2D.Double(transition_intersect_x, transition_intersect_y);
+                    intersetion_place = new Point2D.Double(place_intersect_x, place_intersect_y);
 
         //END PLACE COMPUTATION
 
 
                     //DRAW ARROW
                     // //draw the shortened line
-                    target_position.setLocation(intersection_transition);
+                    target_position.setLocation(intersetion_place);
                     // line.setLine(source_position, target_position);
                     // g.setStroke(new java.awt.BasicStroke(1f));
                     // g.setPaint(new Color(23, 0, 0));
@@ -298,9 +173,9 @@ public class ArcFigure extends BaseFigure {
 
 
 
-                    //compute the actual offset of transition_arrow to (0,0)
-                    Double offset_x = target_position.getX()-ARROW_RADIUS+transition_arrow_move_x;
-                    Double offset_y = target_position.getY()-ARROW_RADIUS+transition_arrow_move_y;
+                    //compute the actual offset of place_arrow to (0,0)
+                    Double offset_x = target_position.getX()-ARROW_RADIUS+place_arrow_move_x;
+                    Double offset_y = target_position.getY()-ARROW_RADIUS+place_arrow_move_y;
 
 
 
@@ -326,6 +201,144 @@ public class ArcFigure extends BaseFigure {
                     g.fill(rotated);
                     g.translate(-offset_x, -offset_y);
 
+            }
+
+            //TRANSITION is target
+            //if (this.getTargetType() == Arc.TARGET_TRANSITION) {
+
+
+        //     Double transition_intersect_x = .0; Double transition_intersect_y = .0;
+        //     Point2D target_position = (Point2D)transition.getPosition().clone();
+        //     Point2D source_position = place.getPosition();
+
+        //             //draw the arrow on transition side
+
+        //             //determine the orientation of gradient triangle by considering who is up or left (target/source)
+        //             //to get the correct angle,
+        //             Double mx = target_position.getX() - source_position.getX();
+        //             Double my = target_position.getY() - source_position.getY();
+        //             is_negative_gradient = (mx < 0 && my < 0) || (mx > 0 && my > 0);
+
+
+        //             Point factor_x_y = getFactor_X_Y(mx, my);
+
+        //             //angle by which to rotate the arrow
+        //             Double angle = getRotationAngle(mx, my, alpha);
+
+
+        //             //the rectangualar around the arrow needs repositioning, so that the arrow will always touch the intersection point
+        //             //is this true for transition as target ????
+        //             Double transition_arrow_move_x = (ARROW_RADIUS/c) * a * factor_x_y.getX();
+        //             Double transition_arrow_move_y = (ARROW_RADIUS/c) * b * factor_x_y.getY();
+
+
+
+
+
+        //             //GET the four lines of transition rectangle
+        //             Point2D[] corners = new Point2D[4];
+        //             Rectangle2D transition_rectangle = ((TransitionFigure)transition.getFigure()).getTransitionRectangle();
+
+        //             //upper_left_corner
+        //             corners[0] = new Point2D.Double(
+        //                 transition_rectangle.getX(),
+        //                 transition_rectangle.getY()
+        //             );
+        //             //upper_right_corner
+        //             corners[1] = new Point2D.Double(
+        //                 transition_rectangle.getX() + transition_rectangle.getWidth(),
+        //                 transition_rectangle.getY()
+        //             );
+        //             //lower_right_corner
+        //             corners[2]  = new Point2D.Double(
+        //                 transition_rectangle.getX() + transition_rectangle.getWidth(),
+        //                 transition_rectangle.getY() + transition_rectangle.getHeight()
+        //             );
+        //             //lower_left_corner
+        //             corners[3]  = new Point2D.Double(
+        //                 transition_rectangle.getX(),
+        //                 transition_rectangle.getY() + transition_rectangle.getHeight()
+        //             );
+
+        //             for (int i = 0; i < 4; i++) {
+        //                 Line2D.Double side = new Line2D.Double(corners[i], corners[(i+1)%4]);
+
+        //                 if (side.intersectsLine(line)) {
+        //                     if (a != 0) {
+        //                         this.gradient = is_negative_gradient ? -b/a : b/a;
+        //                     }
+
+
+        //                     System.out.println( gradient );
+
+        //                     // boolean is_positiv_gradient = target_position.getY() - source_position.getY();
+
+        //                     //compute the position of intersection with Transition
+        //                     // transition_intersect_x = target_position.getX() + p*a*factor_x_y.getX();
+        //                     // transition_intersect_y = target_position.getY() + p*b*factor_x_y.getY();
+
+
+        //                     break;
+        //                 }
+        //             }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //             intersection_transition = new Point2D.Double(transition_intersect_x, transition_intersect_y);
+
+        // //END PLACE COMPUTATION
+
+
+        //             //DRAW ARROW
+        //             // //draw the shortened line
+        //             target_position.setLocation(intersection_transition);
+        //             // line.setLine(source_position, target_position);
+        //             // g.setStroke(new java.awt.BasicStroke(1f));
+        //             // g.setPaint(new Color(23, 0, 0));
+        //             // g.draw(line);
+
+
+
+
+        //             //compute the actual offset of transition_arrow to (0,0)
+        //             Double offset_x = target_position.getX()-ARROW_RADIUS+transition_arrow_move_x;
+        //             Double offset_y = target_position.getY()-ARROW_RADIUS+transition_arrow_move_y;
+
+
+
+        //             //create the shape
+        //             int r = ARROW_RADIUS.intValue();
+        //             Polygon poly = new Polygon(
+        //                 new int[]{r, 2*r, 0},
+        //                 new int[]{0, 2*r, 2*r},
+        //                 3
+        //             );
+
+        //             Rectangle bounds = poly.getBounds();
+        //             AffineTransform transform = new AffineTransform();
+        //             transform.rotate(Math.toRadians(angle), bounds.width / 2, bounds.height / 2);
+
+        //             Path2D path = new GeneralPath(poly);
+        //             Shape rotated = path.createTransformedShape( transform );
+
+        //             g.translate(offset_x, offset_y);
+        //             // g.setColor(Color.LIGHT_GRAY);
+        //             // g.fill(bounds);
+        //             g.setColor(Color.BLACK);
+        //             g.fill(rotated);
+        //             g.translate(-offset_x, -offset_y);
+
             //}
 
         }
@@ -334,24 +347,34 @@ public class ArcFigure extends BaseFigure {
     }
 
 
-    public Point getFactor_X_Y(Double mx, Double my) {
+    public Point getFactor_X_Y(boolean target_is_left) {
         Point factor_x_y;
 
         int factor_x = 1;
         int factor_y = 1;
 
-        if (mx > 0) {
-            factor_x *= -1;
-            if (my > 0) {
+
+
+        if (!target_is_left) {
+           factor_x = -1;
+           if (!is_negative_gradient) {
+                // 0-90°
+                factor_y = 1;
+            } else {
                 // 90-180°
-                factor_y *= -1;
+                factor_y = -1;
             }
         } else {
-            if (my > 0) {
+            factor_x = 1;
+            if (!is_negative_gradient) {
                 // 180-270°
-                factor_y *= -1;
+                factor_y = -1;
+            } else {
+                // 270-360°
+                factor_y = 1;
             }
         }
+
 
         factor_x_y = new Point(factor_x, factor_y);
 
@@ -359,24 +382,24 @@ public class ArcFigure extends BaseFigure {
     }
 
 
-    public Double getRotationAngle(Double mx, Double my, Double alpha) {
+    public Double getRotationAngle(boolean target_is_left, Double alpha) {
         Double rotation_angle;
 
-        if (is_negativ_gradient) {
-           if (my < 0) {
+        if (!target_is_left) {
+           if (!is_negative_gradient) {
                 // 0-90°
                 rotation_angle = alpha;
             } else {
-                // 180-270°
-                rotation_angle = 180+alpha;
-            }
-        } else {
-           if (my < 0) {
-                // 270-360°
-                rotation_angle = 360-alpha;
-            } else {
                 // 90-180°
                 rotation_angle = 180-alpha;
+            }
+        } else {
+           if (!is_negative_gradient) {
+                // 180-270°
+                rotation_angle = 180+alpha;
+            } else {
+                // 270-360°
+                rotation_angle = 360-alpha;
             }
         }
 
