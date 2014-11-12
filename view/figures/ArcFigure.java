@@ -128,7 +128,6 @@ public class ArcFigure extends BaseFigure {
 
             // TRANSITION is target
             if (1==1 || this.getTargetType() == Arc.TARGET_TRANSITION) {
-                Point2D p = new Point2D.Double(0,0);
 
                     Double transition_intersect_x = .0; Double transition_intersect_y = .0;
                     Point2D target_position = (Point2D)transition.getPosition().clone();
