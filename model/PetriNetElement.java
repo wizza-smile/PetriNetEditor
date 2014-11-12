@@ -23,6 +23,7 @@ public abstract class PetriNetElement {
     /////////////////////
     //implemented methods
     //////////////////////
+    public void addArcId(String arc_id){}
 
     public String getId() { return elementId; }
     public void setId(String elementId) { this.elementId = elementId; }

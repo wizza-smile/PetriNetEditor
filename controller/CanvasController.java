@@ -167,11 +167,10 @@ public class CanvasController {
                     BaseFigure figure = SelectionController.selectFigureUnderMousePointer(mousePressPoint);
                     //if not: do nothing
                     //if yes: add arc to place
-                    if (figure != null && figure.getElement() instanceof Place) {
-                        ((Place)figure.getElement()).addArcId(arc_no_target_id);
+                    if (figure != null && !(figure.getElement() instanceof Arc)) {
+                        figure.getElement().addArcId(arc_no_target_id);
                         Arc arc = (Arc)PetriNetController.getElementById(arc_no_target_id);
                         arc.selectTarget(figure.getId());
-                        System.out.println( "PLACE:  :: MODE_ARC_SELECT_TARGET" );
                     }
                     break;
                 default:

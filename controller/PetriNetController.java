@@ -60,7 +60,7 @@ public class PetriNetController {
         String arcId;
         PetriNetElement element;
 
-        PetriNetElement source_element = (Transition)getElementById(source_id);
+        PetriNetElement source_element = getElementById(source_id);
 
         arcId = "a_" + next_element_id.toString();
         Arc arc = new Arc(arcId, source_id, type);
