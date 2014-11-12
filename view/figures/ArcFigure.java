@@ -63,20 +63,77 @@ public class ArcFigure extends BaseFigure {
             //then draw the arrowHead
 
             target_position = (Point2D)target_element.getPosition().clone();
-            Double x = .0; Double y = .0; Double alpha = .0; Double beta = .0;
+            Double x = .0; Double y = .0;
 
+            Line2D.Double line = new Line2D.Double(source_position, target_position);
+
+            Rectangle2D gradientRectangle = line.getBounds2D();
             //gradient triangle
-            Double a = source_position.getX() - target_position.getX();
-            Double b = source_position.getY() - target_position.getY();
+            Double a = gradientRectangle.getWidth();
+            Double b = gradientRectangle.getHeight();
+
+
+
+            // g.setColor(Color.BLUE);
+            // g.draw(gradientRectangle);
+
             //compute distance between midPoints of source and target
             //Pythagoras
-            Double c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+            Double c = Math.hypot(a, b);
 
-            a= -a;
-            b= -b;
 
             //the angle alpha // opposite to x length (a) in gradient triangle
             Double rad = Math.abs(Math.asin(a/c)*180/Math.PI);
+
+
+
+
+            //draw the arrow
+
+            //radius of the triangle of arrow (size of arrow!)
+            Double RADIUS = 6.;
+            //angle by which to rotate the arrow
+            Double angle = 0.;
+
+
+
+
+
+//PLACE is target
+
+            //determine the orientation of gradient triangle by considering who is up or left (target/source)
+            //to get the correct angle,
+            Double mx = target_position.getX() - source_position.getX();
+            Double my = target_position.getY() - source_position.getY();
+
+
+            if (mx > 0) {
+                    a *= -1;
+                if (my < 0) {
+                    // 0-90°
+                    angle = rad;
+                } else {
+                    b *= -1;
+                    // 90-180°
+                    angle = 180-rad;
+                }
+            } else {
+                if (my > 0) {
+                    // 180-270°
+                    angle = 180+rad;
+                    b *= -1;
+
+                } else {
+                    // 270-360°
+                    angle = 360-rad;
+                }
+            }
+
+            //the rectangualar around the arrow needs repositioning, so that the arrow will always touch the intersection point
+            //is this true for transition as target ????
+            Double move_x = (RADIUS/c) * a;
+            Double move_y = (RADIUS/c) * b;
+
 
             //relative factor of PlaceRadius to that distance
             //the arc will be shortened by this amount on the Place side
@@ -87,7 +144,7 @@ public class ArcFigure extends BaseFigure {
             x = target_position.getX() + p*a;
             y = target_position.getY() + p*b;
 
-            Line2D.Double line = new Line2D.Double(source_position, target_position);
+//END PLACE
 
             g.setStroke(new java.awt.BasicStroke(1f));
             g.setPaint(new Color(0, 0, 0));
@@ -102,40 +159,11 @@ public class ArcFigure extends BaseFigure {
 
 
 
-            //draw the arrow
-
-            //radius of the triangle of arrow (size of arrow!)
-            Double RADIUS = 6.;
-            //angle by which to rotate the arrow
-            Double angle = 0.;
-
-            //the arrow needs repositioning, so that the arrow will always touch the intersection point
-            Double move_x = (RADIUS/c) * a;
-            Double move_y = (RADIUS/c) * b;
 
             //compute the actual offset of arrow to (0,0)
             Double offset_x = target_position.getX()-RADIUS+move_x;
             Double offset_y = target_position.getY()-RADIUS+move_y;
 
-            //determin the orientation of gradient triangle by considering who is up or left (target/source)
-            //to get the correct angle,
-            if (move_x < 0) {
-                 if (move_y > 0) {
-                    // 0-90°
-                    angle = rad;
-                } else {
-                    // 90-180°
-                    angle = 180-rad;
-                }
-            } else {
-                if (move_y < 0) {
-                    // 180-270°
-                    angle = 180+rad;
-                } else {
-                    // 270-360°
-                    angle = 360-rad;
-                }
-            }
 
 
             //create the shape
