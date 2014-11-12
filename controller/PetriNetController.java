@@ -29,9 +29,11 @@ public class PetriNetController {
         petriNet = new PetriNet();
     }
 
+
     public static PetriNet getPetriNet() {
         return petriNet;
     }
+
 
     public static void addPetriNetElement(Point2D position, int type) {
         Integer next_element_id = petriNet.getNextElementId();
@@ -55,6 +57,7 @@ public class PetriNetController {
         petriNet.place_transition_ids.add(elementId);
     }
 
+
     public static void addArc(String source_id, int type) {
         Integer next_element_id = petriNet.getNextElementId();
         String arcId;
@@ -73,10 +76,7 @@ public class PetriNetController {
         }
 
         petriNet.addArc(arcId, arc);
-
-
     }
-
 
 
     public static PetriNetElement getElementById(String elementId) {
@@ -84,6 +84,10 @@ public class PetriNetController {
     }
 
 
+    /**
+     * Iterate over All PetriNetElements to compute a surrounding Rectangle
+     * @return the surrounding Rectangle
+     */
     public static Rectangle getPetriNetRectangle() {
         Double width, height;
         Double upper_left_x = .0;

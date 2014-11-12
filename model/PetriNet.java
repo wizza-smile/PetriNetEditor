@@ -22,9 +22,9 @@ public class PetriNet {
         return ++this.id_counter;
     }
 
-    public int getElementCount() {
-        return element_counter;
-    }
+    // public int getElementCount() {
+    //     return element_counter;
+    // }
 
     //returnes a deep copy of contained elements
     public HashMap<String, PetriNetElement> getElements() {
