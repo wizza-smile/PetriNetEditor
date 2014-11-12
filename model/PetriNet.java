@@ -50,9 +50,9 @@ public class PetriNet {
 
 
 
-    public void addArc(String elementId, PetriNetElement element) {
-        addElement(elementId, element);
-        arc_ids.add(elementId);
+    public void addArc(String arcId, PetriNetElement arc) {
+        addElement(arcId, arc);
+        arc_ids.add(arcId);
     }
 
 

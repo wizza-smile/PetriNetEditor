@@ -56,7 +56,6 @@ public class TransitionFigure extends BaseFigure implements Selectable {
         drawFill(g);
         drawBorder(g);
 
-
     }
 
 
@@ -106,6 +105,10 @@ public class TransitionFigure extends BaseFigure implements Selectable {
 
     public void setTransitionRectangle(Rectangle2D r) {
         this.transitionRectangle = r;
+    }
+
+    public Rectangle2D getTransitionRectangle() {
+        return this.transitionRectangle;
     }
 
 }

@@ -85,11 +85,17 @@ public class CanvasController {
         BaseFigure figure = SelectionController.selectFigureUnderMousePointer(mousePressPoint);
         //if not: do nothing
         //if yes: create new arc with source = transition
-        if (figure != null && figure.getElement() instanceof Transition) {
-            PetriNetController.addArc(figure.getId());
-
-            GlobalController.mode = GlobalController.MODE_ARC_SELECT_TARGET;
-            System.out.println( "WREERE" );
+        if (figure != null) {
+            if (figure.getElement() instanceof Transition) {
+                System.out.println( "TRansiTION" );
+                PetriNetController.addArc(figure.getId(), PetriNetController.ELEMENT_TRANSITION);
+                GlobalController.mode = GlobalController.MODE_ARC_SELECT_TARGET;
+            }
+            if (figure.getElement() instanceof Place) {
+                System.out.println( "PlacE" );
+                PetriNetController.addArc(figure.getId(), PetriNetController.ELEMENT_PLACE);
+                GlobalController.mode = GlobalController.MODE_ARC_SELECT_TARGET;
+            }
         }
     }
 
@@ -165,8 +171,8 @@ public class CanvasController {
                         ((Place)figure.getElement()).addArcId(arc_no_target_id);
                         Arc arc = (Arc)PetriNetController.getElementById(arc_no_target_id);
                         arc.selectTarget(figure.getId());
+                        System.out.println( "PLACE:  :: MODE_ARC_SELECT_TARGET" );
                     }
-                    System.out.println( "MODE_ARC_SELECT_TARGET" );
                     break;
                 default:
                     System.out.println("MOUSE PRESSSSSS");
