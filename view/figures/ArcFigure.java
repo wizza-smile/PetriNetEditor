@@ -65,34 +65,40 @@ public class ArcFigure extends BaseFigure {
             target_position = (Point2D)target_element.getPosition().clone();
             Double x = .0; Double y = .0; Double alpha = .0; Double beta = .0;
 
-            //compute distance between midPoints of source and target
+            //gradient triangle
             Double a = source_position.getX() - target_position.getX();
             Double b = source_position.getY() - target_position.getY();
+            //compute distance between midPoints of source and target
             //Pythagoras
             Double c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
-            //relative factor of PlaceRadius to that distance
-            //the arc will be shortened by this amount on the Target side
-            Double p = PlaceFigure.DIAMETER / (2*c);
 
-            //the angle alpha // opposite to x length (a)
+            a= -a;
+            b= -b;
+
+            //the angle alpha // opposite to x length (a) in gradient triangle
             Double rad = Math.abs(Math.asin(a/c)*180/Math.PI);
 
-            //compute the position of arcArrow
+            //relative factor of PlaceRadius to that distance
+            //the arc will be shortened by this amount on the Place side
+            //to determin the intersection with place
+            Double p = PlaceFigure.DIAMETER / (2*c);
+
+            //compute the position of intersection with Place
             x = target_position.getX() + p*a;
             y = target_position.getY() + p*b;
 
             Line2D.Double line = new Line2D.Double(source_position, target_position);
 
             g.setStroke(new java.awt.BasicStroke(1f));
-            g.setPaint(new Color(203, 0, 0, 23));
+            g.setPaint(new Color(0, 0, 0));
             g.draw(line);
 
-
+            // //draw the shortened line
             target_position.setLocation(x, y);
-            line.setLine(source_position, target_position);
-            g.setStroke(new java.awt.BasicStroke(1f));
-            g.setPaint(new Color(23, 0, 0));
-            g.draw(line);
+            // line.setLine(source_position, target_position);
+            // g.setStroke(new java.awt.BasicStroke(1f));
+            // g.setPaint(new Color(23, 0, 0));
+            // g.draw(line);
 
 
 
@@ -100,10 +106,10 @@ public class ArcFigure extends BaseFigure {
 
             //radius of the triangle of arrow (size of arrow!)
             Double RADIUS = 6.;
-            //angle by which to turn the arrow
+            //angle by which to rotate the arrow
             Double angle = 0.;
 
-            //the arrow needs repositioning, so that the arrow will always touch the Place
+            //the arrow needs repositioning, so that the arrow will always touch the intersection point
             Double move_x = (RADIUS/c) * a;
             Double move_y = (RADIUS/c) * b;
 
@@ -111,8 +117,8 @@ public class ArcFigure extends BaseFigure {
             Double offset_x = target_position.getX()-RADIUS+move_x;
             Double offset_y = target_position.getY()-RADIUS+move_y;
 
-
-            //get the correct angle, by considering who is up or left (target/source)
+            //determin the orientation of gradient triangle by considering who is up or left (target/source)
+            //to get the correct angle,
             if (move_x < 0) {
                  if (move_y > 0) {
                     // 0-90°
