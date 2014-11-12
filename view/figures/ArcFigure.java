@@ -60,7 +60,7 @@ public class ArcFigure extends BaseFigure {
 
         } else {
             target_position = (Point2D)target_element.getPosition().clone();
-            Double x = .0; Double y = .0;
+            Double x = .0; Double y = .0; Double alpha = .0; Double beta = .0;
 
             Double a = source_position.getX() - target_position.getX();
             Double b = source_position.getY() - target_position.getY();
@@ -84,14 +84,81 @@ public class ArcFigure extends BaseFigure {
             g.setPaint(new Color(23, 0, 0));
             g.draw(line);
 
+
+
+
+            //dreick radius
+            Double RADIUS = 6.;
+            Double angle = 0.;
+
+            Double move_x = (RADIUS/c) * a;
+            Double move_y = (RADIUS/c) * b;
+
+            int r = RADIUS.intValue();
             Polygon poly = new Polygon(
-                       new int[]{25, 50, 0},
-                       new int[]{0, 50, 50},
+                       new int[]{r, 2*r, 0},
+                       new int[]{0, 2*r, 2*r},
                        3);
-            Double angle = 300.0;
+
+  // Double a = source_position.getX() - target_position.getX();
+  // Double b = source_position.getY() - target_position.getY();
+
+  // Double c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+
+            Double rad = Math.abs(Math.asin((a)/(c))*180/Math.PI);
+            // Double rad = Math.asin(Math.sin(Math.PI*40/180))*180/Math.PI;
+            System.out.println("RAD: " + rad );
+
+
+            //pythagoras
+            if (move_x < 0) {
+                //0-180
+                if (move_y > 0) {
+                    // 0-90
+                    angle = rad;
+                } else {
+                    // 90-180
+                    angle = 180-rad;
+                }
+                // alpha = angle%90;
+                // beta = 90-alpha;
+                // factor = -1.;
+                // factorx = factor;
+            } else {
+              //180-360
+              if (move_y < 0) {
+                    angle = rad+180;
+                    // 180-270
+
+              } else {
+                  // 270-360
+                    angle = 360-rad;
+
+              }
+            }
+
+
+            // Double la = RADIUS*Math.sin(Math.PI*alpha/180);
+            // Double lb = RADIUS*Math.sin(Math.PI*beta/180);
+
+
+
+            // System.out.println( "Math.sin(alpha) a" + Math.sin(Math.PI*alpha/180) );
+            // System.out.println( "Math.sin(beta) a" + Math.sin(Math.PI*beta/180) );
+            // System.out.println( "alpha a" + alpha );
+
             // Polygon shape = new Polygon();
             // shape.addPoint(...);
             // ....
+
+            // Double move_x = (-1)*(la+RADIUS);
+            // Double move_y = (-1)*(lb+RADIUS+PlaceFigure.DIAMETER/2);
+
+            // System.out.println( "LENGTH a: " + la );
+            // System.out.println( "LENGTH b: " + lb );
+            System.out.println( "move_x: " + move_x );
+            System.out.println( "move_y: " + move_y );
+
             Rectangle bounds = poly.getBounds();
             AffineTransform transform = new AffineTransform();
             transform.rotate(Math.toRadians(angle), bounds.width / 2, bounds.height / 2);
@@ -101,11 +168,15 @@ public class ArcFigure extends BaseFigure {
 
 
             g.translate(target_position.getX(), target_position.getY());
-            g.setColor(Color.LIGHT_GRAY);
-            g.fill(bounds);
-            g.setColor(Color.RED);
+            g.translate(-RADIUS, -RADIUS);
+            g.translate(move_x, move_y);
+            // g.setColor(Color.LIGHT_GRAY);
+            // g.fill(bounds);
+            g.setColor(Color.BLACK);
             g.fill(rotated);
             g.translate(-target_position.getX(), -target_position.getY());
+            g.translate(RADIUS, RADIUS);
+            g.translate(-move_x, -move_y);
         }
 
         //intersectsLine(Line2D l)
