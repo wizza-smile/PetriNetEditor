@@ -179,6 +179,8 @@ public class ArcFigure extends BaseFigure {
             computeIntersectionPlace();
             computeIntersectionTransition();
 
+            if (intersection_transition == null) return;
+
             //first draw the line
             Line2D shortened_line = new Line2D.Double(intersection_transition, intersection_place);
 
@@ -313,8 +315,6 @@ public class ArcFigure extends BaseFigure {
 
         //draw the arrowHead
         public void draw(Graphics2D g) {
-            if (TARGET_TYPE == Arc.TARGET_TRANSITION && intersection_target == null) return;
-
             //compute the actual offset of arrow to (0,0)
             Double offset_x = intersection_target.getX()-ARROW_RADIUS+arrow_move_x;
             Double offset_y = intersection_target.getY()-ARROW_RADIUS+arrow_move_y;
