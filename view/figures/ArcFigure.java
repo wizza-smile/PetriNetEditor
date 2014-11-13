@@ -20,7 +20,7 @@ import javax.swing.*;
 
 public class ArcFigure extends BaseFigure {
     //radius of the circle surrounding arrow (size of arrow!)
-    final public static Double ARROW_RADIUS_BASE = 7.;
+    final public static Double ARROW_RADIUS_BASE = 6.1;
     public static Double ARROW_RADIUS = ARROW_RADIUS_BASE;
 
     Line2D line;
@@ -71,13 +71,6 @@ public class ArcFigure extends BaseFigure {
         this.place_is_up = getPlace().getPosition().getY() < getTransition().getPosition().getY();
         this.is_negative_gradient = (place_is_left ^ place_is_up) ? false : true;
 
-        // Double x_val, y_val, width, height;
-        // width = place_is_left ? getTransition().getPosition().getX()-getPlace().getPosition().getX() : getPlace().getPosition().getX()-getTransition().getPosition().getX();
-        // height = place_is_up ? getTransition().getPosition().getY()-getPlace().getPosition().getY() : getPlace().getPosition().getY()-getTransition().getPosition().getY();
-        // x_val = place_is_left ? getPlace().getPosition().getX() : getTransition().getPosition().getX();
-        // y_val = place_is_up ? getTransition().getPosition().getX() : getPlace().getPosition().getX();
-
-        // Rectangle2D gradientRectangle = new Rectangle2D.Double(x_val, y_val, width, height);
         Rectangle2D gradientRectangle = line.getBounds2D();
 
         //gradient triangle
@@ -92,11 +85,13 @@ public class ArcFigure extends BaseFigure {
 
     protected void computeIntersectionPlace() {
         Double place_intersect_x = .0; Double place_intersect_y = .0;
+
+        //determine in which direction from place's midpoint the intersection lies
+        Point factor_x_y = getFactor_X_Y(place_is_left, place_is_up);
+
         //ratio between PlaceRadius and the distance between midPoints
         //the arc will be shortened by this amount on the Place side
         //to determin the intersection with place
-        Point factor_x_y = getFactor_X_Y(place_is_left, place_is_up);
-
         Double p = (PlaceFigure.DIAMETER/2) / c;
 
         //compute the position of intersection with Place
@@ -192,23 +187,22 @@ public class ArcFigure extends BaseFigure {
             g.draw(shortened_line);
 
             //DRAW ARROW
-            Double BASE_POINT_DIAMETER = 40.;
+            Double BASE_POINT_DIAMETER = 5.7*ARROW_RADIUS;
             // TRANSITION is target
             if (this.getTargetType() == Arc.TARGET_TRANSITION || this.getTargetType() == Arc.TARGET_BOTH) {
                 ArrowHead arrowHead = new ArrowHead(Arc.TARGET_TRANSITION);
                 arrowHead.draw(g);
             } else if (intersection_transition != null) {
 
-                Ellipse2D point = new Ellipse2D.Double(
+                Rectangle2D point = new Rectangle2D.Double(
                     intersection_transition.getX() - BASE_POINT_DIAMETER / 12,
                     intersection_transition.getY() - BASE_POINT_DIAMETER / 12,
                     BASE_POINT_DIAMETER/6,
                     BASE_POINT_DIAMETER/6
                 );
-                g.setColor(Color.BLACK);
+                g.setColor(new Color(0,0,0,200));
                 g.fill(point);
-                g.setColor(Color.BLACK);
-                g.draw(point);
+
             }
 
             //PLACE is target
@@ -216,16 +210,14 @@ public class ArcFigure extends BaseFigure {
                 ArrowHead arrowHead = new ArrowHead(Arc.TARGET_PLACE);
                 arrowHead.draw(g);
             } else {
-                Ellipse2D point = new Ellipse2D.Double(
+                Rectangle2D point = new Rectangle2D.Double(
                     intersection_place.getX() - BASE_POINT_DIAMETER / 12,
                     intersection_place.getY() - BASE_POINT_DIAMETER / 12,
                     BASE_POINT_DIAMETER/6,
                     BASE_POINT_DIAMETER/6
                 );
-                g.setColor(Color.BLACK);
-                g.fill(point);
-                g.setColor(Color.BLACK);
-                g.draw(point);
+                  g.setColor(new Color(0,0,0,200));
+                  g.fill(point);
             }
         }
 
@@ -261,11 +253,8 @@ public class ArcFigure extends BaseFigure {
     public Point getFactor_X_Y(boolean target_is_left, boolean target_is_up) {
         Point factor_x_y;
 
-        int factor_x = 1;
-        int factor_y = 1;
-
-        factor_x = target_is_left ? 1 : -1;
-        factor_y = target_is_up ? 1 : -1;
+        int factor_x = target_is_left ? 1 : -1;
+        int factor_y = target_is_up ? 1 : -1;
 
         factor_x_y = new Point(factor_x, factor_y);
 
@@ -309,7 +298,7 @@ public class ArcFigure extends BaseFigure {
             rotation_angle = getRotationAngle(target_is_left, alpha);
             factor_x_y = getFactor_X_Y(target_is_left, target_is_up);
 
-            //the rectangualar around the arrow needs repositioning, so that the arrow will always touch the intersection point
+            //the rectangle around the arrow needs repositioning, so that the arrow will always touch the intersection point
             arrow_move_x = (ARROW_RADIUS/c) * a * factor_x_y.getX();
             arrow_move_y = (ARROW_RADIUS/c) * b * factor_x_y.getY();
 
@@ -321,28 +310,24 @@ public class ArcFigure extends BaseFigure {
             Double offset_x = intersection_target.getX()-ARROW_RADIUS+arrow_move_x;
             Double offset_y = intersection_target.getY()-ARROW_RADIUS+arrow_move_y;
 
-            //create the shape
-            int r = ARROW_RADIUS.intValue();
-            Polygon poly = new Polygon(
-                new int[]{r, 2*r, 0},
-                new int[]{0, 2*r, 2*r},
-                3
-            );
+            Path2D path = new Path2D.Double();
+            path.moveTo(ARROW_RADIUS, 0);
+            path.lineTo(2*ARROW_RADIUS, 2*ARROW_RADIUS);
+            path.lineTo(0, 2*ARROW_RADIUS);
+            path.closePath();
 
-            Rectangle bounds = poly.getBounds();
+            Rectangle2D bounds = path.getBounds2D();
+
             AffineTransform transform = new AffineTransform();
-            transform.rotate(Math.toRadians(rotation_angle), bounds.width / 2, bounds.height / 2);
+            transform.rotate(Math.toRadians(rotation_angle), bounds.getX() + bounds.getWidth() / 2, bounds.getY() + bounds.getHeight() / 2);
 
-            Path2D path = new GeneralPath(poly);
             Shape rotated = path.createTransformedShape( transform );
-
-            g.translate(offset_x, offset_y);
-            g.setColor(TARGET_TYPE == Arc.TARGET_PLACE ? Color.BLACK : Color.BLACK);
-            g.fill(rotated);
-            g.setStroke(new java.awt.BasicStroke(1f));
             g.setColor(Color.BLACK);
-            g.draw(rotated);
+            g.translate(offset_x, offset_y);
+            g.fill(rotated);
+            // g.draw(bounds);
             g.translate(-offset_x, -offset_y);
+
         }
 
         public Double getRotationAngle(boolean target_is_left, Double alpha) {

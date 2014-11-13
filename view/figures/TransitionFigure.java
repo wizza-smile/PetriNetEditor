@@ -22,7 +22,8 @@ public class TransitionFigure extends BaseFigure implements Selectable {
 
     private Rectangle2D transitionRectangle;
 
-    final public static double DIMENSION = Grid.cellSize/0.9;
+    final public static double DIMENSION_BASE = 45;
+    public static double DIMENSION = DIMENSION_BASE;
 
 
 

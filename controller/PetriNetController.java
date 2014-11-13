@@ -19,7 +19,8 @@ public class PetriNetController {
     public final static int ELEMENT_TRANSITION = 1;
     public final static int ELEMENT_ARC = 2;
 
-    public final static int PETRINET_PADDING = 40;
+    public final static Double PETRINET_PADDING_BASE = 40.;
+    public static Double PETRINET_PADDING = PETRINET_PADDING_BASE;
 
     static private PetriNet petriNet;
 
