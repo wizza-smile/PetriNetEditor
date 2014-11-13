@@ -2,7 +2,7 @@
 package view.figures;
 
 import model.*;
-import view.Grid;
+import view.*;
 import controller.*;
 
 import java.lang.Math;
@@ -20,7 +20,8 @@ import javax.swing.*;
 
 public class ArcFigure extends BaseFigure {
     //radius of the circle surrounding arrow (size of arrow!)
-    static Double ARROW_RADIUS = 7.;
+    final public static Double ARROW_RADIUS_BASE = 7.;
+    public static Double ARROW_RADIUS = ARROW_RADIUS_BASE;
 
     Line2D line;
 

@@ -25,7 +25,8 @@ public class PlaceFigure extends BaseFigure implements Selectable {
 
 
 
-    final public static double DIAMETER = Grid.cellSize/1;
+    final public static double DIAMETER_BASE = Grid.cellSize/1;
+    public static double DIAMETER = DIAMETER_BASE;
     //protected TokenSetFigure tokenFigure;
 
     public PlaceFigure(Place place) {

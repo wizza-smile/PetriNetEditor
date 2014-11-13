@@ -56,6 +56,7 @@ public class MainWindowController {
         switch (button_id) {
             //File buttons
             case "create_new":
+                GlobalController.setSize(2.);
                 System.out.println("CREATE NEW");
                 break;
             case "exit":

@@ -247,4 +247,8 @@ public class CanvasController {
         return currentMousePoint;
     }
 
+    public static void repaintCanvas() {
+        canvas.repaint();
+    }
+
 }

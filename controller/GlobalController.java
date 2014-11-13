@@ -2,6 +2,7 @@ package controller;
 
 import model.*;
 import view.*;
+import view.figures.*;
 
 import java.util.*;
 import java.awt.*;
@@ -11,6 +12,7 @@ import javax.swing.*;
 
 public class GlobalController {
 
+    public static Double size = 1.;
 
     public static int mode = 0;
     public static final int MODE_SELECT = 0;
@@ -25,8 +27,6 @@ public class GlobalController {
 
     // EVENTS
     public static final int CANVAS_MOUSE_PRESSED = 0;
-
-
 
 
     public static void startApplication() {
@@ -44,6 +44,16 @@ public class GlobalController {
                 MainWindowController.injectCanvas(canvas);
             }
         });
+    }
+
+
+    public static void setSize(Double size) {
+        GlobalController.size = size;
+
+        ArcFigure.ARROW_RADIUS = ArcFigure.ARROW_RADIUS_BASE * size;
+        PlaceFigure.DIAMETER = PlaceFigure.DIAMETER_BASE * size;
+
+        CanvasController.repaintCanvas();
     }
 
 
