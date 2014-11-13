@@ -70,13 +70,14 @@ public class ArcFigure extends BaseFigure {
         this.place_is_up = getPlace().getPosition().getY() < getTransition().getPosition().getY();
         this.is_negative_gradient = (place_is_left ^ place_is_up) ? false : true;
 
-        Double x_val, y_val, width, height;
-        width = place_is_left ? getTransition().getPosition().getX()-getPlace().getPosition().getX() : getPlace().getPosition().getX()-getTransition().getPosition().getX();
-        height = place_is_up ? getTransition().getPosition().getY()-getPlace().getPosition().getY() : getPlace().getPosition().getY()-getTransition().getPosition().getY();
-        x_val = place_is_left ? getPlace().getPosition().getX() : getTransition().getPosition().getX();
-        y_val = place_is_up ? getTransition().getPosition().getX() : getPlace().getPosition().getX();
+        // Double x_val, y_val, width, height;
+        // width = place_is_left ? getTransition().getPosition().getX()-getPlace().getPosition().getX() : getPlace().getPosition().getX()-getTransition().getPosition().getX();
+        // height = place_is_up ? getTransition().getPosition().getY()-getPlace().getPosition().getY() : getPlace().getPosition().getY()-getTransition().getPosition().getY();
+        // x_val = place_is_left ? getPlace().getPosition().getX() : getTransition().getPosition().getX();
+        // y_val = place_is_up ? getTransition().getPosition().getX() : getPlace().getPosition().getX();
 
-        Rectangle2D gradientRectangle = new Rectangle2D.Double(x_val, y_val, width, height);
+        // Rectangle2D gradientRectangle = new Rectangle2D.Double(x_val, y_val, width, height);
+        Rectangle2D gradientRectangle = line.getBounds2D();
 
         //gradient triangle
         this.a = gradientRectangle.getWidth();
