@@ -78,6 +78,11 @@ public class PetriNetController {
         petriNet.addArc(arcId, arc);
     }
 
+    public static void removeArc(String arc_id) {
+        petriNet.removeElement(arc_id);
+        petriNet.removeArcId(arc_id);
+    }
+
 
     public static PetriNetElement getElementById(String elementId) {
         return petriNet.getElementById(elementId);

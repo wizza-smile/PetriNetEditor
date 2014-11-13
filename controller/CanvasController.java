@@ -81,18 +81,16 @@ public class CanvasController {
 
 
     public static void handleMousePressedModeArc() {
-        //check if a transition is under mousepointer
+        //check if a transition/place is under mousepointer
         BaseFigure figure = SelectionController.selectFigureUnderMousePointer(mousePressPoint);
         //if not: do nothing
         //if yes: create new arc with source = transition
         if (figure != null) {
             if (figure.getElement() instanceof Transition) {
-                System.out.println( "TRansiTION" );
                 PetriNetController.addArc(figure.getId(), PetriNetController.ELEMENT_TRANSITION);
                 GlobalController.mode = GlobalController.MODE_ARC_SELECT_TARGET;
             }
             if (figure.getElement() instanceof Place) {
-                System.out.println( "PlacE" );
                 PetriNetController.addArc(figure.getId(), PetriNetController.ELEMENT_PLACE);
                 GlobalController.mode = GlobalController.MODE_ARC_SELECT_TARGET;
             }
@@ -160,14 +158,13 @@ public class CanvasController {
                     break;
                 case GlobalController.MODE_ARC:
                     handleMousePressedModeArc();
-                    System.out.println( "MODE_ARC" );
                     break;
                 case GlobalController.MODE_ARC_SELECT_TARGET:
                     //check if a Place is under mousepointer
                     BaseFigure figure = SelectionController.selectFigureUnderMousePointer(mousePressPoint);
                     //if not: do nothing
                     //if yes: add arc to place
-                    if (figure != null && !(figure.getElement() instanceof Arc)) {
+                    if (figure != null && !(figure instanceof ArcFigure)) {
                         Arc arc = (Arc)PetriNetController.getElementById(arc_no_target_id);
                         if (arc.selectTarget(figure.getId())) {
                             figure.getElement().addArcId(arc_no_target_id);
@@ -236,7 +233,7 @@ public class CanvasController {
         currentMousePoint = new Point2D.Double(e.getX(), e.getY());
         switch (GlobalController.mode) {
             case  GlobalController.MODE_ARC_SELECT_TARGET:
-                // System.out.println( "ARC_TARGTE" );
+
                 break;
             default:
                 break;

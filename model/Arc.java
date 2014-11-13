@@ -24,13 +24,11 @@ public class Arc extends PetriNetElement {
         if (type == PetriNetController.ELEMENT_TRANSITION) {
             this.transition_id = this.source_id;
             this.target_type = TARGET_PLACE;
-            System.out.println( "INIT w transition " +this.target_type);
         }
         if (type == PetriNetController.ELEMENT_PLACE) {
             this.place_id = this.source_id;
             this.target_type = TARGET_TRANSITION;
         }
-        System.out.println("CREATE TARGET TYPE "+ this.target_type );
         //cache a figure
         this.getFigure();
     }
@@ -45,21 +43,56 @@ public class Arc extends PetriNetElement {
         return arcfigure;
     };
 
+    public boolean connectsSameElements(String elem_id_1, String elem_id_2) {
+        if (elem_id_1 == this.target_id && elem_id_2 == this.source_id
+            || elem_id_2 == this.target_id && elem_id_1 == this.source_id) {
+            return true;
+        }
+        return false;
+    }
+
+    //the input arc will be removed!
+    protected boolean merge(Arc arc) {
+        if (arc.source_id == this.source_id) {
+            return false;
+        } else {
+            this.target_type = TARGET_BOTH;
+        }
+
+        //now both directions
+        return true;
+    }
+
+
     public boolean selectTarget(String target_id) {
-        //Check if arc already exists with the same place and transition
-        //if yes merge!
+
         PetriNetElement target_elem = PetriNetController.getElementById(target_id);
         if (TARGET_TRANSITION == this.target_type && target_elem instanceof Transition) {
             this.target_id = target_id;
             this.transition_id = this.target_id;
-            return true;
         }
         if (TARGET_PLACE == this.target_type && target_elem instanceof Place) {
             this.target_id = target_id;
             this.place_id = this.target_id;
-            return true;
         }
-        System.out.println("TARGET TYPE "+ this.target_type );
+
+
+        //Check if arc already exists with the same place and transition
+        //if yes merge!
+        Arc arc = null;
+        boolean doublette_found = false;
+        for (String arc_id : PetriNetController.getPetriNet().getArcIds() ) {
+            arc = (Arc)PetriNetController.getElementById(arc_id);
+            if (this.getId() != arc.getId() && arc.connectsSameElements(target_id, this.source_id)) {
+                doublette_found = true;
+                break;
+            }
+        }
+        //remove after iteration (concurrency)
+        if (doublette_found) {
+            PetriNetController.removeArc(arc.getId());
+        }
+
         return false;
     }
 

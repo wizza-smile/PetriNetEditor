@@ -4,6 +4,7 @@ import controller.*;
 import view.figures.*;
 
 import java.util.*;
+import java.util.Collections.*;
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -42,8 +43,8 @@ public class PetriNet {
     }
 
 
-    public ArrayList<String> getArcIds() {
-        return arc_ids;
+    public java.util.List<String> getArcIds() {
+        return Collections.synchronizedList(arc_ids);
     }
 
 
@@ -52,14 +53,25 @@ public class PetriNet {
 
     public void addArc(String arcId, PetriNetElement arc) {
         addElement(arcId, arc);
-        arc_ids.add(arcId);
+        getArcIds().add(arcId);
+    }
+
+
+
+    public void removeArcId(String arcId) {
+        getArcIds().remove(arcId);
     }
 
 
 
     public void addElement(String elementId, PetriNetElement element) {
-        elements.put(elementId, element);
+        Collections.synchronizedMap(elements).put(elementId, element);
         element_counter++;
+    }
+
+    public void removeElement(String elementId) {
+        Collections.synchronizedMap(elements).remove(elementId);
+        element_counter--;
     }
 
     public PetriNetElement getElementById(String elementId) {
