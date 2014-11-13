@@ -52,15 +52,13 @@ public class Arc extends PetriNetElement {
     }
 
     //the input arc will be removed!
-    protected boolean merge(Arc arc) {
-        if (arc.source_id == this.source_id) {
-            return false;
-        } else {
+    protected void merge(Arc arc) {
+        if (arc.source_id != this.source_id || arc.target_type == TARGET_BOTH) {
+            //now both directions
             this.target_type = TARGET_BOTH;
         }
 
-        //now both directions
-        return true;
+        return;
     }
 
 
@@ -78,7 +76,6 @@ public class Arc extends PetriNetElement {
 
 
         //Check if arc already exists with the same place and transition
-        //if yes merge!
         Arc arc = null;
         boolean doublette_found = false;
         for (String arc_id : PetriNetController.getPetriNet().getArcIds() ) {
@@ -88,8 +85,10 @@ public class Arc extends PetriNetElement {
                 break;
             }
         }
-        //remove after iteration (concurrency)
+        //if yes merge!
         if (doublette_found) {
+            this.merge(arc);
+            //remove after iteration (concurrency)
             PetriNetController.removeArc(arc.getId());
         }
 
