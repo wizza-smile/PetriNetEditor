@@ -20,7 +20,7 @@ import javax.swing.*;
 
 public class ArcFigure extends BaseFigure {
     //radius of the circle surrounding arrow (size of arrow!)
-    static Double ARROW_RADIUS = 7.;
+    static Double ARROW_RADIUS = 5.8;
 
     Line2D line;
 
@@ -64,7 +64,19 @@ public class ArcFigure extends BaseFigure {
 
 
     protected void computeGradientTriangle() {
-        Rectangle2D gradientRectangle = line.getBounds2D();
+
+        // determine the orientation of gradient triangle by considering who is up or left (target/source)
+        this.place_is_left = getPlace().getPosition().getX() < getTransition().getPosition().getX();
+        this.place_is_up = getPlace().getPosition().getY() < getTransition().getPosition().getY();
+        this.is_negative_gradient = (place_is_left ^ place_is_up) ? false : true;
+
+        Double x_val, y_val, width, height;
+        width = place_is_left ? getTransition().getPosition().getX()-getPlace().getPosition().getX() : getPlace().getPosition().getX()-getTransition().getPosition().getX();
+        height = place_is_up ? getTransition().getPosition().getY()-getPlace().getPosition().getY() : getPlace().getPosition().getY()-getTransition().getPosition().getY();
+        x_val = place_is_left ? getPlace().getPosition().getX() : getTransition().getPosition().getX();
+        y_val = place_is_up ? getTransition().getPosition().getX() : getPlace().getPosition().getX();
+
+        Rectangle2D gradientRectangle = new Rectangle2D.Double(x_val, y_val, width, height);
 
         //gradient triangle
         this.a = gradientRectangle.getWidth();
@@ -74,11 +86,6 @@ public class ArcFigure extends BaseFigure {
 
         //the angle alpha // opposite to x length (a) in gradient triangle
         this.alpha = Math.abs(Math.asin(a/c)*180/Math.PI);
-
-        // determine the orientation of gradient triangle by considering who is up or left (target/source)
-        this.place_is_left = getPlace().getPosition().getX() < getTransition().getPosition().getX();
-        this.place_is_up = getPlace().getPosition().getY() < getTransition().getPosition().getY();
-        this.is_negative_gradient = (place_is_left ^ place_is_up) ? false : true;
     }
 
     protected void computeIntersectionPlace() {
@@ -152,6 +159,7 @@ public class ArcFigure extends BaseFigure {
             line = new Line2D.Double(source_position, target_position);
             g.setStroke(new java.awt.BasicStroke(1f));
             g.setPaint(new Color(23, 0, 0));
+            g.setColor(Color.GREEN);
             g.draw(line);
 
         } else {
@@ -163,27 +171,56 @@ public class ArcFigure extends BaseFigure {
 
             //first draw the line
             line = new Line2D.Double(transition.getPosition(), place.getPosition());
-
-            g.setStroke(new java.awt.BasicStroke(1f));
-            g.setPaint(new Color(0, 0, 0));
-            g.draw(line);
+            // g.setStroke(new java.awt.BasicStroke(1f));
+            // g.setPaint(new Color(23, 23, 23));            // g.draw(line);
 
             computeGradientTriangle();
             computeIntersectionPlace();
             computeIntersectionTransition();
 
-            //DRAW ARROW
+            //first draw the line
+            Line2D shortened_line = new Line2D.Double(intersection_transition, intersection_place);
 
+            g.setStroke(new java.awt.BasicStroke(1f));
+            g.setPaint(new Color(23, 0, 0));
+            g.setColor(Color.GREEN);
+            g.draw(shortened_line);
+
+            //DRAW ARROW
+            Double BASE_POINT_DIAMETER = 40.;
             // TRANSITION is target
             if (this.getTargetType() == Arc.TARGET_TRANSITION || this.getTargetType() == Arc.TARGET_BOTH) {
                 ArrowHead arrowHead = new ArrowHead(Arc.TARGET_TRANSITION);
                 arrowHead.draw(g);
+            } else if (intersection_transition != null) {
+
+                Ellipse2D point = new Ellipse2D.Double(
+                    intersection_transition.getX() - BASE_POINT_DIAMETER / 12,
+                    intersection_transition.getY() - BASE_POINT_DIAMETER / 12,
+                    BASE_POINT_DIAMETER/6,
+                    BASE_POINT_DIAMETER/6
+                );
+                g.setColor(Color.BLACK);
+                g.fill(point);
+                g.setColor(Color.BLACK);
+                g.draw(point);
             }
 
             //PLACE is target
             if (this.getTargetType() == Arc.TARGET_PLACE || this.getTargetType() == Arc.TARGET_BOTH) {
                 ArrowHead arrowHead = new ArrowHead(Arc.TARGET_PLACE);
                 arrowHead.draw(g);
+            } else {
+                Ellipse2D point = new Ellipse2D.Double(
+                    intersection_place.getX() - BASE_POINT_DIAMETER / 12,
+                    intersection_place.getY() - BASE_POINT_DIAMETER / 12,
+                    BASE_POINT_DIAMETER/6,
+                    BASE_POINT_DIAMETER/6
+                );
+                g.setColor(Color.BLACK);
+                g.fill(point);
+                g.setColor(Color.BLACK);
+                g.draw(point);
             }
         }
 
@@ -273,6 +310,7 @@ public class ArcFigure extends BaseFigure {
 
         }
 
+        //draw the arrowHead
         public void draw(Graphics2D g) {
             if (TARGET_TYPE == Arc.TARGET_TRANSITION && intersection_target == null) return;
 
@@ -296,8 +334,11 @@ public class ArcFigure extends BaseFigure {
             Shape rotated = path.createTransformedShape( transform );
 
             g.translate(offset_x, offset_y);
-            g.setColor(Color.BLACK);
+            g.setColor(TARGET_TYPE == Arc.TARGET_PLACE ? Color.BLACK : Color.GREEN);
             g.fill(rotated);
+            g.setStroke(new java.awt.BasicStroke(1f));
+            g.setColor(Color.BLACK);
+            g.draw(rotated);
             g.translate(-offset_x, -offset_y);
         }
 

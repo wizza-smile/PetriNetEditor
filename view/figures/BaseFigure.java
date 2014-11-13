@@ -23,7 +23,7 @@ public abstract class BaseFigure {
     protected boolean highlighted = false;
 
     protected Color strokeColor = new Color(0, 0, 0);
-    protected Color fillColor = new Color(255, 255, 255, 195);
+    protected Color fillColor = new Color(255, 255, 255, 255);//195
     protected Color selectedColor = new Color(183, 55, 55, 40);
     protected Color highlightedColor = new Color(115, 230, 0);
 

@@ -168,9 +168,10 @@ public class CanvasController {
                     //if not: do nothing
                     //if yes: add arc to place
                     if (figure != null && !(figure.getElement() instanceof Arc)) {
-                        figure.getElement().addArcId(arc_no_target_id);
                         Arc arc = (Arc)PetriNetController.getElementById(arc_no_target_id);
-                        arc.selectTarget(figure.getId());
+                        if (arc.selectTarget(figure.getId())) {
+                            figure.getElement().addArcId(arc_no_target_id);
+                        }
                     }
                     break;
                 default:

@@ -45,17 +45,22 @@ public class Arc extends PetriNetElement {
         return arcfigure;
     };
 
-    public void selectTarget(String target_id) {
+    public boolean selectTarget(String target_id) {
         //Check if arc already exists with the same place and transition
         //if yes merge!
-        this.target_id = target_id;
-        if (TARGET_TRANSITION == this.target_type) {
+        PetriNetElement target_elem = PetriNetController.getElementById(target_id);
+        if (TARGET_TRANSITION == this.target_type && target_elem instanceof Transition) {
+            this.target_id = target_id;
             this.transition_id = this.target_id;
+            return true;
         }
-        if (TARGET_PLACE == this.target_type) {
+        if (TARGET_PLACE == this.target_type && target_elem instanceof Place) {
+            this.target_id = target_id;
             this.place_id = this.target_id;
+            return true;
         }
         System.out.println("TARGET TYPE "+ this.target_type );
+        return false;
     }
 
     public Transition getTransition() {

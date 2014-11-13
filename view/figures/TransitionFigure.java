@@ -71,8 +71,12 @@ public class TransitionFigure extends BaseFigure implements Selectable {
 
     public void drawBorder(Graphics2D g) {
 
-        float dash1[] = {5f, 3f};
-        g.setStroke(new BasicStroke(2f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1f, dash1, 0f));
+        if (selected) {
+            float dash1[] = {5f, 3f};
+            g.setStroke(new BasicStroke(2f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1f, dash1, 0f));
+        } else {
+            g.setStroke(new BasicStroke(2f));
+        }
 
         if (highlighted) {
             g.setPaint(highlightedColor);
