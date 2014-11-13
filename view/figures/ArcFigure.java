@@ -20,7 +20,7 @@ import javax.swing.*;
 
 public class ArcFigure extends BaseFigure {
     //radius of the circle surrounding arrow (size of arrow!)
-    static Double ARROW_RADIUS = 5.8;
+    static Double ARROW_RADIUS = 7.;
 
     Line2D line;
 
@@ -160,7 +160,7 @@ public class ArcFigure extends BaseFigure {
             line = new Line2D.Double(source_position, target_position);
             g.setStroke(new java.awt.BasicStroke(1f));
             g.setPaint(new Color(23, 0, 0));
-            g.setColor(Color.GREEN);
+            g.setColor(Color.RED);
             g.draw(line);
 
         } else {
@@ -172,8 +172,9 @@ public class ArcFigure extends BaseFigure {
 
             //first draw the line
             line = new Line2D.Double(transition.getPosition(), place.getPosition());
-            // g.setStroke(new java.awt.BasicStroke(1f));
-            // g.setPaint(new Color(23, 23, 23));            // g.draw(line);
+            g.setStroke(new java.awt.BasicStroke(1f));
+            g.setPaint(new Color(123, 123, 123));
+            g.draw(line);
 
             computeGradientTriangle();
             computeIntersectionPlace();
@@ -186,7 +187,7 @@ public class ArcFigure extends BaseFigure {
 
             g.setStroke(new java.awt.BasicStroke(1f));
             g.setPaint(new Color(23, 0, 0));
-            g.setColor(Color.GREEN);
+            g.setColor(Color.BLACK);
             g.draw(shortened_line);
 
             //DRAW ARROW
@@ -335,7 +336,7 @@ public class ArcFigure extends BaseFigure {
             Shape rotated = path.createTransformedShape( transform );
 
             g.translate(offset_x, offset_y);
-            g.setColor(TARGET_TYPE == Arc.TARGET_PLACE ? Color.BLACK : Color.GREEN);
+            g.setColor(TARGET_TYPE == Arc.TARGET_PLACE ? Color.BLACK : Color.BLACK);
             g.fill(rotated);
             g.setStroke(new java.awt.BasicStroke(1f));
             g.setColor(Color.BLACK);
