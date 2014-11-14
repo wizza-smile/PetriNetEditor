@@ -16,17 +16,17 @@ public class Arc extends PetriNetElement {
 
     protected int target_type;
 
-    protected String transition_id, place_id, source_id, target_id;
+    protected String transition_id, place_id;//, source_id, target_id;
 
     public Arc(String arcId, String source_id, int type) {
         this.elementId = arcId;
-        this.source_id = source_id;
+        // this.source_id = source_id;
         if (type == PetriNetController.ELEMENT_TRANSITION) {
-            this.transition_id = this.source_id;
+            this.transition_id = source_id;
             this.target_type = TARGET_PLACE;
         }
         if (type == PetriNetController.ELEMENT_PLACE) {
-            this.place_id = this.source_id;
+            this.place_id = source_id;
             this.target_type = TARGET_TRANSITION;
         }
         //cache a figure
@@ -48,8 +48,8 @@ public class Arc extends PetriNetElement {
     };
 
     public boolean connectsSameElements(String elem_id_1, String elem_id_2) {
-        if (elem_id_1 == this.target_id && elem_id_2 == this.source_id
-            || elem_id_2 == this.target_id && elem_id_1 == this.source_id) {
+        if (elem_id_1 == this.place_id && elem_id_2 == this.transition_id
+            || elem_id_2 == this.place_id && elem_id_1 == this.transition_id) {
             return true;
         }
         return false;
@@ -57,7 +57,8 @@ public class Arc extends PetriNetElement {
 
     //the input arc will be removed!
     protected void merge(Arc arc) {
-        if (arc.source_id != this.source_id || arc.target_type == TARGET_BOTH) {
+        //if the two arcs differ in place/transiiton
+        if (arc.target_type == TARGET_BOTH || arc.target_type != this.target_type ) {
             //now both directions
             this.target_type = TARGET_BOTH;
         }
@@ -70,12 +71,12 @@ public class Arc extends PetriNetElement {
 
         PetriNetElement target_elem = PetriNetController.getElementById(target_id);
         if (TARGET_TRANSITION == this.target_type && target_elem instanceof Transition) {
-            this.target_id = target_id;
-            this.transition_id = this.target_id;
+            // this.target_id = target_id;
+            this.transition_id = target_id;
         }
         if (TARGET_PLACE == this.target_type && target_elem instanceof Place) {
-            this.target_id = target_id;
-            this.place_id = this.target_id;
+            // this.target_id = target_id;
+            this.place_id = target_id;
         }
 
 
@@ -84,7 +85,7 @@ public class Arc extends PetriNetElement {
         boolean doublette_found = false;
         for (String arc_id : PetriNetController.getPetriNet().getArcIds() ) {
             arc = (Arc)PetriNetController.getElementById(arc_id);
-            if (this.getId() != arc.getId() && arc.connectsSameElements(target_id, this.source_id)) {
+            if (this.getId() != arc.getId() && arc.connectsSameElements(target_id, this.getSourceId())) {
                 doublette_found = true;
                 break;
             }
@@ -107,9 +108,13 @@ public class Arc extends PetriNetElement {
         return (Place)PetriNetController.getElementById(this.place_id);
     }
 
+    //if Arc has only one current element, return this elements id
+    public String getSourceId() {
+        return this.transition_id == null ? this.place_id : this.transition_id;
+    }
 
     public PetriNetElement getSource() {
-        return PetriNetController.getElementById(this.source_id);
+        return PetriNetController.getElementById(getSourceId());
     }
 
     public int getTargetType() {
@@ -126,6 +131,6 @@ public class Arc extends PetriNetElement {
     }
 
     public boolean isTargetSet() {
-        return target_id == null ? false : true;
+        return transition_id == null || place_id == null ? false : true;
     }
 }
