@@ -172,7 +172,27 @@ public class CanvasController {
                     }
                     break;
                 default:
-                    System.out.println("MOUSE PRESSSSSS");
+                    System.out.println("LEFT MOUSE PRESSSSSS");
+                    break;
+            }
+        }
+        if (SwingUtilities.isRightMouseButton(e)) {
+            switch (GlobalController.mode) {
+                case GlobalController.MODE_SELECT:
+                    //if click on arrowHead: SHOW the menu to delete Arc
+                    java.util.List<String> arc_ids = PetriNetController.getPetriNet().getArcIds();
+                    for (String arc_id : arc_ids ) {
+                        ArcFigure arcFigure = (ArcFigure)PetriNetController.getElementById(arc_id).getFigure();
+                        Integer target_type = arcFigure.arrowHeadsContain(new Point2D.Double(e.getX(), e.getY()));
+                        if (target_type != null) {
+                            //open context menu to
+                            //remove this target type /and evtl arrow??
+                            MainWindowController.showArcMenu(e, arc_id, target_type);
+                        }
+                    }
+                    break;
+                default:
+                    System.out.println("RIGHT MOUSE");
                     break;
             }
         }

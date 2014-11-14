@@ -25,6 +25,8 @@ public class ArcFigure extends BaseFigure {
 
     Line2D line;
 
+    public ArrayList<ArrowHead> arrow_heads = new ArrayList<ArrowHead>();
+
     //gradient triangle
     Double a, b, c, alpha, gradient;
     boolean is_negative_gradient;
@@ -43,6 +45,10 @@ public class ArcFigure extends BaseFigure {
         return (Arc)this.element;
     }
 
+    // public java.util.List<ArcFigure> getArrowHeadsList() {
+    //     return arrow_heads;
+    // }
+
     public boolean contains(Point2D position) {
         return false;
     }
@@ -59,8 +65,25 @@ public class ArcFigure extends BaseFigure {
         return this.getArc().getPlace();
     }
 
+    // public void removeTarget(int target_type) {
+    //     if (this.getArc().getTargetType() == target_type ) {
+    //         this.getArc().removeTarget(target_type);
+    //     }
+    // }
+
     public int getTargetType() {
         return this.getArc().getTargetType();
+    }
+
+    public Integer arrowHeadsContain(Point2D position) {
+        for (ArrowHead ah : arrow_heads ) {
+            if (ah.contains(position)) {
+                return ah.TARGET_TYPE;
+
+            }
+        }
+
+        return null;
     }
 
 
@@ -178,7 +201,7 @@ public class ArcFigure extends BaseFigure {
 
             if (intersection_transition == null) return;
 
-            //first draw the line
+            //then draw the second line (shortened by intersections)
             Line2D shortened_line = new Line2D.Double(intersection_transition, intersection_place);
 
             g.setStroke(new java.awt.BasicStroke(1f));
@@ -186,11 +209,12 @@ public class ArcFigure extends BaseFigure {
             g.setColor(Color.BLACK);
             g.draw(shortened_line);
 
-            //DRAW ARROW
+            //DRAW ARROW_HEAD(S)
             Double BASE_POINT_DIAMETER = 5.7*ARROW_RADIUS;
-            // TRANSITION is target
             if (this.getTargetType() == Arc.TARGET_TRANSITION || this.getTargetType() == Arc.TARGET_BOTH) {
+                // TRANSITION is target
                 ArrowHead arrowHead = new ArrowHead(Arc.TARGET_TRANSITION);
+                arrow_heads.add(arrowHead);
                 arrowHead.draw(g);
             } else if (intersection_transition != null) {
 
@@ -202,12 +226,12 @@ public class ArcFigure extends BaseFigure {
                 );
                 g.setColor(new Color(0,0,0,200));
                 g.fill(point);
-
             }
 
-            //PLACE is target
             if (this.getTargetType() == Arc.TARGET_PLACE || this.getTargetType() == Arc.TARGET_BOTH) {
+                //PLACE is target
                 ArrowHead arrowHead = new ArrowHead(Arc.TARGET_PLACE);
+                arrow_heads.add(arrowHead);
                 arrowHead.draw(g);
             } else {
                 Rectangle2D point = new Rectangle2D.Double(
@@ -216,8 +240,8 @@ public class ArcFigure extends BaseFigure {
                     BASE_POINT_DIAMETER/6,
                     BASE_POINT_DIAMETER/6
                 );
-                  g.setColor(new Color(0,0,0,200));
-                  g.fill(point);
+                g.setColor(new Color(0,0,0,200));
+                g.fill(point);
             }
         }
 
@@ -262,14 +286,16 @@ public class ArcFigure extends BaseFigure {
     }
 
 
-    private class ArrowHead {
+    public class ArrowHead {
         final int TARGET_TYPE;
 
+        Shape rotatedArrowShape;
         Point2D target_position, source_position;
         Point2D intersection_target;
         //rotation_angle by which to rotate the arrow
         Double rotation_angle;
         Double arrow_move_x, arrow_move_y;
+        Double offset_x, offset_y;
         Point factor_x_y;
         boolean target_is_left, target_is_up;
 
@@ -298,17 +324,24 @@ public class ArcFigure extends BaseFigure {
             rotation_angle = getRotationAngle(target_is_left, alpha);
             factor_x_y = getFactor_X_Y(target_is_left, target_is_up);
 
-            //the rectangle around the arrow needs repositioning, so that the arrow will always touch the intersection point
+            //due to rotation ? the rectangle around the arrow needs repositioning, so that the arrow will always touch the intersection point
             arrow_move_x = (ARROW_RADIUS/c) * a * factor_x_y.getX();
             arrow_move_y = (ARROW_RADIUS/c) * b * factor_x_y.getY();
 
+            //compute the actual offset of arrow to (0,0)
+            offset_x = intersection_target.getX()-ARROW_RADIUS+arrow_move_x;
+            offset_y = intersection_target.getY()-ARROW_RADIUS+arrow_move_y;
+        }
+
+        public boolean contains(Point2D position) {
+            Point2D modified_position = new Point2D.Double(position.getX() - offset_x, position.getY() - offset_y);
+            if (rotatedArrowShape.contains(modified_position)) return true;
+            return false;
         }
 
         //draw the arrowHead
         public void draw(Graphics2D g) {
-            //compute the actual offset of arrow to (0,0)
-            Double offset_x = intersection_target.getX()-ARROW_RADIUS+arrow_move_x;
-            Double offset_y = intersection_target.getY()-ARROW_RADIUS+arrow_move_y;
+
 
             Path2D path = new Path2D.Double();
             path.moveTo(ARROW_RADIUS, 0);
@@ -321,10 +354,10 @@ public class ArcFigure extends BaseFigure {
             AffineTransform transform = new AffineTransform();
             transform.rotate(Math.toRadians(rotation_angle), bounds.getX() + bounds.getWidth() / 2, bounds.getY() + bounds.getHeight() / 2);
 
-            Shape rotated = path.createTransformedShape( transform );
+            rotatedArrowShape = path.createTransformedShape( transform );
             g.setColor(Color.BLACK);
             g.translate(offset_x, offset_y);
-            g.fill(rotated);
+            g.fill(rotatedArrowShape);
 
             // bounds = rotated.getBounds2D();
             // g.draw(bounds);

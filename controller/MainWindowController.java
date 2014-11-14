@@ -3,6 +3,7 @@ package controller;
 import view.*;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.geom.*;
 
 import javax.swing.*;
@@ -13,6 +14,7 @@ public class MainWindowController {
     public static MainWindow main_window;
 
 
+
     public static void startMainWindow() {
         main_window = new MainWindow();
         main_window.init();
@@ -21,6 +23,11 @@ public class MainWindowController {
 
     public static MainWindow getMainWindow() {
         return main_window;
+    }
+
+
+    public static void showArcMenu(MouseEvent e, String arc_id, int target_type) {
+        main_window.showArcMenu(e, arc_id, target_type);
     }
 
 
@@ -86,5 +93,6 @@ public class MainWindowController {
 
         return;
     }
+
 
 }

@@ -33,6 +33,10 @@ public class Arc extends PetriNetElement {
         this.getFigure();
     }
 
+    public void delete() {
+        PetriNetController.removeArc(this.getId());
+    }
+
     public String getId() { return elementId; }
 
     public ArcFigure getFigure() {
@@ -110,6 +114,15 @@ public class Arc extends PetriNetElement {
 
     public int getTargetType() {
         return this.target_type;
+    }
+
+    public void removeTarget(int target_type) {
+        if (this.target_type == TARGET_BOTH) {
+            this.target_type -= target_type+1;
+        }
+        if (this.target_type == target_type ) {
+            this.delete();
+        }
     }
 
     public boolean isTargetSet() {

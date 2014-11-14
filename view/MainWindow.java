@@ -1,5 +1,6 @@
 package view;
 
+import model.*;
 import controller.*;
 
 import java.awt.*;
@@ -76,7 +77,6 @@ public class MainWindow extends JFrame {//implements Scrollable
         eMenuItem.setMnemonic(KeyEvent.VK_E);
         eMenuItem.setToolTipText("Exit application");
         eMenuItem.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent event) {
                 System.exit(0);
             }
@@ -104,6 +104,32 @@ public class MainWindow extends JFrame {//implements Scrollable
         return statusLabel;
     }
 
+
+
+    public void showArcMenu(MouseEvent e, String arc_id, int target_type) {
+
+
+        PopUpDemo contextMenu = new PopUpDemo(arc_id, target_type);
+        contextMenu.show(e.getComponent(), e.getX(), e.getY());
+    }
+
+
+
+
+    public class PopUpDemo extends JPopupMenu {
+        JMenuItem anItem;
+        public PopUpDemo(String arc_id, int target_type) {
+            anItem = new JMenuItem("delete");
+            anItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent event) {
+                    Arc arc = (Arc)PetriNetController.getElementById(arc_id);
+                    arc.removeTarget(target_type);
+                    CanvasController.repaintCanvas();
+                }
+            });
+            add(anItem);
+        }
+    }
 
 }
 
