@@ -325,7 +325,10 @@ public class ArcFigure extends BaseFigure {
             g.setColor(Color.BLACK);
             g.translate(offset_x, offset_y);
             g.fill(rotated);
+
+            // bounds = rotated.getBounds2D();
             // g.draw(bounds);
+
             g.translate(-offset_x, -offset_y);
 
         }
