@@ -25,7 +25,8 @@ public class ArcFigure extends BaseFigure {
 
     Line2D line;
 
-    public ArrayList<ArrowHead> arrow_heads = new ArrayList<ArrowHead>();
+    //two possible arrow heads 0=target_transition 1= target_place
+    public ArrowHead[] arrow_heads = new ArrowHead[2];
 
     //gradient triangle
     Double a, b, c, alpha, gradient;
@@ -76,10 +77,23 @@ public class ArcFigure extends BaseFigure {
     }
 
     public Integer arrowHeadsContain(Point2D position) {
-        for (ArrowHead ah : arrow_heads ) {
-            if (ah.contains(position)) {
-                return ah.TARGET_TYPE;
+        if (getTargetType() == Arc.TARGET_TRANSITION || getTargetType() == Arc.TARGET_BOTH) {
 
+        }
+
+        if (getTargetType() == Arc.TARGET_BOTH) {
+            for (ArrowHead ah : arrow_heads ) {
+                if (ah.contains(position)) {
+                    return ah.TARGET_TYPE;
+                }
+            }
+        } else if (getTargetType() == Arc.TARGET_TRANSITION) {
+            if (arrow_heads[0].contains(position)) {
+                return arrow_heads[0].TARGET_TYPE;
+            }
+        } else {
+            if (arrow_heads[1].contains(position)) {
+                return arrow_heads[1].TARGET_TYPE;
             }
         }
 
@@ -214,7 +228,7 @@ public class ArcFigure extends BaseFigure {
             if (this.getTargetType() == Arc.TARGET_TRANSITION || this.getTargetType() == Arc.TARGET_BOTH) {
                 // TRANSITION is target
                 ArrowHead arrowHead = new ArrowHead(Arc.TARGET_TRANSITION);
-                arrow_heads.add(arrowHead);
+                arrow_heads[0] = arrowHead;
                 arrowHead.draw(g);
             } else if (intersection_transition != null) {
 
@@ -231,7 +245,7 @@ public class ArcFigure extends BaseFigure {
             if (this.getTargetType() == Arc.TARGET_PLACE || this.getTargetType() == Arc.TARGET_BOTH) {
                 //PLACE is target
                 ArrowHead arrowHead = new ArrowHead(Arc.TARGET_PLACE);
-                arrow_heads.add(arrowHead);
+                arrow_heads[1] = arrowHead;
                 arrowHead.draw(g);
             } else {
                 Rectangle2D point = new Rectangle2D.Double(
