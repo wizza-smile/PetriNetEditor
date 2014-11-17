@@ -8,7 +8,7 @@ public abstract class PetriNetElement {
 
     protected Point2D position;
     protected String elementId;
-    protected BaseFigure figure;
+    protected String figureId;
 
 
     ///////////////////
@@ -33,7 +33,7 @@ public abstract class PetriNetElement {
     public void setPosition(Point2D position) {
         this.position = position;
         //update figure position!
-        ((Selectable)this.figure).updatePosition();
+        ((Selectable)this.getFigure()).updatePosition();
     }
 
 

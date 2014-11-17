@@ -43,34 +43,35 @@ public abstract class BaseFigure {
 
 
 
-    public void drawLabel(Graphics2D g) {
-        Double labelPadding = 6.;
-        String label = "Label muss sein";
+    // public void drawLabel(Graphics2D g) {
+    //     this.labelFigure
+        // Double labelPadding = 6.;
+        // String label = "Label muss sein";
 
-        Font font = new Font(null, java.awt.Font.BOLD, 12);
-        FontRenderContext fontRenderContext = g.getFontRenderContext();
-        TextLayout textLayout = new TextLayout(label, font, fontRenderContext);
+        // Font font = new Font(null, java.awt.Font.BOLD, 12);
+        // FontRenderContext fontRenderContext = g.getFontRenderContext();
+        // TextLayout textLayout = new TextLayout(label, font, fontRenderContext);
 
-        Rectangle2D textBounds = textLayout.getBounds();
+        // Rectangle2D textBounds = textLayout.getBounds();
 
-        Double label_y_offset = 37.;
+        // Double label_y_offset = 37.;
 
-        Rectangle2D label_border_rect = new Rectangle2D.Double(
-            getPosition().getX() - (textBounds.getWidth()+labelPadding) / 2,
-            getPosition().getY() - (textBounds.getHeight()+labelPadding) / 2 - label_y_offset,// ,
-            textBounds.getWidth()+labelPadding,
-            textBounds.getHeight()+labelPadding);
+        // Rectangle2D label_border_rect = new Rectangle2D.Double(
+        //     getPosition().getX() - (textBounds.getWidth()+labelPadding) / 2,
+        //     getPosition().getY() - (textBounds.getHeight()+labelPadding) / 2 - label_y_offset,// ,
+        //     textBounds.getWidth()+labelPadding,
+        //     textBounds.getHeight()+labelPadding);
 
-        g.setPaint(labelFillColor);
-        g.fill(label_border_rect);
+        // g.setPaint(labelFillColor);
+        // g.fill(label_border_rect);
 
-        g.setStroke(new java.awt.BasicStroke(1f));
-        g.setPaint(labelStrokeColor);
+        // g.setStroke(new java.awt.BasicStroke(1f));
+        // g.setPaint(labelStrokeColor);
 
-        g.drawString(label,
-                (float) (getPosition().getX() - 1 - (textBounds.getWidth()) / 2),
-                (float) (getPosition().getY() + textBounds.getHeight()/2 - label_y_offset)// + (textBounds.getHeight()+labelPadding/2) / 2)
-        );
+        // g.drawString(label,
+        //         (float) (getPosition().getX() - 1 - (textBounds.getWidth()) / 2),
+        //         (float) (getPosition().getY() + textBounds.getHeight()/2 - label_y_offset)// + (textBounds.getHeight()+labelPadding/2) / 2)
+        // );
 
 
 
@@ -114,7 +115,7 @@ public abstract class BaseFigure {
         //     drawPosY += layout.getDescent() + layout.getLeading();
         // }
 
-    }
+    // }
 
 
 

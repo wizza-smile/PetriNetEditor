@@ -15,8 +15,10 @@ public class PetriNet {
     private static int element_counter = 0;
 
     private HashMap<String, PetriNetElement> elements = new HashMap<String, PetriNetElement>();
-    public ArrayList<String> place_transition_ids = new ArrayList<String>();
+    public ArrayList<String> place_ids = new ArrayList<String>();
+    public ArrayList<String> transition_ids = new ArrayList<String>();
     public ArrayList<String> arc_ids = new ArrayList<String>();
+
 
 
     public int getNextElementId() {
@@ -46,8 +48,6 @@ public class PetriNet {
     public java.util.List<String> getArcIds() {
         return Collections.synchronizedList(arc_ids);
     }
-
-
 
 
 

@@ -21,14 +21,22 @@ public class TransitionFigure extends BaseFigure implements Selectable {
 
 
     private Rectangle2D transitionRectangle;
+    private LabelFigure labelFigure;
+
 
     final public static double DIMENSION_BASE = 45;
     public static double DIMENSION = DIMENSION_BASE;
 
 
+    public void drawLabel(Graphics2D g) {
+        this.labelFigure.draw(g);
+    }
 
     public TransitionFigure(Transition transition) {
         this.element = (PetriNetElement)transition;
+
+        this.labelFigure = new LabelFigure(this.getId(), this.getTransition().getPosition());
+
     }
 
     public Transition getTransition() {
@@ -46,6 +54,8 @@ public class TransitionFigure extends BaseFigure implements Selectable {
     public boolean intersects(Rectangle2D rect) {
         return this.transitionRectangle.intersects(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
     }
+
+
 
 
     public void draw(Graphics2D g) {
@@ -101,7 +111,7 @@ public class TransitionFigure extends BaseFigure implements Selectable {
 
 
     public void updatePosition() {
-        // setEllipse(generateEllipse());
+        labelFigure.updatePosition();
     }
 
 

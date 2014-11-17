@@ -1,6 +1,7 @@
 package model;
 
 import view.figures.*;
+import controller.*;
 
 import java.util.*;
 
@@ -34,13 +35,16 @@ public class Transition extends PetriNetElement {
         this.label = label;
     }
 
+
     public BaseFigure getFigure() {
-        if (figure == null) {
-            figure = new TransitionFigure(this);
+        if (figureId == null) {
+            TransitionFigure transitionFigure = new TransitionFigure(this);
+            figureId = this.getId();
+            CanvasController.addTransitionFigure(figureId, transitionFigure);
+            return (BaseFigure)transitionFigure;
+        } else {
+            return CanvasController.getFigureById(this.getId());
         }
-
-        return figure;
-    };
-
+    }
 
 }

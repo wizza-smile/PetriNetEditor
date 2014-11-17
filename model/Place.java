@@ -1,6 +1,7 @@
 package model;
 
 import view.figures.*;
+import controller.*;
 
 import java.util.*;
 
@@ -42,12 +43,15 @@ public class Place extends PetriNetElement {
     }
 
     public BaseFigure getFigure() {
-        if (figure == null) {
-            figure = new PlaceFigure(this);
+        if (figureId == null) {
+            PlaceFigure placeFigure = new PlaceFigure(this);
+            figureId = this.getId();
+            CanvasController.addPlaceFigure(figureId, placeFigure);
+            return (BaseFigure)placeFigure;
+        } else {
+            return CanvasController.getFigureById(this.getId());
         }
-
-        return figure;
-    };
+    }
 
 
 }

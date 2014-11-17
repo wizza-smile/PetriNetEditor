@@ -28,12 +28,30 @@ public class CanvasController {
     public static String arc_no_target_id;
 
 
+
+
+
+    public static ArrayList<String> getPositionablesIds() {
+        ArrayList<String> positionablesIds = new ArrayList<String>();
+        positionablesIds.addAll(canvas.place_figure_ids);
+        positionablesIds.addAll(canvas.transition_figure_ids);
+        positionablesIds.addAll(canvas.label_figure_ids);
+
+        return positionablesIds;
+    }
+
+    public static BaseFigure getFigureById(String figureId) {
+        return canvas.getFigureById(figureId);
+    }
+
     public static view.Canvas createCanvas() {
         canvas = new view.Canvas();
 
         return canvas;
     }
-
+    public static view.Canvas getCanvas() {
+        return canvas;
+    }
 
     /* Resize the Canvas and move Elements and Viewport to create illusion of endless canvas */
     public static void cleanUpCanvas() {
@@ -98,15 +116,22 @@ public class CanvasController {
     }
 
 
-
-
-
     //adjust the reference point from which the grid will be painted
     //should always be 0 or negative
     public static void addToGridReferencePoint(Point2D p) {
         Grid.addToReferencePoint(p);
     }
 
+    public static void addPlaceFigure(String figureId, PlaceFigure figure) {
+        CanvasController.getCanvas().addFigure(figureId, figure);
+        CanvasController.getCanvas().place_figure_ids.add(figureId);
+    }
+
+
+    public static void addTransitionFigure(String figureId, TransitionFigure figure) {
+        CanvasController.getCanvas().addFigure(figureId, figure);
+        CanvasController.getCanvas().transition_figure_ids.add(figureId);
+    }
 
     public static Dimension getCanvasSize() {
         return canvas.getPreferredSize();

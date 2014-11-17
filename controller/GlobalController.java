@@ -59,5 +59,14 @@ public class GlobalController {
     }
 
 
+    public static ArrayList<String> combineIdArrayLists(ArrayList<String>[] list_arr) {
+        ArrayList<String> newList = new ArrayList<String>();
+        for (ArrayList<String> list : list_arr) {
+            newList.addAll(list);
+        }
+
+        return newList;
+    }
+
 
 }

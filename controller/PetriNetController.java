@@ -36,6 +36,31 @@ public class PetriNetController {
     }
 
 
+    public static PetriNetElement getElementById(String elementId) {
+        return petriNet.getElementById(elementId);
+    }
+
+
+    public static ArrayList<String> getAllElementIds() {
+        ArrayList<String> allElementIds = new ArrayList<String>();
+        allElementIds.addAll(petriNet.place_ids);
+        allElementIds.addAll(petriNet.transition_ids);
+        allElementIds.addAll(petriNet.arc_ids);
+
+        return allElementIds;
+    }
+
+    public static ArrayList<String> getConnectablesIds() {
+        ArrayList<String> allElementIds = new ArrayList<String>();
+        allElementIds.addAll(petriNet.place_ids);
+        allElementIds.addAll(petriNet.transition_ids);
+
+        return allElementIds;
+    }
+
+
+
+
     public static void addPetriNetElement(Point2D position, int type) {
         Integer next_element_id = petriNet.getNextElementId();
         String elementId;
@@ -45,17 +70,18 @@ public class PetriNetController {
             case PetriNetController.ELEMENT_PLACE:
                 elementId = "p_" + next_element_id.toString();
                 element = new Place(elementId, position);
+                petriNet.place_ids.add(elementId);
                 break;
             case PetriNetController.ELEMENT_TRANSITION:
                 elementId = "t_" + next_element_id.toString();
                 element = new Transition(elementId, position);
+                petriNet.transition_ids.add(elementId);
                 break;
             default:
                 return;
         }
 
         petriNet.addElement(elementId, element);
-        petriNet.place_transition_ids.add(elementId);
     }
 
 
@@ -85,10 +111,6 @@ public class PetriNetController {
     }
 
 
-    public static PetriNetElement getElementById(String elementId) {
-        return petriNet.getElementById(elementId);
-    }
-
 
     /**
      * Iterate over All PetriNetElements to compute a surrounding Rectangle
@@ -104,7 +126,7 @@ public class PetriNetController {
         boolean initialized = false;
 
 
-        for (String elem_id : PetriNetController.getPetriNet().place_transition_ids) {
+        for (String elem_id : PetriNetController.getConnectablesIds()) {
             PetriNetElement elem = PetriNetController.getElementById(elem_id);
             Point2D position = elem.getPosition();
 
@@ -135,7 +157,7 @@ public class PetriNetController {
 
     public static void moveAllElements(Double x, Double y) {
 
-        for (String elem_id : PetriNetController.getPetriNet().place_transition_ids) {
+        for (String elem_id : PetriNetController.getConnectablesIds()) {
             PetriNetElement elem = PetriNetController.getElementById(elem_id);
             Point2D position = elem.getPosition();
             Point2D new_position = new Point2D.Double(position.getX()+x, position.getY()+y);

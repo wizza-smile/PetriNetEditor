@@ -22,6 +22,7 @@ public class PlaceFigure extends BaseFigure implements Selectable {
 
     private Ellipse2D ellipse;
     private Ellipse2D tokenPoint;
+    private LabelFigure labelFigure;
 
 
 
@@ -35,9 +36,11 @@ public class PlaceFigure extends BaseFigure implements Selectable {
         if (1==1 || this.getPlace().getTokenCount() == 1) {
             this.tokenPoint = generateTokenPoint();
         }
+
+        this.labelFigure = new LabelFigure(this.getId(), this.getPlace().getPosition());
+
         // this.placeId = placeId;
         // this.position = position;
-        // this.label = new TextFigure(this);
         // this.tokenFigure = new TokenSetFigure(this);
     }
 
@@ -62,6 +65,9 @@ public class PlaceFigure extends BaseFigure implements Selectable {
     }
 
 
+    public void drawLabel(Graphics2D g) {
+        this.labelFigure.draw(g);
+    }
 
     // public RectangularShape getBounds() {
     //     return new Ellipse2D.Double(place.getPosition().getX() - DIAMETER / 2, place.getPosition().getY() - DIAMETER / 2, DIAMETER, DIAMETER);
@@ -170,7 +176,7 @@ public class PlaceFigure extends BaseFigure implements Selectable {
 
 
     public void updatePosition() {
-        // setEllipse(generateEllipse());
+        labelFigure.updatePosition();
     }
 
 

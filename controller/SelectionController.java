@@ -65,14 +65,13 @@ public class SelectionController {
 
     //select figure, if one is under pointer
     public static BaseFigure selectFigureUnderMousePointer(Point2D pointer) {
-        Iterator it = PetriNetController.getPetriNet().getElements().values().iterator();
-        while (it.hasNext()) {
-            BaseFigure figure = ((PetriNetElement)it.next()).getFigure();
-            if (figure.contains(pointer) && figure instanceof Selectable) {
-
+        for (String id : CanvasController.getPositionablesIds() ) {
+            BaseFigure figure = CanvasController.getFigureById(id);
+            if (figure.contains(pointer)) {
                 return figure;
             }
         }
+
         return null;
     }
 

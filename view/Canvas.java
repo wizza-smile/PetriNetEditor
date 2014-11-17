@@ -22,6 +22,11 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     boolean enabledGrid = true;
     Dimension minSize = new Dimension(300, 250);
 
+    private HashMap<String, BaseFigure> figures = new HashMap<String, BaseFigure>();
+    public ArrayList<String> place_figure_ids = new ArrayList<String>();
+    public ArrayList<String> transition_figure_ids = new ArrayList<String>();
+    public ArrayList<String> arc_figure_ids = new ArrayList<String>();
+    public ArrayList<String> label_figure_ids = new ArrayList<String>();
 
     public Canvas() {
         this.setCanvasSize(MainWindowController.getViewport().getSize());
@@ -46,7 +51,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
             arc.getFigure().draw(g2);
         }
 
-        for (String elem_id : PetriNetController.getPetriNet().place_transition_ids) {
+        for (String elem_id : PetriNetController.getAllElementIds()) {
             PetriNetElement elem = PetriNetController.getElementById(elem_id);
             elem.getFigure().draw(g2);
         }
@@ -56,6 +61,14 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         MainWindowController.setStatusBarText(MainWindowController.getViewport().getViewPosition().getX() + " " + MainWindowController.getViewport().getViewPosition().getY());
     }
 
+
+    public void addFigure(String figureId, BaseFigure figure) {
+        figures.put(figureId, figure);
+    }
+
+    public BaseFigure getFigureById(String figureId) {
+        return figures.get(figureId);
+    }
 
     public Dimension getMinSize() {
         return minSize;
