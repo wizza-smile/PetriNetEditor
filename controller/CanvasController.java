@@ -176,10 +176,11 @@ public class CanvasController {
                     break;
             }
         }
+        //RECHTER MOUSE PRESS
         if (SwingUtilities.isRightMouseButton(e)) {
             switch (GlobalController.mode) {
                 case GlobalController.MODE_SELECT:
-                    //if click on arrowHead: SHOW the menu to delete Arc
+                    //if click on arrowHead: SHOW the menu to delete Arc(target)
                     java.util.List<String> arc_ids = PetriNetController.getPetriNet().getArcIds();
                     for (String arc_id : arc_ids ) {
                         ArcFigure arcFigure = (ArcFigure)PetriNetController.getElementById(arc_id).getFigure();
