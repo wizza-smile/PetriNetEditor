@@ -52,11 +52,9 @@ public class TransitionFigure extends BaseFigure implements Selectable {
         // regenrate transitionRectangle
         setTransitionRectangle(generateTransitionRectangle());
 
-        // drawLabel(g);
-
         drawFill(g);
         drawBorder(g);
-
+        drawLabel(g);
     }
 
 

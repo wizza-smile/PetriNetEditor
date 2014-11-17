@@ -107,8 +107,6 @@ public class MainWindow extends JFrame {//implements Scrollable
 
 
     public void showArcMenu(MouseEvent e, String arc_id, int target_type) {
-
-
         PopUpDemo contextMenu = new PopUpDemo(arc_id, target_type);
         contextMenu.show(e.getComponent(), e.getX(), e.getY());
     }
@@ -119,11 +117,14 @@ public class MainWindow extends JFrame {//implements Scrollable
     public class PopUpDemo extends JPopupMenu {
         JMenuItem anItem;
         public PopUpDemo(String arc_id, int target_type) {
+            //local variable target_type is accessed from within inner class; needs to be declared final
+            final String a_id = arc_id;
+            final int t_type = target_type;
             anItem = new JMenuItem("delete");
             anItem.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent event) {
-                    Arc arc = (Arc)PetriNetController.getElementById(arc_id);
-                    arc.removeTarget(target_type);
+                    Arc arc = (Arc)PetriNetController.getElementById(a_id);
+                    arc.removeTarget(t_type);
                     CanvasController.repaintCanvas();
                 }
             });

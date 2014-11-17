@@ -81,11 +81,12 @@ public class PlaceFigure extends BaseFigure implements Selectable {
             this.tokenPoint = generateTokenPoint();
         }
 
-        drawLabel(g);
 
         drawFill(g);
         drawBorder(g);
         drawToken(g);
+
+        drawLabel(g);
 
     }
 

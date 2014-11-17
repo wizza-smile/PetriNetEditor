@@ -51,26 +51,19 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
             elem.getFigure().draw(g2);
         }
 
-
         SelectionController.drawSelectionFigure(g2);
 
-
         MainWindowController.setStatusBarText(MainWindowController.getViewport().getViewPosition().getX() + " " + MainWindowController.getViewport().getViewPosition().getY());
-
     }
-
 
 
     public Dimension getMinSize() {
         return minSize;
     }
 
-
     public void setCanvasSize(Dimension dim) {
         this.setPreferredSize(dim);
     }
-
-
 
     public void mouseClicked(MouseEvent e) {
         CanvasController.mouseClicked(e);
