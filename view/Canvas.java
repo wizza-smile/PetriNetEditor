@@ -51,9 +51,16 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
             arc.getFigure().draw(g2);
         }
 
-        for (String elem_id : PetriNetController.getAllElementIds()) {
-            PetriNetElement elem = PetriNetController.getElementById(elem_id);
-            elem.getFigure().draw(g2);
+        //draw places and transitions
+        for (String figure_id : CanvasController.getPlacesAndTransitionFiguresIds()) {
+            BaseFigure figure = CanvasController.getFigureById(figure_id);
+            figure.draw(g2);
+        }
+
+        //draw labels
+        for (String figure_id : label_figure_ids) {
+            BaseFigure figure = CanvasController.getFigureById(figure_id);
+            figure.draw(g2);
         }
 
         SelectionController.drawSelectionFigure(g2);

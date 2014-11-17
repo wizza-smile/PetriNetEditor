@@ -4,31 +4,34 @@ package view.figures;
 import controller.*;
 
 
+import java.awt.*;
 import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.font.FontRenderContext;
-import java.awt.font.TextLayout;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
+import java.awt.font.*;
+import java.awt.geom.*;
 
 
-public class LabelFigure extends BaseFigure {
+public class LabelFigure extends BaseFigure implements Selectable {
+
+
+    protected Color labelStrokeColor = new Color(0, 0, 0);
+    protected Color labelFillColor = new Color(255, 255, 255, 255);
 
     protected String labelText;
     public Point2D position;
     private Point2D offsetToLabeledFigure = new Point2D.Double(50, 0);
     private String labeledFigureId;
-    // private Rectangle2D rectangle;
+    private Rectangle2D label_border_rect;
 
     public LabelFigure(String labeledFigureId, Point2D labeledFigurePosition) {
+
         this.elementId = labeledFigureId;
+        this.figureId = "label_" + this.elementId;
         this.position = new Point2D.Double(offsetToLabeledFigure.getX() + labeledFigurePosition.getX(), offsetToLabeledFigure.getY() + labeledFigurePosition.getY());
     }
 
 
     public boolean contains(Point2D position) {
-        // return this.rectangle.contains(position);
-        return false;
+        return this.label_border_rect.contains(position);
     }
 
     public void updatePosition() {
@@ -54,7 +57,7 @@ public class LabelFigure extends BaseFigure {
 
         Double label_y_offset = 37.;
 
-        Rectangle2D label_border_rect = new Rectangle2D.Double(
+        label_border_rect = new Rectangle2D.Double(
             getPosition().getX() - (textBounds.getWidth()+labelPadding) / 2,
             getPosition().getY() - (textBounds.getHeight()+labelPadding) / 2 - label_y_offset,// ,
             textBounds.getWidth()+labelPadding,
@@ -75,13 +78,37 @@ public class LabelFigure extends BaseFigure {
 
 
 
-    public Point2D getPosition() { return position; }
-    public void setPosition(Point2D position) { this.position = position; }
+    public Point2D getPosition() {
+        return position;
+    }
+
+    public void setPosition(Point2D position) {
+        this.position = position;
+        this.offsetToLabeledFigure = new Point2D.Double(this.position.getX() - this.getLabeledFigure().getPosition().getX(), this.position.getY() - this.getLabeledFigure().getPosition().getY());
+
+    }
 
 
     public BaseFigure getLabeledFigure() {
         return CanvasController.getFigureById(elementId);
     }
+
+
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+
+    public String getId() { return figureId; }
+
+
+
+
 
 
 

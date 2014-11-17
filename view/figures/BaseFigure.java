@@ -13,6 +13,8 @@ import java.awt.geom.*;
 
 ///SELECTABLE FIGURES   PLACE / TRANSIITONS
 public abstract class BaseFigure {
+    protected String figureId;
+
     //the element the figure represents
     protected String elementId;
     protected PetriNetElement element;
@@ -27,8 +29,6 @@ public abstract class BaseFigure {
     protected Color selectedColor = new Color(183, 55, 55, 40);
     protected Color highlightedColor = new Color(115, 230, 0);
 
-    protected Color labelStrokeColor = new Color(0, 0, 0);
-    protected Color labelFillColor = new Color(255, 255, 255, 205);
 
 
     public abstract boolean intersects(Rectangle2D r);
@@ -36,6 +36,8 @@ public abstract class BaseFigure {
     // public abstract Point2D getLowerRightCorner();
     //
 
+
+    public String getFigureId() {return this.figureId;}
 
     public void draw(Graphics2D g) {
         // PetriNetController.checkLowerRightCorner(this.getLowerRightCorner());

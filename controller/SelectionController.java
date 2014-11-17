@@ -48,7 +48,7 @@ public class SelectionController {
 
     public static void setOffsetToSelectedElements(Point2D point) {
         for (String id : selectedElements_ids ) {
-            BaseFigure figure = PetriNetController.getElementById(id).getFigure();
+            BaseFigure figure = CanvasController.getFigureById(id);
             figure.setOffsetToPoint(point);
         }
     }
@@ -103,8 +103,7 @@ public class SelectionController {
 
     public static void clearSelection() {
         for (String id : selectedElements_ids ) {
-            if (PetriNetController.getElementById(id).getFigure() instanceof Selectable)
-                ((Selectable)PetriNetController.getElementById(id).getFigure()).setSelected(false);
+            ((Selectable)CanvasController.getFigureById(id)).setSelected(false);
         }
         selectedElements_ids = new ArrayList<String>();
 

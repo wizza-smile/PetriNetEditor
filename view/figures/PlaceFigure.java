@@ -22,7 +22,7 @@ public class PlaceFigure extends BaseFigure implements Selectable {
 
     private Ellipse2D ellipse;
     private Ellipse2D tokenPoint;
-    private LabelFigure labelFigure;
+    private String labelFigureId;
 
 
 
@@ -37,8 +37,9 @@ public class PlaceFigure extends BaseFigure implements Selectable {
             this.tokenPoint = generateTokenPoint();
         }
 
-        this.labelFigure = new LabelFigure(this.getId(), this.getPlace().getPosition());
-
+        LabelFigure labelFigure = new LabelFigure(this.getId(), this.getPlace().getPosition());
+        this.labelFigureId = labelFigure.getFigureId();
+        CanvasController.addLabelFigure(labelFigureId, labelFigure);
         // this.placeId = placeId;
         // this.position = position;
         // this.tokenFigure = new TokenSetFigure(this);
@@ -52,9 +53,9 @@ public class PlaceFigure extends BaseFigure implements Selectable {
         this.selected = selected;
     }
 
-    // public boolean isSelected() {
-    //     return selected;
-    // }
+    public boolean isSelected() {
+        return selected;
+    }
 
     public boolean contains(Point2D position) {
         return this.ellipse.contains(position);
@@ -66,7 +67,7 @@ public class PlaceFigure extends BaseFigure implements Selectable {
 
 
     public void drawLabel(Graphics2D g) {
-        this.labelFigure.draw(g);
+        this.getLabelFigure().draw(g);
     }
 
     // public RectangularShape getBounds() {
@@ -176,7 +177,7 @@ public class PlaceFigure extends BaseFigure implements Selectable {
 
 
     public void updatePosition() {
-        labelFigure.updatePosition();
+        getLabelFigure().updatePosition();
     }
 
 
@@ -184,6 +185,12 @@ public class PlaceFigure extends BaseFigure implements Selectable {
     public void setEllipse(Ellipse2D e) {
         this.ellipse = e;
     }
+
+    public LabelFigure getLabelFigure() {
+        return (LabelFigure)CanvasController.getFigureById(this.labelFigureId);
+    }
+
+
 
 
     // public void setPosition(Point2D newPosition) {

@@ -31,6 +31,14 @@ public class CanvasController {
 
 
 
+    public static ArrayList<String> getPlacesAndTransitionFiguresIds() {
+        ArrayList<String> positionablesIds = new ArrayList<String>();
+        positionablesIds.addAll(canvas.place_figure_ids);
+        positionablesIds.addAll(canvas.transition_figure_ids);
+
+        return positionablesIds;
+    }
+
     public static ArrayList<String> getPositionablesIds() {
         ArrayList<String> positionablesIds = new ArrayList<String>();
         positionablesIds.addAll(canvas.place_figure_ids);
@@ -127,6 +135,11 @@ public class CanvasController {
         CanvasController.getCanvas().place_figure_ids.add(figureId);
     }
 
+    public static void addLabelFigure(String figureId, LabelFigure figure) {
+        CanvasController.getCanvas().addFigure(figureId, figure);
+        CanvasController.getCanvas().label_figure_ids.add(figureId);
+    }
+
 
     public static void addTransitionFigure(String figureId, TransitionFigure figure) {
         CanvasController.getCanvas().addFigure(figureId, figure);
@@ -142,7 +155,8 @@ public class CanvasController {
         //on dbl-click: clear selection and select figure under pointer, if any
         if (e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e)) {
             SelectionController.clearSelection();
-            SelectionController.selectFigureUnderMousePointer(mousePressPoint);
+            BaseFigure figureUnderMousePointer = SelectionController.selectFigureUnderMousePointer(mousePressPoint);
+            SelectionController.addFigureToSelection(figureUnderMousePointer);
             GlobalController.mode = GlobalController.MODE_SELECT;
         }
     }
@@ -153,23 +167,39 @@ public class CanvasController {
         if (SwingUtilities.isLeftMouseButton(e)) {
             switch (GlobalController.mode) {
                 case GlobalController.MODE_SELECT:
+                    //check if a label is under mouse pointer
+                    //if yes: only this label will be selected (and dragged)
+                    BaseFigure figureUnderMousePointer = SelectionController.selectFigureUnderMousePointer(mousePressPoint);
+
+                    if (figureUnderMousePointer != null && figureUnderMousePointer instanceof LabelFigure) {
+
+                        SelectionController.clearSelection();
+                        SelectionController.addFigureToSelection(figureUnderMousePointer);
+                        GlobalController.mode = GlobalController.MODE_DRAG_SELECTION;
+                    }
+
+
                     //check if a selected elementFigure is under mouse pointer
                     //if yes: start dragging selection
-                    ArrayList<String> selectedElements_ids = SelectionController.getSelectedElementsIds();
-                    for (String id : selectedElements_ids ) {
-                        if (PetriNetController.getElementById(id).getFigure().contains(mousePressPoint)) {
-                            //user wants to drag selected elements!
-                            GlobalController.mode = GlobalController.MODE_DRAG_SELECTION;
-                            break;
-                        }
+                    //
+                    if (figureUnderMousePointer instanceof Selectable && ((Selectable)figureUnderMousePointer).isSelected()) {
+                        //user wants to drag selected elements!
+                        GlobalController.mode = GlobalController.MODE_DRAG_SELECTION;
                     }
+                    // ArrayList<String> selectedElements_ids = SelectionController.getSelectedElementsIds();
+                    // for (String id : selectedElements_ids ) {
+                    //     if (CanvasController.getFigureById(id).contains(mousePressPoint)) {
+                    //         //user wants to drag selected elements!
+                    //         GlobalController.mode = GlobalController.MODE_DRAG_SELECTION;
+                    //         break;
+                    //     }
+                    // }
                     //if not: remove current selection and select figure under mouse pointer, if any.
                     if (GlobalController.mode != GlobalController.MODE_DRAG_SELECTION) {
                         SelectionController.clearSelection();
 
-                        BaseFigure figure = SelectionController.selectFigureUnderMousePointer(mousePressPoint);
-                        if (figure != null && figure instanceof Selectable) {
-                            SelectionController.addFigureToSelection(figure);
+                        if (figureUnderMousePointer != null && figureUnderMousePointer instanceof Selectable) {
+                            SelectionController.addFigureToSelection(figureUnderMousePointer);
                             GlobalController.mode = GlobalController.MODE_DRAG_SELECTION;
                         }
                     }
@@ -239,7 +269,8 @@ public class CanvasController {
                     ArrayList<String> selectedElements_ids = SelectionController.getSelectedElementsIds();
                     boolean clearSelection = true;
                     for (String id : selectedElements_ids ) {
-                        BaseFigure figure = PetriNetController.getElementById(id).getFigure();
+                        BaseFigure figure = CanvasController.getFigureById(id);
+                        System.out.println( id );
                         Point2D offset = figure.getOffset();
                         figure.setPosition( new Point2D.Double(currentMousePoint.getX()+offset.getX(), currentMousePoint.getY()+offset.getY()) );
                     }
