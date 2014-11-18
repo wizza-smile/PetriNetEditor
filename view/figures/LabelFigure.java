@@ -50,7 +50,7 @@ public class LabelFigure extends BaseFigure implements Selectable {
 
         Double labelPadding = 6.;
 
-        String label = ((Connectable)PetriNetController.getElementById(elementId)).getLabel();
+        String label = getLabel();
 
         Font font = new Font(null, java.awt.Font.BOLD, 12);
         FontRenderContext fontRenderContext = g.getFontRenderContext();
@@ -109,6 +109,13 @@ public class LabelFigure extends BaseFigure implements Selectable {
 
 
     public String getId() { return figureId; }
+
+    public String getLabel() {
+        return ((Connectable)PetriNetController.getElementById(elementId)).getLabel();
+    }
+    public void setLabel(String label) {
+        ((Connectable)PetriNetController.getElementById(elementId)).setLabel(label);
+    }
 
 
 

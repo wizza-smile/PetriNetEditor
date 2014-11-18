@@ -1,6 +1,7 @@
 package view;
 
 import model.*;
+import view.figures.*;
 import controller.*;
 
 import java.awt.*;
@@ -106,11 +107,13 @@ public class MainWindow extends JFrame {//implements Scrollable
 
 
 
-    public void showPlacePopupMenu(MouseEvent e, String place_figure_id) {
-        Place place = (Place)PetriNetController.getElementById(place_figure_id);
+    public void showLabelInput(MouseEvent e, String label_figure_id) {
+        LabelFigure labelFigure = (LabelFigure)CanvasController.getFigureById(label_figure_id);
         //Input dialog with a text field
-        String input = JOptionPane.showInputDialog(e.getComponent(), "Enter a new Label:", place.getLabel());
-        place.setLabel(input);
+        String input = JOptionPane.showInputDialog(e.getComponent(), "Enter a new Label:", labelFigure.getLabel());
+        if (input != null) {
+            labelFigure.setLabel(input);
+        }
     }
 
     public void showArcPopupMenu(MouseEvent e, String arc_id, int target_type) {

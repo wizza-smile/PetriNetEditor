@@ -224,12 +224,10 @@ public class CanvasController {
             switch (GlobalController.mode) {
                 case GlobalController.MODE_SELECT:
 
-                    //check if a connectable Elem is under mouse
+                    //check if a label is under mouse
                     BaseFigure figureUnderMousePointer = SelectionController.getFigureUnderMousePointer(mousePressPoint);
-                    if (figureUnderMousePointer != null && !(figureUnderMousePointer instanceof LabelFigure)) {
-                        if (figureUnderMousePointer instanceof PlaceFigure) {
-                            MainWindowController.showPlacePopupMenu(e, figureUnderMousePointer.getId());
-                        }
+                    if (figureUnderMousePointer != null && figureUnderMousePointer instanceof LabelFigure) {
+                        MainWindowController.showLabelInput(e, figureUnderMousePointer.getId());
                     }
 
                     //if click on arrowHead: SHOW the menu to delete Arc(target)

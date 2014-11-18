@@ -26,8 +26,8 @@ public class MainWindowController {
     }
 
 
-    public static void showPlacePopupMenu(MouseEvent e, String place_figure_id) {
-        main_window.showPlacePopupMenu(e, place_figure_id);
+    public static void showLabelInput(MouseEvent e, String label_figure_id) {
+        main_window.showLabelInput(e, label_figure_id);
     }
 
     public static void showArcPopupMenu(MouseEvent e, String arc_id, int target_type) {
