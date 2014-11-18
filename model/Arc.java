@@ -67,6 +67,7 @@ public class Arc extends PetriNetElement {
     protected void merge(Arc arc) {
         //if the two arcs differ in place/transiiton
         if (arc.target_type == TARGET_BOTH || arc.target_type != this.target_type ) {
+            System.out.println( "merge BOTH" );
             //now both directions
             this.target_type = TARGET_BOTH;
         }
@@ -76,6 +77,7 @@ public class Arc extends PetriNetElement {
 
 
     public boolean selectTarget(String target_id) {
+        String source_id = this.getSourceId();
 
         PetriNetElement target_elem = PetriNetController.getElementById(target_id);
         if (TARGET_TRANSITION == this.target_type && target_elem instanceof Transition) {
@@ -93,7 +95,7 @@ public class Arc extends PetriNetElement {
         boolean doublette_found = false;
         for (String arc_id : PetriNetController.getPetriNet().getArcIds() ) {
             arc = (Arc)PetriNetController.getElementById(arc_id);
-            if (this.getId() != arc.getId() && arc.connectsSameElements(target_id, this.getSourceId())) {
+            if (this.getId() != arc.getId() && arc.connectsSameElements(target_id, source_id)) {
                 doublette_found = true;
                 break;
             }
