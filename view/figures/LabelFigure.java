@@ -1,6 +1,7 @@
 
 package view.figures;
 
+import model.*;
 import controller.*;
 
 
@@ -18,7 +19,7 @@ public class LabelFigure extends BaseFigure implements Selectable {
 
     protected String labelText;
     public Point2D position;
-    private Point2D offsetToLabeledFigure = new Point2D.Double(0, 50);
+    private Point2D offsetToLabeledFigure = new Point2D.Double(30, 50);
     private String labeledFigureId;
     private Rectangle2D label_border_rect;
 
@@ -46,8 +47,10 @@ public class LabelFigure extends BaseFigure implements Selectable {
 
     public void draw(Graphics2D g) {
 
+
         Double labelPadding = 6.;
-        String label = "Label muss sein";
+
+        String label = ((Connectable)PetriNetController.getElementById(elementId)).getLabel();
 
         Font font = new Font(null, java.awt.Font.BOLD, 12);
         FontRenderContext fontRenderContext = g.getFontRenderContext();
@@ -73,6 +76,7 @@ public class LabelFigure extends BaseFigure implements Selectable {
                 (float) (getPosition().getX() - 1 - (textBounds.getWidth()) / 2),
                 (float) (getPosition().getY() + textBounds.getHeight()/2 - label_y_offset)// + (textBounds.getHeight()+labelPadding/2) / 2)
         );
+
 
     }
 

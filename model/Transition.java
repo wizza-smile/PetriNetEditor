@@ -7,7 +7,7 @@ import java.util.*;
 
 import java.awt.geom.Point2D;
 
-public class Transition extends PetriNetElement {
+public class Transition extends PetriNetElement implements Connectable {
 
     public String label;
     private ArrayList<String> arc_ids = new ArrayList<String>();

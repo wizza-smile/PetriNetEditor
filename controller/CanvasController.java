@@ -108,7 +108,7 @@ public class CanvasController {
 
     public static void handleMousePressedModeArc() {
         //check if a transition/place is under mousepointer
-        BaseFigure figure = SelectionController.selectFigureUnderMousePointer(mousePressPoint);
+        BaseFigure figure = SelectionController.getFigureUnderMousePointer(mousePressPoint);
         //if not: do nothing
         //if yes: create new arc with source = transition
         if (figure != null) {
@@ -154,7 +154,7 @@ public class CanvasController {
         //on dbl-click: clear selection and select figure under pointer, if any
         if (e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e)) {
             SelectionController.clearSelection();
-            BaseFigure figureUnderMousePointer = SelectionController.selectFigureUnderMousePointer(mousePressPoint);
+            BaseFigure figureUnderMousePointer = SelectionController.getFigureUnderMousePointer(mousePressPoint);
             SelectionController.addFigureToSelection(figureUnderMousePointer);
             GlobalController.setMode(GlobalController.MODE_SELECT);
         }
@@ -168,7 +168,7 @@ public class CanvasController {
                 case GlobalController.MODE_SELECT:
                     //check if a label is under mouse pointer
                     //if yes: only this label will be selected (and dragged)
-                    BaseFigure figureUnderMousePointer = SelectionController.selectFigureUnderMousePointer(mousePressPoint);
+                    BaseFigure figureUnderMousePointer = SelectionController.getFigureUnderMousePointer(mousePressPoint);
 
                     if (figureUnderMousePointer != null && figureUnderMousePointer instanceof LabelFigure) {
                         SelectionController.clearSelection();
@@ -204,7 +204,7 @@ public class CanvasController {
                     break;
                 case GlobalController.MODE_ARC_SELECT_TARGET:
                     //check if a Place is under mousepointer
-                    BaseFigure figure = SelectionController.selectFigureUnderMousePointer(mousePressPoint);
+                    BaseFigure figure = SelectionController.getFigureUnderMousePointer(mousePressPoint);
                     //if not: do nothing
                     //if yes: add arc to place
                     if (figure != null && !(figure instanceof ArcFigure)) {
@@ -223,6 +223,15 @@ public class CanvasController {
         if (SwingUtilities.isRightMouseButton(e)) {
             switch (GlobalController.mode) {
                 case GlobalController.MODE_SELECT:
+
+                    //check if a connectable Elem is under mouse
+                    BaseFigure figureUnderMousePointer = SelectionController.getFigureUnderMousePointer(mousePressPoint);
+                    if (figureUnderMousePointer != null && !(figureUnderMousePointer instanceof LabelFigure)) {
+                        if (figureUnderMousePointer instanceof PlaceFigure) {
+                            MainWindowController.showPlacePopupMenu(e, figureUnderMousePointer.getId());
+                        }
+                    }
+
                     //if click on arrowHead: SHOW the menu to delete Arc(target)
                     java.util.List<String> arc_ids = PetriNetController.getPetriNet().getArcIds();
                     for (String arc_id : arc_ids ) {
@@ -231,9 +240,10 @@ public class CanvasController {
                         if (target_type != null) {
                             //open context menu to
                             //remove this target type /and evtl arrow??
-                            MainWindowController.showArcMenu(e, arc_id, target_type);
+                            MainWindowController.showArcPopupMenu(e, arc_id, target_type);
                         }
                     }
+
                     break;
                 default:
                     System.out.println("RIGHT MOUSE");

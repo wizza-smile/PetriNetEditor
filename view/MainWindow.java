@@ -106,20 +106,28 @@ public class MainWindow extends JFrame {//implements Scrollable
 
 
 
-    public void showArcMenu(MouseEvent e, String arc_id, int target_type) {
-        PopUpDemo contextMenu = new PopUpDemo(arc_id, target_type);
+    public void showPlacePopupMenu(MouseEvent e, String place_figure_id) {
+        Place place = (Place)PetriNetController.getElementById(place_figure_id);
+        //Input dialog with a text field
+        String input = JOptionPane.showInputDialog(e.getComponent(), "Enter a new Label:", place.getLabel());
+        place.setLabel(input);
+    }
+
+    public void showArcPopupMenu(MouseEvent e, String arc_id, int target_type) {
+        ArcPopupMenu contextMenu = new ArcPopupMenu(arc_id, target_type);
         contextMenu.show(e.getComponent(), e.getX(), e.getY());
     }
 
 
 
 
-    public class PopUpDemo extends JPopupMenu {
+    private class ArcPopupMenu extends JPopupMenu {
         JMenuItem anItem;
-        public PopUpDemo(String arc_id, int target_type) {
+        public ArcPopupMenu(String arc_id, int target_type) {
             //local variable target_type is accessed from within inner class; needs to be declared final
             final String a_id = arc_id;
             final int t_type = target_type;
+            setLabel("Arc");
             anItem = new JMenuItem("delete");
             anItem.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent event) {

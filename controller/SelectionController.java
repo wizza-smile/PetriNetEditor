@@ -63,8 +63,8 @@ public class SelectionController {
     }
 
 
-    //select figure, if one is under pointer
-    public static BaseFigure selectFigureUnderMousePointer(Point2D pointer) {
+    //get figure, if one is under pointer (TransitionFigure, PlaceFigure, LabelFigure)
+    public static BaseFigure getFigureUnderMousePointer(Point2D pointer) {
         for (String id : CanvasController.getPositionablesIds() ) {
             BaseFigure figure = CanvasController.getFigureById(id);
             if (figure.contains(pointer)) {

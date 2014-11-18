@@ -7,7 +7,7 @@ import java.util.*;
 
 import java.awt.geom.Point2D;
 
-public class Place extends PetriNetElement {
+public class Place extends PetriNetElement implements Connectable {
 
     public String label;
 
