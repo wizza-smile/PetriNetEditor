@@ -46,25 +46,26 @@ public class LabelFigure extends BaseFigure implements Selectable {
     };
 
     public void draw(Graphics2D g) {
-
-
         Double labelPadding = 6.;
 
         String label = getLabel();
 
-        Font font = new Font(null, java.awt.Font.BOLD, 12);
+        int fontSize = 13;
+        Font font = new Font(null, java.awt.Font.PLAIN, fontSize);
+        g.setFont(font);
         FontRenderContext fontRenderContext = g.getFontRenderContext();
         TextLayout textLayout = new TextLayout(label, font, fontRenderContext);
 
-        Rectangle2D textBounds = textLayout.getBounds();
+        Rectangle2D textBounds = textLayout.getPixelBounds(fontRenderContext,0,0);
 
         Double label_y_offset = 0.;
 
         label_border_rect = new Rectangle2D.Double(
-            getPosition().getX() - (textBounds.getWidth()+labelPadding) / 2,
-            getPosition().getY() - (textBounds.getHeight()+labelPadding) / 2 - label_y_offset,// ,
-            textBounds.getWidth()+labelPadding,
-            textBounds.getHeight()+labelPadding);
+            (Double)(getPosition().getX() - (textBounds.getWidth()+labelPadding) / 2),
+            (Double)(getPosition().getY() - (textBounds.getHeight()+labelPadding) / 2 ),// - label_y_offset,
+            (Double)(textBounds.getWidth()+labelPadding),
+            (Double)(textBounds.getHeight()+labelPadding)
+        );
 
         g.setPaint(labelFillColor);
         g.fill(label_border_rect);
@@ -73,9 +74,20 @@ public class LabelFigure extends BaseFigure implements Selectable {
         g.setPaint(labelStrokeColor);
 
         g.drawString(label,
-                (float) (getPosition().getX() - 1 - (textBounds.getWidth()) / 2),
-                (float) (getPosition().getY() + textBounds.getHeight()/2 - label_y_offset)// + (textBounds.getHeight()+labelPadding/2) / 2)
+            (float) (getPosition().getX() - 1 - textBounds.getWidth()/2),
+            (float) (getPosition().getY() + (fontSize*3/8))//
         );
+
+
+
+
+        // Rectangle2D text_border_rect = new Rectangle2D.Double(
+        //     getPosition().getX() - textBounds.getWidth() / 2,
+        //     (float) (getPosition().getY() - textBounds.getHeight() / 2),// - label_y_offset,
+        //     textBounds.getWidth(),
+        //     textBounds.getHeight());
+        // g.setPaint(labelStrokeColor);
+        // g.draw(text_border_rect);
 
 
     }
