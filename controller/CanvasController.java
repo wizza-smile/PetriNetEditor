@@ -20,6 +20,9 @@ import javax.swing.SwingUtilities;
 
 public class CanvasController {
 
+    public final static Double PETRINET_PADDING_BASE = 20.;
+    public static Double PETRINET_PADDING = PETRINET_PADDING_BASE;
+
     static private view.Canvas canvas;
 
     static Point2D mousePressPoint;
@@ -30,13 +33,12 @@ public class CanvasController {
 
 
 
-
     public static ArrayList<String> getPlacesAndTransitionFiguresIds() {
-        ArrayList<String> positionablesIds = new ArrayList<String>();
-        positionablesIds.addAll(canvas.place_figure_ids);
-        positionablesIds.addAll(canvas.transition_figure_ids);
+        ArrayList<String> placesAndTransitionFiguresIds = new ArrayList<String>();
+        placesAndTransitionFiguresIds.addAll(canvas.place_figure_ids);
+        placesAndTransitionFiguresIds.addAll(canvas.transition_figure_ids);
 
-        return positionablesIds;
+        return placesAndTransitionFiguresIds;
     }
 
     public static ArrayList<String> getPositionablesIds() {
@@ -63,13 +65,17 @@ public class CanvasController {
 
     /* Resize the Canvas and move Elements and Viewport to create illusion of endless canvas */
     public static void cleanUpCanvas() {
-        Rectangle petrinet_rectangle = PetriNetController.getPetriNetRectangle();
-        Rectangle viewport_rectangle = MainWindowController.getViewportRectangle();
+        // Rectangle2D petriNet_rectangle = (Rectangle2D)PetriNetController.getPetriNetRectangle();
+        Rectangle2D figures_rectangle = CanvasController.getFiguresBounds();
+        Rectangle2D viewport_rectangle = MainWindowController.getViewportRectangle();
 
-        Rectangle combined_viewport_and_petrinet_rectangle = petrinet_rectangle.union(viewport_rectangle);
+        // System.out.println( figures_rectangle );
 
-        Double cleanedCanvasWidth = combined_viewport_and_petrinet_rectangle.getWidth();
-        Double cleanedCanvasHeight = combined_viewport_and_petrinet_rectangle.getHeight();
+
+        figures_rectangle.add(viewport_rectangle);
+
+        Double cleanedCanvasWidth = figures_rectangle.getWidth();
+        Double cleanedCanvasHeight = figures_rectangle.getHeight();
         //set Canvas Size to combinedViewportAndPetrinetRectangle Size
         canvas.setPreferredSize(new Dimension(cleanedCanvasWidth.intValue(), cleanedCanvasHeight.intValue()));
 
@@ -77,8 +83,8 @@ public class CanvasController {
         a) point(0,0) and
         b) combinedViewportAndPetrinetRectangle upper_left point
         so that all elements will be within new canvas size */
-        Double move_x = (-1) * combined_viewport_and_petrinet_rectangle.getX();
-        Double move_y = (-1) * combined_viewport_and_petrinet_rectangle.getY();
+        Double move_x = (-1) * figures_rectangle.getX();
+        Double move_y = (-1) * figures_rectangle.getY();
 
         if (move_x != 0 || move_y != 0) {
             System.out.println(" MOVE after canvas resize | left or up");
@@ -200,16 +206,20 @@ public class CanvasController {
                     PetriNetController.addPetriNetElement(mousePressPoint, PetriNetController.ELEMENT_TRANSITION);
                     break;
                 case GlobalController.MODE_ARC:
+                    System.out.println( "MODE_ARC" );
                     handleMousePressedModeArc();
                     break;
                 case GlobalController.MODE_ARC_SELECT_TARGET:
+                    System.out.println( "MODE_ARC_SELECT_TARGET" );
                     //check if a Place is under mousepointer
                     BaseFigure figure = SelectionController.getFigureUnderMousePointer(mousePressPoint);
                     //if not: do nothing
                     //if yes: add arc to place
-                    if (figure != null && !(figure instanceof ArcFigure)) {
+                    if (figure != null && !(figure instanceof LabelFigure)) {
                         Arc arc = (Arc)PetriNetController.getElementById(arc_no_target_id);
                         if (arc.selectTarget(figure.getId())) {
+                            System.out.println( "set MODE_ARC" );
+                            GlobalController.setMode(GlobalController.MODE_ARC);
                             figure.getElement().addArcId(arc_no_target_id);
                         }
                     }
@@ -322,5 +332,58 @@ public class CanvasController {
     public static void repaintCanvas() {
         canvas.repaint();
     }
+
+    //get the rectangle that encloses all labels
+    public static Rectangle2D getLabelsBounds() {
+        Rectangle2D labelsBounds = new Rectangle2D.Double(0, 0, 0, 0);
+        boolean initialized = false;
+
+        for (String label_figure_id : CanvasController.getCanvas().label_figure_ids) {
+            LabelFigure labelFigure = (LabelFigure)CanvasController.getFigureById(label_figure_id);
+            if (initialized) {
+                labelsBounds.add(labelFigure.getBounds());
+            } else {
+                labelsBounds = labelFigure.getBounds();
+                initialized = true;
+            }
+        }
+
+        return labelsBounds;
+    }
+
+    public static Rectangle2D getPetriNetFiguresBounds() {
+        Rectangle2D petriNetBounds = new Rectangle2D.Double(0, 0, 0, 0);
+        boolean initialized = false;
+
+        for (String figure_id : CanvasController.getPlacesAndTransitionFiguresIds()) {
+            BaseFigure figure = CanvasController.getFigureById(figure_id);
+            if (initialized) {
+                petriNetBounds.add(figure.getBounds());
+            } else {
+                petriNetBounds = figure.getBounds();
+                initialized = true;
+            }
+        }
+
+        return petriNetBounds;
+    }
+
+    public static Rectangle2D getFiguresBounds() {
+        Rectangle2D petriNetBounds = getPetriNetFiguresBounds();
+        petriNetBounds.add(getLabelsBounds());
+
+        //add padding
+        Rectangle2D figuresBounds = new Rectangle2D.Double(
+            petriNetBounds.getX() - PETRINET_PADDING,
+            petriNetBounds.getY() - PETRINET_PADDING,
+            petriNetBounds.getWidth() + 2*PETRINET_PADDING,
+            petriNetBounds.getHeight() + 2*PETRINET_PADDING
+        );
+
+
+        return figuresBounds;
+    }
+
+
 
 }

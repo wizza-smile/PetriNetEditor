@@ -190,6 +190,9 @@ public class PlaceFigure extends BaseFigure implements Selectable {
         return (LabelFigure)CanvasController.getFigureById(this.labelFigureId);
     }
 
+    public Rectangle2D getBounds() {
+        return this.ellipse.getBounds();
+    }
 
 
 

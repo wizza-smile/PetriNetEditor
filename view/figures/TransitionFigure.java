@@ -108,6 +108,9 @@ public class TransitionFigure extends BaseFigure implements Selectable {
 
 
 
+    public Rectangle2D getBounds() {
+        return this.transitionRectangle;
+    }
 
 
 

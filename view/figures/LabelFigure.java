@@ -125,9 +125,18 @@ public class LabelFigure extends BaseFigure implements Selectable {
     public String getLabel() {
         return ((Connectable)PetriNetController.getElementById(elementId)).getLabel();
     }
+
     public void setLabel(String label) {
         ((Connectable)PetriNetController.getElementById(elementId)).setLabel(label);
     }
+
+    public Rectangle2D getBounds() {
+        return label_border_rect;
+    }
+
+
+
+
 
 
 

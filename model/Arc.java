@@ -107,7 +107,7 @@ public class Arc extends PetriNetElement {
 
         CanvasController.arc_no_target_id = null;
 
-        return false;
+        return true;
     }
 
     public Transition getTransition() {

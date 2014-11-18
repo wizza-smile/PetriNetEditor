@@ -69,7 +69,7 @@ public class GlobalController {
         ArcFigure.ARROW_RADIUS = ArcFigure.ARROW_RADIUS_BASE * size;
         PlaceFigure.DIAMETER = PlaceFigure.DIAMETER_BASE * size;
         TransitionFigure.DIMENSION = TransitionFigure.DIMENSION_BASE * size;
-        PetriNetController.PETRINET_PADDING = PetriNetController.PETRINET_PADDING_BASE * size;
+        CanvasController.PETRINET_PADDING = CanvasController.PETRINET_PADDING_BASE * size;
 
         CanvasController.repaintCanvas();
     }
