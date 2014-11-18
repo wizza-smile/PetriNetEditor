@@ -15,13 +15,13 @@ public class LabelFigure extends BaseFigure implements Selectable {
 
 
     protected Color labelStrokeColor = new Color(0, 0, 0);
-    protected Color labelFillColor = new Color(255, 255, 255, 255);
+    protected Color labelFillColor = new Color(245, 245, 245, 245);
 
     protected String labelText;
     public Point2D position;
     private Point2D offsetToLabeledFigure = new Point2D.Double(30, 50);
     private String labeledFigureId;
-    private Rectangle2D label_border_rect;
+    private RoundRectangle2D label_border_rect;
 
     public LabelFigure(String labeledFigureId, Point2D labeledFigurePosition) {
 
@@ -60,11 +60,13 @@ public class LabelFigure extends BaseFigure implements Selectable {
 
         Double label_y_offset = 0.;
 
-        label_border_rect = new Rectangle2D.Double(
+        label_border_rect = new RoundRectangle2D.Double(
             (Double)(getPosition().getX() - (textBounds.getWidth()+labelPadding) / 2),
             (Double)(getPosition().getY() - (textBounds.getHeight()+labelPadding) / 2 ),// - label_y_offset,
             (Double)(textBounds.getWidth()+labelPadding),
-            (Double)(textBounds.getHeight()+labelPadding)
+            (Double)(textBounds.getHeight()+labelPadding),
+            5,
+            5
         );
 
         g.setPaint(labelFillColor);
@@ -131,7 +133,7 @@ public class LabelFigure extends BaseFigure implements Selectable {
     }
 
     public Rectangle2D getBounds() {
-        return label_border_rect;
+        return label_border_rect.getBounds();
     }
 
 

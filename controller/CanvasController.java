@@ -69,9 +69,6 @@ public class CanvasController {
         Rectangle2D figures_rectangle = CanvasController.getFiguresBounds();
         Rectangle2D viewport_rectangle = MainWindowController.getViewportRectangle();
 
-        // System.out.println( figures_rectangle );
-
-
         figures_rectangle.add(viewport_rectangle);
 
         Double cleanedCanvasWidth = figures_rectangle.getWidth();
