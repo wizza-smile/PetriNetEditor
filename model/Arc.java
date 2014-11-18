@@ -67,7 +67,6 @@ public class Arc extends PetriNetElement {
     protected void merge(Arc arc) {
         //if the two arcs differ in place/transiiton
         if (arc.target_type == TARGET_BOTH || arc.target_type != this.target_type ) {
-            System.out.println( "merge BOTH" );
             //now both directions
             this.target_type = TARGET_BOTH;
         }
