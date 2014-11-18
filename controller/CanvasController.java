@@ -203,11 +203,9 @@ public class CanvasController {
                     PetriNetController.addPetriNetElement(mousePressPoint, PetriNetController.ELEMENT_TRANSITION);
                     break;
                 case GlobalController.MODE_ARC:
-                    System.out.println( "MODE_ARC" );
                     handleMousePressedModeArc();
                     break;
                 case GlobalController.MODE_ARC_SELECT_TARGET:
-                    System.out.println( "MODE_ARC_SELECT_TARGET" );
                     //check if a Place is under mousepointer
                     BaseFigure figure = SelectionController.getFigureUnderMousePointer(mousePressPoint);
                     //if not: do nothing
@@ -215,7 +213,6 @@ public class CanvasController {
                     if (figure != null && !(figure instanceof LabelFigure)) {
                         Arc arc = (Arc)PetriNetController.getElementById(arc_no_target_id);
                         if (arc.selectTarget(figure.getId())) {
-                            System.out.println( "set MODE_ARC" );
                             GlobalController.setMode(GlobalController.MODE_ARC);
                             figure.getElement().addArcId(arc_no_target_id);
                         }
