@@ -26,6 +26,10 @@ public class Transition extends PetriNetElement {
         arc_ids.add(arc_id);
     }
 
+    public void removeArcId(String arc_id) {
+        arc_ids.remove(arc_id);
+    }
+
 
     public String getLabel() {
         return label;

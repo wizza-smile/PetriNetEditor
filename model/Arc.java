@@ -34,6 +34,14 @@ public class Arc extends PetriNetElement {
     }
 
     public void delete() {
+        if (place_id != null) {
+            Place place = (Place)PetriNetController.getElementById(place_id);
+            place.removeArcId(this.getId());
+        }
+        if (transition_id != null){
+            Transition transition = (Transition)PetriNetController.getElementById(transition_id);
+            transition.removeArcId(this.getId());
+        }
         PetriNetController.removeArc(this.getId());
     }
 
@@ -80,7 +88,7 @@ public class Arc extends PetriNetElement {
         }
 
 
-        //Check if arc already exists with the same place and transition
+        //Check if an arc already exists with the same place and transition
         Arc arc = null;
         boolean doublette_found = false;
         for (String arc_id : PetriNetController.getPetriNet().getArcIds() ) {
@@ -96,6 +104,8 @@ public class Arc extends PetriNetElement {
             //remove after iteration (concurrency)
             PetriNetController.removeArc(arc.getId());
         }
+
+        CanvasController.arc_no_target_id = null;
 
         return false;
     }

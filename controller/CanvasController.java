@@ -114,12 +114,11 @@ public class CanvasController {
         if (figure != null) {
             if (figure.getElement() instanceof Transition) {
                 PetriNetController.addArc(figure.getId(), PetriNetController.ELEMENT_TRANSITION);
-                GlobalController.mode = GlobalController.MODE_ARC_SELECT_TARGET;
             }
             if (figure.getElement() instanceof Place) {
                 PetriNetController.addArc(figure.getId(), PetriNetController.ELEMENT_PLACE);
-                GlobalController.mode = GlobalController.MODE_ARC_SELECT_TARGET;
             }
+            GlobalController.setMode(GlobalController.MODE_ARC_SELECT_TARGET);
         }
     }
 
@@ -157,7 +156,7 @@ public class CanvasController {
             SelectionController.clearSelection();
             BaseFigure figureUnderMousePointer = SelectionController.selectFigureUnderMousePointer(mousePressPoint);
             SelectionController.addFigureToSelection(figureUnderMousePointer);
-            GlobalController.mode = GlobalController.MODE_SELECT;
+            GlobalController.setMode(GlobalController.MODE_SELECT);
         }
     }
 
@@ -174,14 +173,14 @@ public class CanvasController {
                     if (figureUnderMousePointer != null && figureUnderMousePointer instanceof LabelFigure) {
                         SelectionController.clearSelection();
                         SelectionController.addFigureToSelection(figureUnderMousePointer);
-                        GlobalController.mode = GlobalController.MODE_DRAG_SELECTION;
+                        GlobalController.setMode(GlobalController.MODE_DRAG_SELECTION);
                     }
 
                     //check if a selected elementFigure is under mouse pointer
                     //if yes: start dragging selection
                     if (figureUnderMousePointer instanceof Selectable && ((Selectable)figureUnderMousePointer).isSelected()) {
                         //user wants to drag selected elements!
-                        GlobalController.mode = GlobalController.MODE_DRAG_SELECTION;
+                        GlobalController.setMode(GlobalController.MODE_DRAG_SELECTION);
                     }
                     //if not: remove current selection and select figure under mouse pointer, if any.
                     if (GlobalController.mode != GlobalController.MODE_DRAG_SELECTION) {
@@ -189,7 +188,7 @@ public class CanvasController {
 
                         if (figureUnderMousePointer != null && !(figureUnderMousePointer instanceof LabelFigure)) {
                             SelectionController.addFigureToSelection(figureUnderMousePointer);
-                            GlobalController.mode = GlobalController.MODE_DRAG_SELECTION;
+                            GlobalController.setMode(GlobalController.MODE_DRAG_SELECTION);
                         }
                     }
                     SelectionController.setOffsetToSelectedElements(mousePressPoint);
@@ -281,7 +280,7 @@ public class CanvasController {
                 break;
             case GlobalController.MODE_DRAG_SELECTION:
                 CanvasController.cleanUpCanvas();
-                GlobalController.mode = GlobalController.MODE_SELECT;
+                GlobalController.setMode(GlobalController.MODE_SELECT);
                 break;
             case GlobalController.MODE_PLACE:
                 //
@@ -297,7 +296,7 @@ public class CanvasController {
     public static void mouseMoved(MouseEvent e) {
         currentMousePoint = new Point2D.Double(e.getX(), e.getY());
         switch (GlobalController.mode) {
-            case  GlobalController.MODE_ARC_SELECT_TARGET:
+            case GlobalController.MODE_ARC_SELECT_TARGET:
 
                 break;
             default:

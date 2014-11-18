@@ -18,7 +18,7 @@ public class LabelFigure extends BaseFigure implements Selectable {
 
     protected String labelText;
     public Point2D position;
-    private Point2D offsetToLabeledFigure = new Point2D.Double(50, 0);
+    private Point2D offsetToLabeledFigure = new Point2D.Double(0, 50);
     private String labeledFigureId;
     private Rectangle2D label_border_rect;
 
@@ -55,7 +55,7 @@ public class LabelFigure extends BaseFigure implements Selectable {
 
         Rectangle2D textBounds = textLayout.getBounds();
 
-        Double label_y_offset = 37.;
+        Double label_y_offset = 0.;
 
         label_border_rect = new Rectangle2D.Double(
             getPosition().getX() - (textBounds.getWidth()+labelPadding) / 2,

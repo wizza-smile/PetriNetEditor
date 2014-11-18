@@ -47,6 +47,22 @@ public class GlobalController {
     }
 
 
+    public static void setMode(int mode) {
+        //cleanup
+        switch (GlobalController.mode) {
+            case MODE_ARC_SELECT_TARGET:
+                if (CanvasController.arc_no_target_id != null) {
+                    Arc arc = (Arc)PetriNetController.getElementById(CanvasController.arc_no_target_id);
+                    arc.delete();
+                    CanvasController.repaintCanvas();
+                }
+                break;
+            default:
+                break;
+        }
+        GlobalController.mode = mode;
+    }
+
     public static void setSize(Double size) {
         GlobalController.size = size;
 
