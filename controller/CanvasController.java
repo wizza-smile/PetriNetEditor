@@ -253,7 +253,7 @@ public class CanvasController {
             }
         }
 
-        canvas.repaint();
+        CanvasController.repaintCanvas();
     }
 
 
@@ -280,7 +280,7 @@ public class CanvasController {
             }
         }
 
-        canvas.repaint();
+        CanvasController.repaintCanvas();
     }
 
 
@@ -291,7 +291,6 @@ public class CanvasController {
                 SelectionController.removeSelectionRectangle();
                 break;
             case GlobalController.MODE_DRAG_SELECTION:
-                CanvasController.cleanUpCanvas();
                 GlobalController.setMode(GlobalController.MODE_SELECT);
                 break;
             case GlobalController.MODE_PLACE:
@@ -300,8 +299,8 @@ public class CanvasController {
             default:
                 break;
         }
-
-        canvas.repaint();
+        cleanUpCanvas();
+        CanvasController.repaintCanvas();
     }
 
 
@@ -315,7 +314,7 @@ public class CanvasController {
                 break;
         }
 
-        canvas.repaint();
+        CanvasController.repaintCanvas();
     }
 
 

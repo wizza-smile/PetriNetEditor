@@ -30,7 +30,7 @@ public class GlobalController {
 
 
     public static void startApplication() {
-
+        Toolkit.getDefaultToolkit().setDynamicLayout(false);
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 PetriNetController.createPetriNet();

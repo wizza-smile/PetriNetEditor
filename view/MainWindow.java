@@ -21,9 +21,16 @@ public class MainWindow extends JFrame {//implements Scrollable
     Canvas canvas;
     public JScrollPane canvasPane;
 
-
+    private class ResizeListener extends ComponentAdapter {
+        public void componentResized(ComponentEvent e) {
+            CanvasController.cleanUpCanvas();
+            System.out.println( "componentResized" );
+        }
+    }
 
     public void init() {
+        this.addComponentListener(new ResizeListener());
+
         this.setTitle("PetriNetEditor");
         this.setSize(800, 600);
         this.setMinimumSize(new Dimension(400, 400));
