@@ -83,11 +83,13 @@ public class Arc extends PetriNetElement {
         if (TARGET_TRANSITION == this.target_type && target_elem instanceof Transition) {
             // this.target_id = target_id;
             this.transition_id = target_id;
+            target_elem.addArcId(this.getId());
             validTarget = true;
         }
         if (TARGET_PLACE == this.target_type && target_elem instanceof Place) {
             // this.target_id = target_id;
             this.place_id = target_id;
+            target_elem.addArcId(this.getId());
             validTarget = true;
         }
 

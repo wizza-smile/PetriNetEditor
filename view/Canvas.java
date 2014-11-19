@@ -73,6 +73,10 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         figures.put(figureId, figure);
     }
 
+    public void removeFigure(String figureId) {
+        figures.remove(figureId);
+    }
+
     public BaseFigure getFigureById(String figureId) {
         return figures.get(figureId);
     }

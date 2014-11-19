@@ -21,21 +21,11 @@ public class TransitionFigure extends BaseFigure implements Selectable {
 
 
     private Rectangle2D transitionRectangle;
-    private LabelFigure labelFigure;
     private String labelFigureId;
 
 
     final public static double DIMENSION_BASE = 45;
     public static double DIMENSION = DIMENSION_BASE;
-
-
-
-    public void drawLabel(Graphics2D g) {
-        this.getLabelFigure().draw(g);
-    }
-    public LabelFigure getLabelFigure() {
-        return (LabelFigure)CanvasController.getFigureById(this.labelFigureId);
-    }
 
 
     public TransitionFigure(Transition transition) {
@@ -45,6 +35,24 @@ public class TransitionFigure extends BaseFigure implements Selectable {
         this.labelFigureId = labelFigure.getFigureId();
         CanvasController.addLabelFigure(labelFigureId, labelFigure);
     }
+
+
+    public void drawLabel(Graphics2D g) {
+        this.getLabelFigure().draw(g);
+
+    }
+
+
+    public void delete() {
+        CanvasController.removeLabelFigure(this.labelFigureId);
+        CanvasController.removeTransitionFigure(this.getId());
+    }
+
+
+    public LabelFigure getLabelFigure() {
+        return (LabelFigure)CanvasController.getFigureById(this.labelFigureId);
+    }
+
 
     public Transition getTransition() {
         return (Transition)this.element;

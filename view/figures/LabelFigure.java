@@ -30,6 +30,10 @@ public class LabelFigure extends BaseFigure implements Selectable {
         this.position = new Point2D.Double(offsetToLabeledFigure.getX() + labeledFigurePosition.getX(), offsetToLabeledFigure.getY() + labeledFigurePosition.getY());
     }
 
+    public void delete() {
+
+    }
+
 
     public boolean contains(Point2D position) {
         return this.label_border_rect.contains(position);
@@ -43,7 +47,7 @@ public class LabelFigure extends BaseFigure implements Selectable {
 
     public boolean intersects(Rectangle2D r) {
         return false;
-    };
+    }
 
     public void draw(Graphics2D g) {
         Double labelPadding = 6.;

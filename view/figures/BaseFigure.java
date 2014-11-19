@@ -31,6 +31,7 @@ public abstract class BaseFigure {
 
 
 
+    public abstract void delete();
     public abstract boolean intersects(Rectangle2D r);
     public abstract boolean contains(Point2D position);
     // public abstract Point2D getLowerRightCorner();
@@ -56,6 +57,7 @@ public abstract class BaseFigure {
     public void setPosition(Point2D position) { getElement().setPosition(position); }
 
     public Point2D getOffset() { return offset; }
+
 
     public void setOffsetToPoint(Point2D point) {
         Double offset_x = this.getPosition().getX() - point.getX();

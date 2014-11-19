@@ -45,6 +45,11 @@ public class PlaceFigure extends BaseFigure implements Selectable {
         // this.tokenFigure = new TokenSetFigure(this);
     }
 
+    public void delete() {
+        CanvasController.removeLabelFigure(this.labelFigureId);
+        CanvasController.removePlaceFigure(this.getId());
+    }
+
     public Place getPlace() {
         return (Place)this.element;
     }

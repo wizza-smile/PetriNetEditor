@@ -34,6 +34,15 @@ public class MainWindowController {
         main_window.showArcPopupMenu(e, arc_id, target_type);
     }
 
+    public static void showTransitionPopupMenu(MouseEvent e, String transition_id) {
+        main_window.showTransitionPopupMenu(e, transition_id);
+    }
+
+
+    public static void showPlacePopupMenu(MouseEvent e, String place_id) {
+        main_window.showPlacePopupMenu(e, place_id);
+    }
+
 
     public static void injectCanvas(view.Canvas canvas) {
         main_window.injectCanvas(canvas);

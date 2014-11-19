@@ -46,7 +46,15 @@ public class PetriNet {
 
 
     public java.util.List<String> getArcIds() {
-        return Collections.synchronizedList(arc_ids);
+        return arc_ids;
+    }
+    public java.util.List<String> getTransitionIds() {
+        // return Collections.synchronizedList(transition_ids);
+        return transition_ids;
+    }
+    public java.util.List<String> getPlaceIds() {
+        // return Collections.synchronizedList(transition_ids);
+        return place_ids;
     }
 
 
@@ -60,6 +68,14 @@ public class PetriNet {
 
     public void removeArcId(String arcId) {
         getArcIds().remove(arcId);
+    }
+
+    public void removeTransitionId(String transition_id) {
+        getTransitionIds().remove(transition_id);
+    }
+
+    public void removePlaceId(String place_id) {
+        getPlaceIds().remove(place_id);
     }
 
 

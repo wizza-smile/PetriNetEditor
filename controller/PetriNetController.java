@@ -112,6 +112,16 @@ public class PetriNetController {
     }
 
 
+    public static void removeTransition(String transition_id) {
+        petriNet.removeElement(transition_id);
+        petriNet.removeTransitionId(transition_id);
+    }
+    public static void removePlace(String place_id) {
+        petriNet.removeElement(place_id);
+        petriNet.removePlaceId(place_id);
+    }
+
+
 
 
     /**

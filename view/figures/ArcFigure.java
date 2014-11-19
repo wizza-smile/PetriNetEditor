@@ -46,9 +46,10 @@ public class ArcFigure extends BaseFigure {
         return (Arc)this.element;
     }
 
-    // public java.util.List<ArcFigure> getArrowHeadsList() {
-    //     return arrow_heads;
-    // }
+
+    public void delete() {
+
+    }
 
     public boolean contains(Point2D position) {
         return false;

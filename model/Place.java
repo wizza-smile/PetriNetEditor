@@ -34,6 +34,24 @@ public class Place extends PetriNetElement implements Connectable {
     }
 
 
+    public void delete() {
+        Arc[] all_arcs = new Arc[arc_ids.size()];
+        int index = 0;
+            System.out.println(arc_ids.size() );
+        for (String arc_id : arc_ids ) {
+            Arc arc = (Arc)PetriNetController.getElementById(arc_id);
+            System.out.println( arc_id );
+            System.out.println( arc );
+            all_arcs[index++] = arc;
+        }
+        for (Arc arc  : all_arcs) {
+            System.out.println( arc );
+            arc.delete();
+        }
+        CanvasController.removeFigure(this.getId());
+        PetriNetController.removePlace(this.getId());
+    }
+
     public String getLabel() {
         return label;
     }

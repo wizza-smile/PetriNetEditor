@@ -30,6 +30,20 @@ public class Transition extends PetriNetElement implements Connectable {
         arc_ids.remove(arc_id);
     }
 
+    public void delete() {
+        Arc[] all_arcs = new Arc[arc_ids.size()];
+        int index = 0;
+        for (String arc_id : arc_ids ) {
+            Arc arc = (Arc)PetriNetController.getElementById(arc_id);
+            all_arcs[index++] = arc;
+        }
+        for (Arc arc  : all_arcs) {
+            arc.delete();
+        }
+        CanvasController.removeFigure(this.getId());
+        PetriNetController.removeTransition(this.getId());
+    }
+
 
     public String getLabel() {
         return label;

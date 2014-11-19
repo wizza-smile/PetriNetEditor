@@ -54,6 +54,11 @@ public class CanvasController {
         return canvas.getFigureById(figureId);
     }
 
+    public static void removeFigure(String figureId) {
+        BaseFigure baseFigure = canvas.getFigureById(figureId);
+        baseFigure.delete();
+    }
+
     public static view.Canvas createCanvas() {
         canvas = new view.Canvas();
 
@@ -134,19 +139,33 @@ public class CanvasController {
     }
 
     public static void addPlaceFigure(String figureId, PlaceFigure figure) {
-        CanvasController.getCanvas().addFigure(figureId, figure);
-        CanvasController.getCanvas().place_figure_ids.add(figureId);
+        canvas.addFigure(figureId, figure);
+        canvas.place_figure_ids.add(figureId);
     }
 
     public static void addLabelFigure(String figureId, LabelFigure figure) {
-        CanvasController.getCanvas().addFigure(figureId, figure);
-        CanvasController.getCanvas().label_figure_ids.add(figureId);
+        canvas.addFigure(figureId, figure);
+        canvas.label_figure_ids.add(figureId);
     }
 
-
     public static void addTransitionFigure(String figureId, TransitionFigure figure) {
-        CanvasController.getCanvas().addFigure(figureId, figure);
-        CanvasController.getCanvas().transition_figure_ids.add(figureId);
+        canvas.addFigure(figureId, figure);
+        canvas.transition_figure_ids.add(figureId);
+    }
+
+    public static void removeTransitionFigure(String figureId) {
+        canvas.removeFigure(figureId);
+        canvas.transition_figure_ids.remove(figureId);
+    }
+
+    public static void removePlaceFigure(String figureId) {
+        canvas.removeFigure(figureId);
+        canvas.place_figure_ids.remove(figureId);
+    }
+
+    public static void removeLabelFigure(String figureId) {
+        canvas.removeFigure(figureId);
+        canvas.label_figure_ids.remove(figureId);
     }
 
     public static Dimension getCanvasSize() {
@@ -215,7 +234,7 @@ public class CanvasController {
                         Arc arc = (Arc)PetriNetController.getElementById(arc_no_target_id);
                         if (arc.selectTarget(figure.getId())) {
                             GlobalController.setMode(GlobalController.MODE_ARC);
-                            figure.getElement().addArcId(arc_no_target_id);
+                            // figure.getElement().addArcId(arc_no_target_id);
                         }
                     }
                     break;
@@ -231,8 +250,23 @@ public class CanvasController {
 
                     //check if a label is under mouse
                     BaseFigure figureUnderMousePointer = SelectionController.getFigureUnderMousePointer(mousePressPoint);
-                    if (figureUnderMousePointer != null && figureUnderMousePointer instanceof LabelFigure) {
-                        MainWindowController.showLabelInput(e, figureUnderMousePointer.getId());
+                    if (figureUnderMousePointer != null) {
+
+                        if (figureUnderMousePointer instanceof LabelFigure) {
+                            MainWindowController.showLabelInput(e, figureUnderMousePointer.getId());
+                        }
+
+                        if (figureUnderMousePointer instanceof TransitionFigure) {
+                            MainWindowController.showTransitionPopupMenu(e, figureUnderMousePointer.getId());
+                        }
+
+
+                        if (figureUnderMousePointer instanceof PlaceFigure) {
+                            MainWindowController.showPlacePopupMenu(e, figureUnderMousePointer.getId());
+                        }
+
+
+
                     }
 
                     //if click on arrowHead: SHOW the menu to delete Arc(target)
@@ -345,6 +379,7 @@ public class CanvasController {
         return labelsBounds;
     }
 
+    //get the rectangle that encloses all transitions and places
     public static Rectangle2D getPetriNetFiguresBounds() {
         Rectangle2D petriNetBounds = new Rectangle2D.Double(0, 0, 0, 0);
         boolean initialized = false;
