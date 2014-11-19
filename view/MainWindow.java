@@ -21,10 +21,10 @@ public class MainWindow extends JFrame {//implements Scrollable
     Canvas canvas;
     public JScrollPane canvasPane;
 
+    // a resize Listener to call the Canvas-Resizing whenever the mainWindow size changes
     private class ResizeListener extends ComponentAdapter {
         public void componentResized(ComponentEvent e) {
             CanvasController.cleanUpCanvas();
-            System.out.println( "componentResized" );
         }
     }
 
@@ -37,7 +37,6 @@ public class MainWindow extends JFrame {//implements Scrollable
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-
         JMenuBar menubar = createMenuBar();
         this.setJMenuBar(menubar);
 
@@ -48,10 +47,8 @@ public class MainWindow extends JFrame {//implements Scrollable
         this.add(statusbar, BorderLayout.SOUTH);
 
         canvasPane = createCanvasPane();
-        // canvasPane.setSize(200, 200);
 
         this.add(canvasPane, BorderLayout.CENTER);
-
     }
 
 
