@@ -65,7 +65,8 @@ public class CanvasController {
 
     /* Resize the Canvas and move Elements and Viewport to create illusion of endless canvas */
     public static void cleanUpCanvas() {
-        // Rectangle2D petriNet_rectangle = (Rectangle2D)PetriNetController.getPetriNetRectangle();
+        if (PetriNetController.getPetriNetElementCount() == 0) return;
+
         Rectangle2D figures_rectangle = CanvasController.getFiguresBounds();
         Rectangle2D viewport_rectangle = MainWindowController.getViewportRectangle();
 

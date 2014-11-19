@@ -77,17 +77,21 @@ public class Arc extends PetriNetElement {
 
     public boolean selectTarget(String target_id) {
         String source_id = this.getSourceId();
+        boolean validTarget = false;
 
         PetriNetElement target_elem = PetriNetController.getElementById(target_id);
         if (TARGET_TRANSITION == this.target_type && target_elem instanceof Transition) {
             // this.target_id = target_id;
             this.transition_id = target_id;
+            validTarget = true;
         }
         if (TARGET_PLACE == this.target_type && target_elem instanceof Place) {
             // this.target_id = target_id;
             this.place_id = target_id;
+            validTarget = true;
         }
 
+        if (!validTarget) return false;
 
         //Check if an arc already exists with the same place and transition
         Arc arc = null;

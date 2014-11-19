@@ -24,6 +24,9 @@ public class PetriNetController {
 
 
 
+    public static Integer getPetriNetElementCount() {
+        return petriNet.getElementCount();
+    }
     public static void createPetriNet() {
         petriNet = new PetriNet();
     }
