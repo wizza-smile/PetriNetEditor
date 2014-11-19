@@ -31,6 +31,7 @@ public class Transition extends PetriNetElement implements Connectable {
     }
 
     public void delete() {
+        SelectionController.clearSelection();
         Arc[] all_arcs = new Arc[arc_ids.size()];
         int index = 0;
         for (String arc_id : arc_ids ) {
