@@ -17,7 +17,7 @@ import java.awt.geom.*;
 import javax.swing.*;
 
 
-public class PlaceFigure extends Positionable implements Selectable {
+public class PlaceFigure extends Positionable {
 
 
     private Ellipse2D ellipse;

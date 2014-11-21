@@ -11,7 +11,7 @@ import java.awt.font.*;
 import java.awt.geom.*;
 
 
-public class LabelFigure extends Positionable implements Selectable {
+public class LabelFigure extends Positionable {
 
 
     protected Color labelStrokeColor = new Color(0, 0, 0);
