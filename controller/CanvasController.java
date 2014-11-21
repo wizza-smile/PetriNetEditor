@@ -221,6 +221,7 @@ public class CanvasController {
                             GlobalController.setMode(GlobalController.MODE_DRAG_SELECTION);
                         } else {
                             //select the element start dragging
+                            SelectionController.clearSelection();
                             SelectionController.addFigureToSelection((Positionable)figureUnderMousePointer);
                             GlobalController.setMode(GlobalController.MODE_DRAG_SELECTION);
                         }
