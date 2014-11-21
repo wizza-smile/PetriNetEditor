@@ -202,31 +202,35 @@ public class CanvasController {
         if (SwingUtilities.isLeftMouseButton(e)) {
             switch (GlobalController.mode) {
                 case GlobalController.MODE_SELECT:
-                    //check if a label is under mouse pointer
-                    //if yes: only this label will be selected (and dragged)
                     BaseFigure figureUnderMousePointer = SelectionController.getFigureUnderMousePointer(mousePressPoint);
 
-                    if (figureUnderMousePointer != null && figureUnderMousePointer instanceof LabelFigure) {
-                        SelectionController.clearSelection();
-                        SelectionController.addFigureToSelection((Positionable)figureUnderMousePointer);
-                        GlobalController.setMode(GlobalController.MODE_DRAG_SELECTION);
-                    }
-
-                    //check if a Positionable is under mouse pointer
-                    if (figureUnderMousePointer instanceof Positionable) {
-                        //now its clear its a transition or place!
-                        //check if its already selected!
-                        if (((Positionable)figureUnderMousePointer).isSelected()) {
-                            //user wants to drag selected elements!
-                            GlobalController.setMode(GlobalController.MODE_DRAG_SELECTION);
-                        } else {
-                            //select the element start dragging
+                    if (figureUnderMousePointer != null) {
+                        //check if a label is under mouse pointer
+                        //if yes: only this label will be selected (and dragged)
+                        if(figureUnderMousePointer instanceof LabelFigure) {
                             SelectionController.clearSelection();
                             SelectionController.addFigureToSelection((Positionable)figureUnderMousePointer);
                             GlobalController.setMode(GlobalController.MODE_DRAG_SELECTION);
                         }
+
+                        //check if a Positionable is under mouse pointer
+                        if (figureUnderMousePointer instanceof Positionable) {
+                            //now its clear its a transition or place!
+                            //check if its already selected!
+                            if (((Positionable)figureUnderMousePointer).isSelected()) {
+                                //user wants to drag selected elements!
+                                GlobalController.setMode(GlobalController.MODE_DRAG_SELECTION);
+                            } else {
+                                //select the element start dragging
+                                SelectionController.clearSelection();
+                                SelectionController.addFigureToSelection((Positionable)figureUnderMousePointer);
+                                GlobalController.setMode(GlobalController.MODE_DRAG_SELECTION);
+                            }
+                        }
+                        SelectionController.setOffsetToSelectedElements(mousePressPoint);
+                    } else {
+                        SelectionController.clearSelection();
                     }
-                    SelectionController.setOffsetToSelectedElements(mousePressPoint);
                     break;
                 case GlobalController.MODE_PLACE:
                     PetriNetController.addPetriNetElement(mousePressPoint, PetriNetController.ELEMENT_PLACE);

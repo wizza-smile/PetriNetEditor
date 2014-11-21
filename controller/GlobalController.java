@@ -62,6 +62,8 @@ public class GlobalController {
         }
         //cleanup before
         switch (mode) {
+            case MODE_PLACE:
+            case MODE_TRANSITION:
             case MODE_ARC:
             case MODE_ARC_SELECT_TARGET:
                 SelectionController.clearSelection();
