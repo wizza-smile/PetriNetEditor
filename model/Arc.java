@@ -109,7 +109,8 @@ public class Arc extends PetriNetElement {
         if (doublette_found) {
             this.merge(arc);
             //remove after iteration (concurrency)
-            PetriNetController.removeArc(arc.getId());
+            arc.delete();
+            // PetriNetController.removeArc(arc.getId());
         }
 
         CanvasController.arc_no_target_id = null;

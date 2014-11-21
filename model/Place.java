@@ -35,7 +35,9 @@ public class Place extends Connectable {
 
 
     public void delete() {
+        System.out.println( "1" );
         SelectionController.clearSelection();
+        System.out.println( "2"+arc_ids.size() );
         Arc[] all_arcs = new Arc[arc_ids.size()];
         int index = 0;
         for (String arc_id : arc_ids ) {
@@ -45,7 +47,9 @@ public class Place extends Connectable {
         for (Arc arc  : all_arcs) {
             arc.delete();
         }
+        System.out.println( "3" );
         CanvasController.removeFigure(this.getId());
+        System.out.println( "4" );
         PetriNetController.removePlace(this.getId());
     }
 
