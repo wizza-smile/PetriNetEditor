@@ -31,25 +31,42 @@ public class SelectionController {
 
         // System.out.printf("%f, %f, %f, %f \n", x, y, width, height );
 
-        Iterator it = PetriNetController.getPetriNet().getElements().values().iterator();
-        while (it.hasNext()) {
-            PetriNetElement element = (PetriNetElement)it.next();
-            BaseFigure figure = element.getFigure();
+
+        for (String id : CanvasController.getPositionablesIds() ) {
+            Positionable figure = (Positionable)CanvasController.getFigureById(id);
             boolean inSelectionRectangle = figure.intersects(selectionRectangle);
-            if (figure instanceof Selectable) {
-                if (inSelectionRectangle) {
-                    SelectionController.addFigureToSelection(figure);
-                } else {
-                    SelectionController.removeFigureFromSelection(figure);
-                }
+            if (inSelectionRectangle) {
+                SelectionController.addFigureToSelection(figure);
+            } else {
+                SelectionController.removeFigureFromSelection(figure);
             }
         }
+
+
+
+        // Iterator it = PetriNetController.getPetriNet().getElements().values().iterator();
+        // while (it.hasNext()) {
+        //     PetriNetElement element = (PetriNetElement)it.next();
+        //     BaseFigure figure = element.getFigure();
+        //     boolean inSelectionRectangle = figure.intersects(selectionRectangle);
+        //     if (figure instanceof Selectable) {
+        //         if (inSelectionRectangle) {
+        //             SelectionController.addFigureToSelection(figure);
+        //         } else {
+        //             SelectionController.removeFigureFromSelection(figure);
+        //         }
+        //     }
+        // }
+
+
+
+
     }
 
     public static void setOffsetToSelectedElements(Point2D point) {
         for (String id : selectedElements_ids ) {
-            BaseFigure figure = CanvasController.getFigureById(id);
-            figure.setOffsetToPoint(point);
+            Positionable figure = (Positionable)CanvasController.getFigureById(id);
+            figure.setOffset(point);
         }
     }
 
@@ -63,9 +80,9 @@ public class SelectionController {
     }
 
 
-    //get figure, if one is under pointer (TransitionFigure, PlaceFigure, LabelFigure)
+    //get figure, if one is under pointer (TransitionFigure, PlaceFigure, LabelFigure, ArcFigure)
     public static BaseFigure getFigureUnderMousePointer(Point2D pointer) {
-        for (String id : CanvasController.getPositionablesIds() ) {
+        for (String id : CanvasController.getAllFigureIds() ) {
             BaseFigure figure = CanvasController.getFigureById(id);
             if (figure.contains(pointer)) {
                 return figure;
@@ -77,10 +94,10 @@ public class SelectionController {
 
 
 
-    public static void addFigureToSelection(BaseFigure figure) {
-        if (figure instanceof Selectable && !selectedElements_ids.contains(figure.getId())) {
+    public static void addFigureToSelection(Positionable figure) {
+        if (!selectedElements_ids.contains(figure.getId())) {
             selectedElements_ids.add(figure.getId());
-            ((Selectable)figure).setSelected(true);
+            figure.setSelected(true);
         }
     }
 
@@ -91,9 +108,9 @@ public class SelectionController {
     }
 
 
-    public static void removeFigureFromSelection(BaseFigure figure) {
+    public static void removeFigureFromSelection(Positionable figure) {
         selectedElements_ids.remove(figure.getId());
-        ((Selectable)figure).setSelected(false);
+        figure.setSelected(false);
     }
 
 
@@ -103,7 +120,7 @@ public class SelectionController {
 
     public static void clearSelection() {
         for (String id : selectedElements_ids ) {
-            ((Selectable)CanvasController.getFigureById(id)).setSelected(false);
+            ((Positionable)CanvasController.getFigureById(id)).setSelected(false);
         }
         selectedElements_ids = new ArrayList<String>();
 

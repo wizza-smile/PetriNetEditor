@@ -17,7 +17,7 @@ import java.awt.geom.*;
 import javax.swing.*;
 
 
-public class PlaceFigure extends BaseFigure implements Selectable {
+public class PlaceFigure extends Positionable implements Selectable {
 
 
     private Ellipse2D ellipse;
@@ -31,14 +31,15 @@ public class PlaceFigure extends BaseFigure implements Selectable {
     //protected TokenSetFigure tokenFigure;
 
     public PlaceFigure(Place place) {
+        this.setId(place.getId());
         this.element = (PetriNetElement)place;
         setEllipse(generateEllipse());
         if (1==1 || this.getPlace().getTokenCount() == 1) {
             this.tokenPoint = generateTokenPoint();
         }
 
-        LabelFigure labelFigure = new LabelFigure(this.getId(), this.getPlace().getPosition());
-        this.labelFigureId = labelFigure.getFigureId();
+        LabelFigure labelFigure = new LabelFigure(this, this.getPlace().getPosition());
+        this.labelFigureId = labelFigure.getId();
         CanvasController.addLabelFigure(labelFigureId, labelFigure);
         // this.placeId = placeId;
         // this.position = position;
@@ -50,8 +51,9 @@ public class PlaceFigure extends BaseFigure implements Selectable {
         CanvasController.removePlaceFigure(this.getId());
     }
 
+
     public Place getPlace() {
-        return (Place)this.element;
+        return (Place)this.getElement();
     }
 
     public void setSelected(boolean selected) {
@@ -197,6 +199,14 @@ public class PlaceFigure extends BaseFigure implements Selectable {
 
     public Rectangle2D getBounds() {
         return this.ellipse.getBounds();
+    }
+
+    public Point2D getPosition() { return getElement().getPosition(); }
+
+    public void setPosition(Point2D position) { getElement().setPosition(position); }
+
+    public Connectable getElement() {
+        return (Connectable)super.getElement();
     }
 
 

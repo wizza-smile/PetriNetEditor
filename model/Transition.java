@@ -7,7 +7,7 @@ import java.util.*;
 
 import java.awt.geom.Point2D;
 
-public class Transition extends PetriNetElement implements Connectable {
+public class Transition extends Connectable {
 
     public String label;
     private ArrayList<String> arc_ids = new ArrayList<String>();
@@ -15,7 +15,7 @@ public class Transition extends PetriNetElement implements Connectable {
     public Transition(String elementId, Point2D position) {
         this.setId(elementId);
         this.position = position;
-        this.label = "T LABEL";
+        this.setLabel("T LABEL");
         //cache a figure
         this.getFigure();
         // this.tokenFigure = new TokenSetFigure(this);
@@ -45,14 +45,6 @@ public class Transition extends PetriNetElement implements Connectable {
         PetriNetController.removeTransition(this.getId());
     }
 
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
-    }
 
 
     public BaseFigure getFigure() {

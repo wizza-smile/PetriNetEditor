@@ -11,7 +11,7 @@ import java.awt.font.*;
 import java.awt.geom.*;
 
 
-public class LabelFigure extends BaseFigure implements Selectable {
+public class LabelFigure extends Positionable implements Selectable {
 
 
     protected Color labelStrokeColor = new Color(0, 0, 0);
@@ -20,13 +20,13 @@ public class LabelFigure extends BaseFigure implements Selectable {
     protected String labelText;
     public Point2D position;
     private Point2D offsetToLabeledFigure = new Point2D.Double(30, 50);
-    private String labeledFigureId;
+    // private String labeledFigureId;
     private RoundRectangle2D label_border_rect;
 
-    public LabelFigure(String labeledFigureId, Point2D labeledFigurePosition) {
-
-        this.elementId = labeledFigureId;
-        this.figureId = "label_" + this.elementId;
+    public LabelFigure(BaseFigure labeledFigure, Point2D labeledFigurePosition) {
+        this.elementId = labeledFigure.getId();
+        this.element = labeledFigure.getElement();
+        this.id = "label_" + this.elementId;
         this.position = new Point2D.Double(offsetToLabeledFigure.getX() + labeledFigurePosition.getX(), offsetToLabeledFigure.getY() + labeledFigurePosition.getY());
     }
 
@@ -111,8 +111,8 @@ public class LabelFigure extends BaseFigure implements Selectable {
     }
 
 
-    public BaseFigure getLabeledFigure() {
-        return CanvasController.getFigureById(elementId);
+    public Positionable getLabeledFigure() {
+        return (Positionable)CanvasController.getFigureById(elementId);
     }
 
 
@@ -126,18 +126,28 @@ public class LabelFigure extends BaseFigure implements Selectable {
     }
 
 
-    public String getId() { return figureId; }
+    // public String getId() {
+    //     return id;
+    // }
+
+    public String getLabeledFigureId() {
+        return this.elementId;
+    }
 
     public String getLabel() {
-        return ((Connectable)PetriNetController.getElementById(elementId)).getLabel();
+        return getElement().getLabel();
     }
 
     public void setLabel(String label) {
-        ((Connectable)PetriNetController.getElementById(elementId)).setLabel(label);
+        getElement().setLabel(label);
     }
 
     public Rectangle2D getBounds() {
         return label_border_rect.getBounds();
+    }
+
+    public Connectable getElement() {
+        return (Connectable)super.getElement();
     }
 
 

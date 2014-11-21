@@ -22,7 +22,7 @@ public class PNMLParser {
      * Mit dieser Main Methode kann der Parser zum Testen
      * aufgerufen werden. Als erster und einziger Paramter muss
      * dazu der Pfad zur PNML Datei angegeben werden.
-     * 
+     *
      * @param args
      *      Die Konsolen Parameter, mit denen das Programm aufgerufen wird.
      */
@@ -76,7 +76,7 @@ public class PNMLParser {
     /**
      * Dieser Konstruktor erstellt einen neuen Parser für PNML Dateien,
      * dem die PNML Datei als Java {@link File} übergeben wird.
-     * 
+     *
      * @param pnml
      *      Java {@link File} Objekt der PNML Datei
      */
@@ -109,7 +109,7 @@ public class PNMLParser {
     }
 
     /**
-     * Diese Methode liest die XML Datei und delegiert die 
+     * Diese Methode liest die XML Datei und delegiert die
      * gefundenen XML Elemente an die entsprechenden Methoden.
      */
     public final void parse() {
@@ -157,7 +157,7 @@ public class PNMLParser {
      * Diese Methode behandelt den Start neuer XML Elemente, in dem der Name des
      * Elements überprüft wird und dann die Behandlung an spezielle Methoden
      * delegiert wird.
-     * 
+     *
      * @param event
      *            {@link XMLEvent}
      */
@@ -183,7 +183,7 @@ public class PNMLParser {
 
     /**
      * Diese Methode wird aufgerufen, wenn Text innerhalb eines Value Elements gelesen wird.
-     * 
+     *
      * @param value
      *      Der gelesene Text als String
      */
@@ -196,8 +196,8 @@ public class PNMLParser {
     }
 
     /**
-     * Diese Methode wird aufgerufen, wenn ein Positionselement gelesen wird. 
-     * 
+     * Diese Methode wird aufgerufen, wenn ein Positionselement gelesen wird.
+     *
      * @param element
      *      das Positionselement
      */
@@ -221,8 +221,8 @@ public class PNMLParser {
     }
 
     /**
-     * Diese Methode wird aufgerufen, wenn ein Transitionselement gelesen wird. 
-     * 
+     * Diese Methode wird aufgerufen, wenn ein Transitionselement gelesen wird.
+     *
      * @param element
      *      das Transitionselement
      */
@@ -246,8 +246,8 @@ public class PNMLParser {
     }
 
     /**
-     * Diese Methode wird aufgerufen, wenn ein Stellenelement gelesen wird. 
-     * 
+     * Diese Methode wird aufgerufen, wenn ein Stellenelement gelesen wird.
+     *
      * @param element
      *      das Stellenelement
      */
@@ -271,8 +271,8 @@ public class PNMLParser {
     }
 
     /**
-     * Diese Methode wird aufgerufen, wenn ein Kantenelement gelesen wird. 
-     * 
+     * Diese Methode wird aufgerufen, wenn ein Kantenelement gelesen wird.
+     *
      * @param element
      *      das Kantenelement
      */
@@ -302,7 +302,7 @@ public class PNMLParser {
 
     /**
      * Diese Methode kann überschrieben werden, um geladene Transitionen zu erstellen.
-     * 
+     *
      * @param id
      *      Identifikationstext der Transition
      */
@@ -312,7 +312,7 @@ public class PNMLParser {
 
     /**
      * Diese Methode kann überschrieben werden, um geladene Stellen zu erstellen.
-     * 
+     *
      * @param id
      *      Identifikationstext der Stelle
      */
@@ -322,13 +322,13 @@ public class PNMLParser {
 
     /**
      * Diese Methode kann überschrieben werden, um geladene Kanten zu erstellen.
-     * 
+     *
      * @param id
      *      Identifikationstext der Kante
      * @param source
      *      Identifikationstext des Startelements der Kante
      * @param target
-     *      Identifikationstext des Endelements der Kante     
+     *      Identifikationstext des Endelements der Kante
      */
     public void newArc(final String id, final String source, final String target) {
         System.out.println("Kante mit id " + id + " von " + source + " nach "
@@ -338,7 +338,7 @@ public class PNMLParser {
     /**
      * Diese Methode kann überschrieben werden, um die Positionen der geladenen
      * Elemente zu aktualisieren.
-     * 
+     *
      * @param id
      *      Identifikationstext des Elements
      * @param x
@@ -354,7 +354,7 @@ public class PNMLParser {
     /**
      * Diese Methode kann überschrieben werden, um den Beschriftungstext der geladenen
      * Elemente zu aktualisieren.
-     * 
+     *
      * @param id
      *      Identifikationstext des Elements
      * @param name
@@ -368,7 +368,7 @@ public class PNMLParser {
     /**
      * Diese Methode kann überschrieben werden, um die Markierung der geladenen
      * Elemente zu aktualisieren.
-     * 
+     *
      * @param id
      *      Identifikationstext des Elements
      * @param marking

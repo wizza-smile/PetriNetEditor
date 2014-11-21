@@ -33,6 +33,17 @@ public class CanvasController {
 
 
 
+
+    public static ArrayList<String> getAllFigureIds() {
+        ArrayList<String> positionablesIds = new ArrayList<String>();
+        positionablesIds.addAll(canvas.label_figure_ids);
+        positionablesIds.addAll(canvas.place_figure_ids);
+        positionablesIds.addAll(canvas.transition_figure_ids);
+        positionablesIds.addAll(canvas.arc_figure_ids);
+
+        return positionablesIds;
+    }
+
     public static ArrayList<String> getPlacesAndTransitionFiguresIds() {
         ArrayList<String> placesAndTransitionFiguresIds = new ArrayList<String>();
         placesAndTransitionFiguresIds.addAll(canvas.place_figure_ids);
@@ -178,8 +189,10 @@ public class CanvasController {
         if (e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e)) {
             SelectionController.clearSelection();
             BaseFigure figureUnderMousePointer = SelectionController.getFigureUnderMousePointer(mousePressPoint);
-            SelectionController.addFigureToSelection(figureUnderMousePointer);
-            GlobalController.setMode(GlobalController.MODE_SELECT);
+            if (figureUnderMousePointer instanceof Positionable){
+                SelectionController.addFigureToSelection((Positionable)figureUnderMousePointer);
+                GlobalController.setMode(GlobalController.MODE_SELECT);
+            }
         }
     }
 
@@ -195,22 +208,20 @@ public class CanvasController {
 
                     if (figureUnderMousePointer != null && figureUnderMousePointer instanceof LabelFigure) {
                         SelectionController.clearSelection();
-                        SelectionController.addFigureToSelection(figureUnderMousePointer);
+                        SelectionController.addFigureToSelection((Positionable)figureUnderMousePointer);
                         GlobalController.setMode(GlobalController.MODE_DRAG_SELECTION);
                     }
 
-                    //check if a selected elementFigure is under mouse pointer
-                    //if yes: start dragging selection
-                    if (figureUnderMousePointer instanceof Selectable && ((Selectable)figureUnderMousePointer).isSelected()) {
-                        //user wants to drag selected elements!
-                        GlobalController.setMode(GlobalController.MODE_DRAG_SELECTION);
-                    }
-                    //if not: remove current selection and select figure under mouse pointer, if any.
-                    if (GlobalController.mode != GlobalController.MODE_DRAG_SELECTION) {
-                        SelectionController.clearSelection();
-
-                        if (figureUnderMousePointer != null && !(figureUnderMousePointer instanceof LabelFigure)) {
-                            SelectionController.addFigureToSelection(figureUnderMousePointer);
+                    //check if a Positionable is under mouse pointer
+                    if (figureUnderMousePointer instanceof Positionable) {
+                        //now its clear its a transition or place!
+                        //check if its already selected!
+                        if (((Positionable)figureUnderMousePointer).isSelected()) {
+                            //user wants to drag selected elements!
+                            GlobalController.setMode(GlobalController.MODE_DRAG_SELECTION);
+                        } else {
+                            //select the element start dragging
+                            SelectionController.addFigureToSelection((Positionable)figureUnderMousePointer);
                             GlobalController.setMode(GlobalController.MODE_DRAG_SELECTION);
                         }
                     }
@@ -304,7 +315,7 @@ public class CanvasController {
                     ArrayList<String> selectedElements_ids = SelectionController.getSelectedElementsIds();
                     boolean clearSelection = true;
                     for (String id : selectedElements_ids ) {
-                        BaseFigure figure = CanvasController.getFigureById(id);
+                        Positionable figure = (Positionable)CanvasController.getFigureById(id);
                         Point2D offset = figure.getOffset();
                         figure.setPosition( new Point2D.Double(currentMousePoint.getX()+offset.getX(), currentMousePoint.getY()+offset.getY()) );
                     }
@@ -385,7 +396,7 @@ public class CanvasController {
         boolean initialized = false;
 
         for (String figure_id : CanvasController.getPlacesAndTransitionFiguresIds()) {
-            BaseFigure figure = CanvasController.getFigureById(figure_id);
+            Positionable figure = (Positionable)CanvasController.getFigureById(figure_id);
             if (initialized) {
                 petriNetBounds.add(figure.getBounds());
             } else {

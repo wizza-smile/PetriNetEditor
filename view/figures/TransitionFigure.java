@@ -17,7 +17,7 @@ import java.awt.geom.*;
 import javax.swing.*;
 
 
-public class TransitionFigure extends BaseFigure implements Selectable {
+public class TransitionFigure extends Positionable {
 
 
     private Rectangle2D transitionRectangle;
@@ -29,10 +29,11 @@ public class TransitionFigure extends BaseFigure implements Selectable {
 
 
     public TransitionFigure(Transition transition) {
+        this.setId(transition.getId());
         this.element = (PetriNetElement)transition;
 
-        LabelFigure labelFigure = new LabelFigure(this.getId(), this.getTransition().getPosition());
-        this.labelFigureId = labelFigure.getFigureId();
+        LabelFigure labelFigure = new LabelFigure(this, this.getTransition().getPosition());
+        this.labelFigureId = labelFigure.getId();
         CanvasController.addLabelFigure(labelFigureId, labelFigure);
     }
 
@@ -58,13 +59,7 @@ public class TransitionFigure extends BaseFigure implements Selectable {
         return (Transition)this.element;
     }
 
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-    }
 
-    public boolean isSelected() {
-        return selected;
-    }
 
     public boolean contains(Point2D position) {
         return this.transitionRectangle.contains(position);
@@ -73,7 +68,6 @@ public class TransitionFigure extends BaseFigure implements Selectable {
     public boolean intersects(Rectangle2D rect) {
         return this.transitionRectangle.intersects(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
     }
-
 
 
 
@@ -138,6 +132,14 @@ public class TransitionFigure extends BaseFigure implements Selectable {
     }
 
 
+
+    public Point2D getPosition() { return getElement().getPosition(); }
+
+    public void setPosition(Point2D position) { getElement().setPosition(position); }
+
+    public Connectable getElement() {
+        return (Connectable)super.getElement();
+    }
 
 
     public void setTransitionRectangle(Rectangle2D r) {

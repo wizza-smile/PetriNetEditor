@@ -173,7 +173,7 @@ public class PetriNetController {
     public static void moveAllElements(Double x, Double y) {
 
         for (String elem_id : PetriNetController.getConnectablesIds()) {
-            PetriNetElement elem = PetriNetController.getElementById(elem_id);
+            Connectable elem = (Connectable)PetriNetController.getElementById(elem_id);
             Point2D position = elem.getPosition();
             Point2D new_position = new Point2D.Double(position.getX()+x, position.getY()+y);
             elem.setPosition(new_position);

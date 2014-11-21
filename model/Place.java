@@ -7,7 +7,7 @@ import java.util.*;
 
 import java.awt.geom.Point2D;
 
-public class Place extends PetriNetElement implements Connectable {
+public class Place extends Connectable {
 
     public String label;
 
@@ -18,7 +18,7 @@ public class Place extends PetriNetElement implements Connectable {
     public Place(String elementId, Point2D position) {
         this.setId(elementId);
         this.position = position;
-        this.label = "LABEL";
+        this.setLabel("LABEL");
         //cache a figure
         this.getFigure();
         // this.tokenFigure = new TokenSetFigure(this);
@@ -47,14 +47,6 @@ public class Place extends PetriNetElement implements Connectable {
         }
         CanvasController.removeFigure(this.getId());
         PetriNetController.removePlace(this.getId());
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
     }
 
     public int getTokenCount() {

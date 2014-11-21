@@ -81,7 +81,7 @@ public class PetriNet {
 
 
     public void addElement(String elementId, PetriNetElement element) {
-        Collections.synchronizedMap(elements).put(elementId, element);
+        getElements().put(elementId, element);
         element_counter++;
     }
 

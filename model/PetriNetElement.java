@@ -7,7 +7,7 @@ import java.awt.geom.Point2D;
 public abstract class PetriNetElement {
 
     protected Point2D position;
-    protected String elementId;
+    protected String id;
     protected String figureId;
 
 
@@ -23,18 +23,11 @@ public abstract class PetriNetElement {
     /////////////////////
     //implemented methods
     //////////////////////
-    public void addArcId(String arc_id){}
 
-    public String getId() { return elementId; }
-    public void setId(String elementId) { this.elementId = elementId; }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
-    public Point2D getPosition() { return position; }
 
-    public void setPosition(Point2D position) {
-        this.position = position;
-        //update figure position!
-        ((Selectable)this.getFigure()).updatePosition();
-    }
 
 
 }

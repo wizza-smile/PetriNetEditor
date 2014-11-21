@@ -27,6 +27,7 @@ public class ArcFigure extends BaseFigure {
 
     //two possible arrow heads 0=target_transition 1= target_place
     public ArrowHead[] arrow_heads = new ArrowHead[2];
+    public int selectedArrowHeadsTargetType;
 
     //gradient triangle
     Double a, b, c, alpha, gradient;
@@ -40,6 +41,7 @@ public class ArcFigure extends BaseFigure {
 
     public ArcFigure(Arc arc) {
         this.element = (PetriNetElement)arc;
+        this.setId(this.element.getId());
     }
 
     public Arc getArc() {
@@ -51,7 +53,15 @@ public class ArcFigure extends BaseFigure {
 
     }
 
+    //check if arrowHead's been clicked on, then store its target
     public boolean contains(Point2D position) {
+        for (ArrowHead ah : arrow_heads ) {
+            if (ah.contains(position)) {
+                this.selectedArrowHeadsTargetType = ah.TARGET_TYPE;
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -78,9 +88,6 @@ public class ArcFigure extends BaseFigure {
     }
 
     public Integer arrowHeadsContain(Point2D position) {
-        if (getTargetType() == Arc.TARGET_TRANSITION || getTargetType() == Arc.TARGET_BOTH) {
-
-        }
 
         if (getTargetType() == Arc.TARGET_BOTH) {
             for (ArrowHead ah : arrow_heads ) {
@@ -187,7 +194,8 @@ public class ArcFigure extends BaseFigure {
 
         //a traget is not yet set, follow the mouse!!
         if (!getArc().isTargetSet()) {
-            Point2D source_position = getArc().getSource().getPosition();
+            Arc arc = getArc();
+            Point2D source_position = arc.getSource().getPosition();
             Point2D target_position = CanvasController.getCurrentMousePoint();
             CanvasController.arc_no_target_id = this.getId();
 
