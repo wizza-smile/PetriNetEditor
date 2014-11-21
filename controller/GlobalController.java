@@ -48,7 +48,7 @@ public class GlobalController {
 
 
     public static void setMode(int mode) {
-        //cleanup
+        //cleanup after
         switch (GlobalController.mode) {
             case MODE_ARC_SELECT_TARGET:
                 if (CanvasController.arc_no_target_id != null) {
@@ -60,6 +60,17 @@ public class GlobalController {
             default:
                 break;
         }
+        //cleanup before
+        switch (mode) {
+            case MODE_ARC:
+            case MODE_ARC_SELECT_TARGET:
+                SelectionController.clearSelection();
+                CanvasController.repaintCanvas();
+                break;
+            default:
+                break;
+        }
+
         GlobalController.mode = mode;
     }
 
