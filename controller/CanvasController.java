@@ -30,7 +30,7 @@ public class CanvasController {
     static private view.Canvas canvas;
 
     static Point2D mousePressPoint;
-    static Point2D currentMousePoint;
+    static Point2D currentMousePoint = new Point2D.Double(.0,.0);
 
     public static String arc_no_target_id;
 
@@ -180,22 +180,22 @@ public class CanvasController {
     }
 
 
-
+    //DEPRECATED
     public static void removeTransitionFigure(String figureId) {
         canvas.removeFigure(figureId);
         canvas.transition_figure_ids.remove(figureId);
     }
-
+    //DEPRECATED
     public static void removeArcFigure(String figureId) {
         canvas.removeFigure(figureId);
         canvas.arc_figure_ids.remove(figureId);
     }
-
+    //DEPRECATED
     public static void removePlaceFigure(String figureId) {
         canvas.removeFigure(figureId);
         canvas.place_figure_ids.remove(figureId);
     }
-
+    //DEPRECATED
     public static void removeLabelFigure(String figureId) {
         canvas.removeFigure(figureId);
         canvas.label_figure_ids.remove(figureId);
@@ -226,7 +226,6 @@ public class CanvasController {
                 }
                 break;
             default:
-                System.out.println("LEFT MOUSE PRESSSSSS");
                 break;
         }
     }
@@ -235,6 +234,7 @@ public class CanvasController {
     public static void mousePressed(MouseEvent e) {
         mousePressPoint = new Point2D.Double(e.getX(), e.getY());
         if (SwingUtilities.isLeftMouseButton(e)) {
+            System.out.println("LEFT MOUSE PRESS");
             switch (GlobalController.mode) {
                 case GlobalController.MODE_SELECT:
                     SelectionController.mouseClickedInModeSelect(e);
@@ -261,12 +261,12 @@ public class CanvasController {
                     }
                     break;
                 default:
-                    System.out.println("LEFT MOUSE PRESSSSSS");
                     break;
             }
         }
         //RECHTER MOUSE PRESS
         if (SwingUtilities.isRightMouseButton(e)) {
+            System.out.println("RIGHT MOUSE");
             switch (GlobalController.mode) {
                 case GlobalController.MODE_SELECT:
                     //if a figure is under mouse, show its popup
@@ -276,7 +276,6 @@ public class CanvasController {
                     }
                     break;
                 default:
-                    System.out.println("RIGHT MOUSE");
                     break;
             }
         }
