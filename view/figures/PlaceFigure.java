@@ -10,8 +10,7 @@ import java.lang.Math;
 
 
 import java.awt.*;
-
-// import java.awt.Graphics2D;
+import java.awt.event.*;
 import java.awt.geom.*;
 
 import javax.swing.*;
@@ -51,6 +50,10 @@ public class PlaceFigure extends Positionable {
         CanvasController.removePlaceFigure(this.getId());
     }
 
+
+    public void showPopup(MouseEvent e) {
+        MainWindowController.showPlacePopupMenu(e, this.getId());
+    }
 
     public Place getPlace() {
         return (Place)this.getElement();

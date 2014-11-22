@@ -1,5 +1,7 @@
 package controller;
 
+import model.*;
+import view.figures.*;
 import view.*;
 
 import java.awt.*;
@@ -30,8 +32,11 @@ public class MainWindowController {
         main_window.showLabelInput(e, label_figure_id);
     }
 
+    //target type of the arrow head clicked on
     public static void showArcPopupMenu(MouseEvent e, String arc_id, int target_type) {
-        main_window.showArcPopupMenu(e, arc_id, target_type);
+        Arc arc = (Arc)PetriNetController.getElementById(arc_id);
+        JPopupMenu contextMenu = arc.getPopup(arc_id, target_type);
+        contextMenu.show(e.getComponent(), e.getX(), e.getY());
     }
 
     public static void showTransitionPopupMenu(MouseEvent e, String transition_id) {

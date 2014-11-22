@@ -35,13 +35,13 @@ public class CanvasController {
 
 
     public static ArrayList<String> getAllFigureIds() {
-        ArrayList<String> positionablesIds = new ArrayList<String>();
-        positionablesIds.addAll(canvas.label_figure_ids);
-        positionablesIds.addAll(canvas.place_figure_ids);
-        positionablesIds.addAll(canvas.transition_figure_ids);
-        positionablesIds.addAll(canvas.arc_figure_ids);
+        ArrayList<String> allFigureIds = new ArrayList<String>();
+        allFigureIds.addAll(canvas.label_figure_ids);
+        allFigureIds.addAll(canvas.place_figure_ids);
+        allFigureIds.addAll(canvas.transition_figure_ids);
+        allFigureIds.addAll(canvas.arc_figure_ids);
 
-        return positionablesIds;
+        return allFigureIds;
     }
 
     public static ArrayList<String> getPlacesAndTransitionFiguresIds() {
@@ -149,6 +149,12 @@ public class CanvasController {
         Grid.addToReferencePoint(p);
     }
 
+    public static void addArcFigure(String figureId, ArcFigure figure) {
+        canvas.addFigure(figureId, figure);
+        canvas.arc_figure_ids.add(figureId);
+    }
+
+
     public static void addPlaceFigure(String figureId, PlaceFigure figure) {
         canvas.addFigure(figureId, figure);
         canvas.place_figure_ids.add(figureId);
@@ -169,6 +175,11 @@ public class CanvasController {
         canvas.transition_figure_ids.remove(figureId);
     }
 
+    public static void removeArcFigure(String figureId) {
+        canvas.removeFigure(figureId);
+        canvas.arc_figure_ids.remove(figureId);
+    }
+
     public static void removePlaceFigure(String figureId) {
         canvas.removeFigure(figureId);
         canvas.place_figure_ids.remove(figureId);
@@ -185,14 +196,21 @@ public class CanvasController {
 
 
     public static void mouseClicked(MouseEvent e) {
-        //on dbl-click: clear selection and select figure under pointer, if any
-        if (e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e)) {
-            SelectionController.clearSelection();
-            BaseFigure figureUnderMousePointer = SelectionController.getFigureUnderMousePointer(mousePressPoint);
-            if (figureUnderMousePointer instanceof Positionable){
-                SelectionController.addFigureToSelection((Positionable)figureUnderMousePointer);
-                GlobalController.setMode(GlobalController.MODE_SELECT);
-            }
+        switch (GlobalController.mode) {
+            case GlobalController.MODE_SELECT:
+                //on dbl-click: clear selection and select figure under pointer, if any
+                if (e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e)) {
+                    SelectionController.clearSelection();
+                    BaseFigure figureUnderMousePointer = SelectionController.getFigureUnderMousePointer(mousePressPoint);
+                    if (figureUnderMousePointer instanceof Positionable){
+                        SelectionController.addFigureToSelection((Positionable)figureUnderMousePointer);
+                        GlobalController.setMode(GlobalController.MODE_SELECT);
+                    }
+                }
+                break;
+            default:
+                System.out.println("LEFT MOUSE PRESSSSSS");
+                break;
         }
     }
 
@@ -264,37 +282,11 @@ public class CanvasController {
             switch (GlobalController.mode) {
                 case GlobalController.MODE_SELECT:
 
-                    //check if a label is under mouse
+                    //if a figure is under mouse, show its popup
                     BaseFigure figureUnderMousePointer = SelectionController.getFigureUnderMousePointer(mousePressPoint);
+
                     if (figureUnderMousePointer != null) {
-
-                        if (figureUnderMousePointer instanceof LabelFigure) {
-                            MainWindowController.showLabelInput(e, figureUnderMousePointer.getId());
-                        }
-
-                        if (figureUnderMousePointer instanceof TransitionFigure) {
-                            MainWindowController.showTransitionPopupMenu(e, figureUnderMousePointer.getId());
-                        }
-
-
-                        if (figureUnderMousePointer instanceof PlaceFigure) {
-                            MainWindowController.showPlacePopupMenu(e, figureUnderMousePointer.getId());
-                        }
-
-
-
-                    }
-
-                    //if click on arrowHead: SHOW the menu to delete Arc(target)
-                    java.util.List<String> arc_ids = PetriNetController.getPetriNet().getArcIds();
-                    for (String arc_id : arc_ids ) {
-                        ArcFigure arcFigure = (ArcFigure)PetriNetController.getElementById(arc_id).getFigure();
-                        Integer target_type = arcFigure.arrowHeadsContain(new Point2D.Double(e.getX(), e.getY()));
-                        if (target_type != null) {
-                            //open context menu to
-                            //remove this target type /and evtl arrow??
-                            MainWindowController.showArcPopupMenu(e, arc_id, target_type);
-                        }
+                        figureUnderMousePointer.showPopup(e);
                     }
 
                     break;

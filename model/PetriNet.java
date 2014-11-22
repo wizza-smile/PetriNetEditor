@@ -67,7 +67,9 @@ public class PetriNet {
 
 
     public void removeArcId(String arcId) {
+        System.out.println( "REMOVE ARC ID" );
         getArcIds().remove(arcId);
+        System.out.println( getArcIds() );
     }
 
     public void removeTransitionId(String transition_id) {
@@ -86,7 +88,8 @@ public class PetriNet {
     }
 
     public void removeElement(String elementId) {
-        Collections.synchronizedMap(elements).remove(elementId);
+        System.out.println( elementId + "  Delete id" );
+        getElements().remove(elementId);
         element_counter--;
     }
 

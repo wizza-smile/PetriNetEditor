@@ -6,7 +6,7 @@ import controller.*;
 
 
 import java.awt.*;
-import java.awt.Font;
+import java.awt.event.*;
 import java.awt.font.*;
 import java.awt.geom.*;
 
@@ -34,6 +34,10 @@ public class LabelFigure extends Positionable {
 
     }
 
+
+    public void showPopup(MouseEvent e) {
+        MainWindowController.showLabelInput(e, this.getId());
+    }
 
     public boolean contains(Point2D position) {
         return this.label_border_rect.contains(position);

@@ -2,14 +2,23 @@ package model;
 
 import view.figures.*;
 
+import java.util.*;
+
 import java.awt.geom.Point2D;
 
 public abstract class Connectable extends PetriNetElement {
 
     public String label;
+    protected ArrayList<String> arc_ids = new ArrayList<String>();
 
-    public void addArcId(String arc_id){}
 
+    public void addArcId(String arc_id) {
+        arc_ids.add(arc_id);
+    }
+
+    public void removeArcId(String arc_id) {
+        arc_ids.remove(arc_id);
+    }
 
     public String getLabel() {
         return this.label;

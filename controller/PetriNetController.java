@@ -46,7 +46,9 @@ public class PetriNetController {
         ArrayList<String> allElementIds = new ArrayList<String>();
         allElementIds.addAll(petriNet.place_ids);
         allElementIds.addAll(petriNet.transition_ids);
-        allElementIds.addAll(petriNet.arc_ids);
+        allElementIds.addAll(petriNet.getArcIds());
+
+        System.out.println( petriNet.getArcIds() );
 
         return allElementIds;
     }
@@ -116,6 +118,7 @@ public class PetriNetController {
         petriNet.removeElement(transition_id);
         petriNet.removeTransitionId(transition_id);
     }
+
     public static void removePlace(String place_id) {
         petriNet.removeElement(place_id);
         petriNet.removePlaceId(place_id);

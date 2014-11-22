@@ -3,7 +3,9 @@ package model;
 import view.figures.*;
 import controller.*;
 
+import java.awt.event.*;
 import java.awt.geom.Point2D;
+import javax.swing.*;
 
 public class Arc extends PetriNetElement {
 
@@ -41,12 +43,14 @@ public class Arc extends PetriNetElement {
             Transition transition = (Transition)PetriNetController.getElementById(transition_id);
             transition.removeArcId(this.getId());
         }
+        CanvasController.removeFigure(this.getId());
         PetriNetController.removeArc(this.getId());
     }
 
     public ArcFigure getFigure() {
         if (arcfigure == null) {
             arcfigure = new ArcFigure(this);
+            CanvasController.addArcFigure(arcfigure.getId(), arcfigure);
         }
 
         return arcfigure;
@@ -67,6 +71,7 @@ public class Arc extends PetriNetElement {
             //now both directions
             this.target_type = TARGET_BOTH;
         }
+        arc.delete();
 
         return;
     }
@@ -109,7 +114,7 @@ public class Arc extends PetriNetElement {
         if (doublette_found) {
             this.merge(arc);
             //remove after iteration (concurrency)
-            arc.delete();
+
             // PetriNetController.removeArc(arc.getId());
         }
 
@@ -151,4 +156,36 @@ public class Arc extends PetriNetElement {
     public boolean isTargetSet() {
         return transition_id == null || place_id == null ? false : true;
     }
+
+
+
+
+    ///////////////
+    //POPUP    ////
+    public JPopupMenu getPopup(String arc_id, int target_type) {
+        JPopupMenu arcPopupMenu = new JPopupMenu();
+        JMenuItem menuItem = new JMenuItem(new DeleteArcMenuAction(this, target_type));//new DeletePetriNetObjectAction(myObject)
+        menuItem.setText("Delete Arrow Head");
+        arcPopupMenu.add(menuItem);
+        arcPopupMenu.addSeparator();
+
+        return arcPopupMenu;
+    }
+
+    protected class DeleteArcMenuAction extends DeletePetriNetObjectAction {
+        int target_type;
+
+        public DeleteArcMenuAction(PetriNetElement elem, int target_type) {
+            this.element = elem;
+            this.target_type = target_type;
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            ((Arc)element).removeTarget(target_type);
+            CanvasController.repaintCanvas();
+        }
+
+    }
+
+
 }

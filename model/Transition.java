@@ -10,7 +10,6 @@ import java.awt.geom.Point2D;
 public class Transition extends Connectable {
 
     public String label;
-    private ArrayList<String> arc_ids = new ArrayList<String>();
 
     public Transition(String elementId, Point2D position) {
         this.setId(elementId);

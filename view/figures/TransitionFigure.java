@@ -10,8 +10,7 @@ import java.lang.Math;
 
 
 import java.awt.*;
-
-// import java.awt.Graphics2D;
+import java.awt.event.*;
 import java.awt.geom.*;
 
 import javax.swing.*;
@@ -49,6 +48,9 @@ public class TransitionFigure extends Positionable {
         CanvasController.removeTransitionFigure(this.getId());
     }
 
+    public void showPopup(MouseEvent e) {
+        MainWindowController.showTransitionPopupMenu(e, this.getId());
+    }
 
     public LabelFigure getLabelFigure() {
         return (LabelFigure)CanvasController.getFigureById(this.labelFigureId);

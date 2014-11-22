@@ -2,7 +2,9 @@ package model;
 
 import view.figures.*;
 
+import java.awt.event.*;
 import java.awt.geom.Point2D;
+import javax.swing.*;
 
 public abstract class PetriNetElement {
 
@@ -18,6 +20,7 @@ public abstract class PetriNetElement {
     // public abstract PetriNetElement cloneElement();
     //return associated figure Object
     public abstract BaseFigure getFigure();
+    public abstract void delete();
 
 
     /////////////////////
@@ -28,7 +31,21 @@ public abstract class PetriNetElement {
     public void setId(String id) { this.id = id; }
 
 
+    protected class DeletePetriNetObjectAction extends AbstractAction {
+        protected PetriNetElement element;
 
+        DeletePetriNetObjectAction() {}
+
+        DeletePetriNetObjectAction(PetriNetElement elem) {
+            element = elem;
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            System.out.println( "delte Arc" );
+            // element.delete();
+        }
+
+    }
 
 }
 

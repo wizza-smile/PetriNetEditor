@@ -11,8 +11,7 @@ import java.util.*;
 
 
 import java.awt.*;
-
-// import java.awt.Graphics2D;
+import java.awt.event.*;
 import java.awt.geom.*;
 
 import javax.swing.*;
@@ -42,6 +41,7 @@ public class ArcFigure extends BaseFigure {
     public ArcFigure(Arc arc) {
         this.element = (PetriNetElement)arc;
         this.setId(this.element.getId());
+
     }
 
     public Arc getArc() {
@@ -50,13 +50,17 @@ public class ArcFigure extends BaseFigure {
 
 
     public void delete() {
+        CanvasController.removeArcFigure(this.getId());
+    }
 
+    public void showPopup(MouseEvent e) {
+        MainWindowController.showArcPopupMenu(e, this.getId(), selectedArrowHeadsTargetType);
     }
 
     //check if arrowHead's been clicked on, then store its target
     public boolean contains(Point2D position) {
         for (ArrowHead ah : arrow_heads ) {
-            if (ah.contains(position)) {
+            if (ah != null && ah.contains(position)) {
                 this.selectedArrowHeadsTargetType = ah.TARGET_TYPE;
                 return true;
             }
@@ -87,31 +91,31 @@ public class ArcFigure extends BaseFigure {
         return this.getArc().getTargetType();
     }
 
-    public Integer arrowHeadsContain(Point2D position) {
+    // public Integer arrowHeadsContain(Point2D position) {
 
-        if (getTargetType() == Arc.TARGET_BOTH) {
-            for (ArrowHead ah : arrow_heads ) {
-                if (ah.contains(position)) {
-                    return ah.TARGET_TYPE;
-                }
-            }
-        } else if (getTargetType() == Arc.TARGET_TRANSITION) {
-            if (arrow_heads[0].contains(position)) {
-                return arrow_heads[0].TARGET_TYPE;
-            }
-        } else {
-            if (arrow_heads[1].contains(position)) {
-                return arrow_heads[1].TARGET_TYPE;
-            }
-        }
+    //     if (getTargetType() == Arc.TARGET_BOTH) {
+    //         for (ArrowHead ah : arrow_heads ) {
+    //             if (ah.contains(position)) {
+    //                 return ah.TARGET_TYPE;
+    //             }
+    //         }
+    //     } else if (getTargetType() == Arc.TARGET_TRANSITION) {
+    //         if (arrow_heads[0].contains(position)) {
+    //             return arrow_heads[0].TARGET_TYPE;
+    //         }
+    //     } else {
+    //         if (arrow_heads[1].contains(position)) {
+    //             return arrow_heads[1].TARGET_TYPE;
+    //         }
+    //     }
 
-        return null;
-    }
+    //     return null;
+    // }
 
 
     protected void computeGradientTriangle() {
 
-        // determine the orientation of gradient triangle by considering who is up or left (target/source)
+        // determine the orientation of gradient triangle by considering who is up or left (place/transition)
         this.place_is_left = getPlace().getPosition().getX() < getTransition().getPosition().getX();
         this.place_is_up = getPlace().getPosition().getY() < getTransition().getPosition().getY();
         this.is_negative_gradient = (place_is_left ^ place_is_up) ? false : true;
@@ -148,8 +152,8 @@ public class ArcFigure extends BaseFigure {
 
 
     /**
-     * Check the sides of transition for Intersection with line.
-     * if one is found call getIntersectionPoint(side, line)
+     * Check the sides of transition rectangle for an intersection with arrowLine.
+     * if one is found, call getIntersectionPoint(side, line)
      */
     protected void computeIntersectionTransition() {
         //check the four lines of transition rectangle
@@ -296,7 +300,7 @@ public class ArcFigure extends BaseFigure {
         return p;
     }
 
-
+    //determines, if negative or positiove for x/y direction
     public Point getFactor_X_Y(boolean target_is_left, boolean target_is_up) {
         Point factor_x_y;
 

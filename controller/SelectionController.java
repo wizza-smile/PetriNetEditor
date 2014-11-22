@@ -84,6 +84,7 @@ public class SelectionController {
     public static BaseFigure getFigureUnderMousePointer(Point2D pointer) {
         for (String id : CanvasController.getAllFigureIds() ) {
             BaseFigure figure = CanvasController.getFigureById(id);
+
             if (figure.contains(pointer)) {
                 return figure;
             }
