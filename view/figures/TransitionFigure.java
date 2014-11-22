@@ -30,16 +30,15 @@ public class TransitionFigure extends Positionable {
     public TransitionFigure(Transition transition) {
         this.setId(transition.getId());
         this.element = (PetriNetElement)transition;
+        register();
 
         LabelFigure labelFigure = new LabelFigure(this, this.getTransition().getPosition());
         this.labelFigureId = labelFigure.getId();
         CanvasController.addLabelFigure(labelFigureId, labelFigure);
     }
 
-
-    public void drawLabel(Graphics2D g) {
-        this.getLabelFigure().draw(g);
-
+    public void register() {
+        CanvasController.addFigure(this, CanvasController.FIGURE_TRANSITION);
     }
 
 
@@ -47,6 +46,12 @@ public class TransitionFigure extends Positionable {
         CanvasController.removeLabelFigure(this.labelFigureId);
         CanvasController.removeTransitionFigure(this.getId());
     }
+
+    public void drawLabel(Graphics2D g) {
+        this.getLabelFigure().draw(g);
+
+    }
+
 
     public void showPopup(MouseEvent e) {
         MainWindowController.showTransitionPopupMenu(e, this.getId());

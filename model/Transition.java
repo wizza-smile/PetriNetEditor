@@ -60,8 +60,8 @@ public class Transition extends Connectable {
     public BaseFigure getFigure() {
         if (figureId == null) {
             TransitionFigure transitionFigure = new TransitionFigure(this);
-            figureId = this.getId();
-            CanvasController.addTransitionFigure(figureId, transitionFigure);
+            figureId = transitionFigure.getId();
+            // CanvasController.addTransitionFigure(figureId, transitionFigure);
             return (BaseFigure)transitionFigure;
         } else {
             return CanvasController.getFigureById(this.getId());

@@ -52,8 +52,8 @@ public class Place extends Connectable {
     public BaseFigure getFigure() {
         if (figureId == null) {
             PlaceFigure placeFigure = new PlaceFigure(this);
-            figureId = this.getId();
-            CanvasController.addPlaceFigure(figureId, placeFigure);
+            figureId = placeFigure.getId();
+            // CanvasController.addPlaceFigure(figureId, placeFigure);
             return (BaseFigure)placeFigure;
         } else {
             return CanvasController.getFigureById(this.getId());

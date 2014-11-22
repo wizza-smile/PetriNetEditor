@@ -39,9 +39,13 @@ public class ArcFigure extends BaseFigure {
 
 
     public ArcFigure(Arc arc) {
+        this.setId(arc.getId());
         this.element = (PetriNetElement)arc;
-        this.setId(this.element.getId());
+        register();
+    }
 
+    public void register() {
+        CanvasController.addFigure(this, CanvasController.FIGURE_ARC);
     }
 
     public Arc getArc() {

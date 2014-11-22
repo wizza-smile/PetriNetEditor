@@ -19,6 +19,10 @@ import javax.swing.SwingUtilities;
 
 
 public class CanvasController {
+    public final static int FIGURE_PLACE = 0;
+    public final static int FIGURE_TRANSITION = 1;
+    public final static int FIGURE_ARC = 2;
+    public final static int FIGURE_LABEL = 3;
 
     public final static Double PETRINET_PADDING_BASE = 20.;
     public static Double PETRINET_PADDING = PETRINET_PADDING_BASE;
@@ -65,10 +69,6 @@ public class CanvasController {
         return canvas.getFigureById(figureId);
     }
 
-    public static void removeFigure(String figureId) {
-        BaseFigure baseFigure = canvas.getFigureById(figureId);
-        baseFigure.delete();
-    }
 
     public static view.Canvas createCanvas() {
         canvas = new view.Canvas();
@@ -150,29 +150,53 @@ public class CanvasController {
     }
 
 
+    public static void addFigure(BaseFigure figure, int type) {
+        canvas.addFigure(figure.getId(), figure);
 
-
-
-
-    public static void addArcFigure(String figureId, ArcFigure figure) {
-        canvas.addFigure(figureId, figure);
-        canvas.arc_figure_ids.add(figureId);
+        switch (type) {
+            case CanvasController.FIGURE_PLACE:
+                canvas.place_figure_ids.add(figure.getId());
+                break;
+            case CanvasController.FIGURE_TRANSITION:
+                canvas.transition_figure_ids.add(figure.getId());
+                break;
+            case CanvasController.FIGURE_ARC:
+                canvas.arc_figure_ids.add(figure.getId());
+                break;
+            case CanvasController.FIGURE_LABEL:
+                canvas.label_figure_ids.add(figure.getId());
+                break;
+            default:
+                return;
+        }
     }
 
+    // public static void addArcFigure(String figureId, ArcFigure figure) {
+    //     canvas.addFigure(figureId, figure);
+    //     canvas.arc_figure_ids.add(figureId);
+    // }
 
-    public static void addPlaceFigure(String figureId, PlaceFigure figure) {
-        canvas.addFigure(figureId, figure);
-        canvas.place_figure_ids.add(figureId);
-    }
+
+    // public static void addPlaceFigure(String figureId, PlaceFigure figure) {
+    //     canvas.addFigure(figureId, figure);
+    //     canvas.place_figure_ids.add(figureId);
+    // }
 
     public static void addLabelFigure(String figureId, LabelFigure figure) {
         canvas.addFigure(figureId, figure);
         canvas.label_figure_ids.add(figureId);
     }
 
-    public static void addTransitionFigure(String figureId, TransitionFigure figure) {
-        canvas.addFigure(figureId, figure);
-        canvas.transition_figure_ids.add(figureId);
+    // public static void addTransitionFigure(String figureId, TransitionFigure figure) {
+    //     canvas.addFigure(figureId, figure);
+    //     canvas.transition_figure_ids.add(figureId);
+    // }
+
+    public static void removeFigure(String figureId) {
+        System.out.println( "REMOVE FIG ID "+figureId );
+        BaseFigure baseFigure = canvas.getFigureById(figureId);
+        System.out.println( baseFigure );
+        baseFigure.delete();
     }
 
     public static void removeTransitionFigure(String figureId) {

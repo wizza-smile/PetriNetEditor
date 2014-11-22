@@ -32,6 +32,9 @@ public class PlaceFigure extends Positionable {
     public PlaceFigure(Place place) {
         this.setId(place.getId());
         this.element = (PetriNetElement)place;
+        register();
+
+
         setEllipse(generateEllipse());
         if (1==1 || this.getPlace().getTokenCount() == 1) {
             this.tokenPoint = generateTokenPoint();
@@ -40,9 +43,10 @@ public class PlaceFigure extends Positionable {
         LabelFigure labelFigure = new LabelFigure(this, this.getPlace().getPosition());
         this.labelFigureId = labelFigure.getId();
         CanvasController.addLabelFigure(labelFigureId, labelFigure);
-        // this.placeId = placeId;
-        // this.position = position;
-        // this.tokenFigure = new TokenSetFigure(this);
+    }
+
+    public void register() {
+        CanvasController.addFigure(this, CanvasController.FIGURE_PLACE);
     }
 
     public void delete() {

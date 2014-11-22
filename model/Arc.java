@@ -61,7 +61,7 @@ public class Arc extends PetriNetElement {
     public ArcFigure getFigure() {
         if (arcfigure == null) {
             arcfigure = new ArcFigure(this);
-            CanvasController.addArcFigure(arcfigure.getId(), arcfigure);
+            // CanvasController.addArcFigure(arcfigure.getId(), arcfigure);
         }
 
         return arcfigure;
@@ -123,12 +123,11 @@ public class Arc extends PetriNetElement {
 
         //if yes merge!
         if (doublette_found) {
+            //merge/remove after iteration (concurrency!)
             this.merge(arc);
-            //remove after iteration (concurrency)
-
-            // PetriNetController.removeArc(arc.getId());
         }
 
+        //unset the red arc with no target
         CanvasController.arc_no_target_id = null;
 
         return true;
