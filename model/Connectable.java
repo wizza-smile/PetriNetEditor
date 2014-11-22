@@ -12,6 +12,12 @@ public abstract class Connectable extends PetriNetElement {
     protected ArrayList<String> arc_ids = new ArrayList<String>();
 
 
+    public void addNewArc() {
+        Arc arc = new Arc(this.getId(), this.getElementType());
+        addArcId(arc.getId());
+    }
+
+
     public void addArcId(String arc_id) {
         arc_ids.add(arc_id);
     }

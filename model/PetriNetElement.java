@@ -11,7 +11,7 @@ public abstract class PetriNetElement {
     protected Point2D position;
     protected String id;
     protected String figureId;
-
+    // protected final int elementType = -1;
 
     ///////////////////
     //abstract methods
@@ -21,7 +21,7 @@ public abstract class PetriNetElement {
     //return associated figure Object
     public abstract BaseFigure getFigure();
     public abstract void delete();
-    // public abstract void register(PetriNetElement pne);
+    public abstract int getElementType();
 
 
     /////////////////////

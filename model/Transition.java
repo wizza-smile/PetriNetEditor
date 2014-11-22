@@ -8,6 +8,7 @@ import java.util.*;
 import java.awt.geom.Point2D;
 
 public class Transition extends Connectable {
+    protected final int elementType = PetriNetController.ELEMENT_TRANSITION;
 
     public String label;
 
@@ -24,6 +25,12 @@ public class Transition extends Connectable {
         this.setId(transition_id);
         PetriNetController.addElement(this, PetriNetController.ELEMENT_TRANSITION);
     }
+
+
+    public int getElementType() {
+        return PetriNetController.ELEMENT_TRANSITION;
+    }
+
 
     public void addArcId(String arc_id) {
         arc_ids.add(arc_id);

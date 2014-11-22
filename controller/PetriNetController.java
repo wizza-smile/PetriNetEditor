@@ -90,33 +90,35 @@ public class PetriNetController {
                 break;
             case PetriNetController.ELEMENT_TRANSITION:
                 petriNet.transition_ids.add(element.getId());
+                break;
             case PetriNetController.ELEMENT_ARC:
-                // petriNet.transition_ids.add(element.getId());
+                petriNet.arc_ids.add(element.getId());
+                break;
             default:
                 return;
         }
     }
 
 
-    public static void addArc(String source_id, int type) {
-        Integer next_element_id = petriNet.getNextElementId();
-        String arcId;
-        PetriNetElement element;
+    // public static void addArc(String source_id, int type) {
+    //     Integer next_element_id = petriNet.getNextElementId();
+    //     String arcId;
+    //     PetriNetElement element;
 
-        PetriNetElement source_element = getElementById(source_id);
+    //     PetriNetElement source_element = getElementById(source_id);
 
-        arcId = "a_" + next_element_id.toString();
-        Arc arc = new Arc(arcId, source_id, type);
+    //     arcId = "a_" + next_element_id.toString();
+    //     Arc arc = new Arc(arcId, source_id, type);
 
-        if (source_element instanceof Transition) {
-            ((Transition)source_element).addArcId(arc.getId());
-        }
-        if (source_element instanceof Place) {
-            ((Place)source_element).addArcId(arc.getId());
-        }
+    //     if (source_element instanceof Transition) {
+    //         ((Transition)source_element).addArcId(arc.getId());
+    //     }
+    //     if (source_element instanceof Place) {
+    //         ((Place)source_element).addArcId(arc.getId());
+    //     }
 
-        petriNet.addArc(arcId, arc);
-    }
+    //     petriNet.addArc(arcId, arc);
+    // }
 
     public static void removeArc(String arc_id) {
         petriNet.removeElement(arc_id);

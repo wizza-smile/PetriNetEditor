@@ -132,12 +132,12 @@ public class CanvasController {
         //if not: do nothing
         //if yes: create new arc with source = transition
         if (figure != null) {
-            if (figure.getElement() instanceof Transition) {
-                PetriNetController.addArc(figure.getId(), PetriNetController.ELEMENT_TRANSITION);
+            if (figure.getElement() instanceof Connectable) {
+                ((Connectable)figure.getElement()).addNewArc();
             }
-            if (figure.getElement() instanceof Place) {
-                PetriNetController.addArc(figure.getId(), PetriNetController.ELEMENT_PLACE);
-            }
+            // if (figure.getElement() instanceof Place) {
+            //     PetriNetController.addArc(figure.getId(), PetriNetController.ELEMENT_PLACE);
+            // }
             GlobalController.setMode(GlobalController.MODE_ARC_SELECT_TARGET);
         }
     }
@@ -148,6 +148,11 @@ public class CanvasController {
     public static void addToGridReferencePoint(Point2D p) {
         Grid.addToReferencePoint(p);
     }
+
+
+
+
+
 
     public static void addArcFigure(String figureId, ArcFigure figure) {
         canvas.addFigure(figureId, figure);
@@ -189,6 +194,12 @@ public class CanvasController {
         canvas.removeFigure(figureId);
         canvas.label_figure_ids.remove(figureId);
     }
+
+
+
+
+
+
 
     public static Dimension getCanvasSize() {
         return canvas.getPreferredSize();
@@ -314,14 +325,6 @@ public class CanvasController {
 
     public static void mouseMoved(MouseEvent e) {
         currentMousePoint = new Point2D.Double(e.getX(), e.getY());
-        // switch (GlobalController.mode) {
-        //     case GlobalController.MODE_ARC_SELECT_TARGET:
-
-        //         break;
-        //     default:
-        //         break;
-        // }
-
         CanvasController.repaintCanvas();
     }
 
@@ -339,7 +342,7 @@ public class CanvasController {
 
 
     /**
-     * compute a surrounding Rectangle of all Figures
+     * compute a surrounding Rectangle of all Figures with added padding
      * @return the surrounding Rectangle
      */
     public static Rectangle2D getFiguresBounds() {

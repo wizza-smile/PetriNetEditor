@@ -8,7 +8,6 @@ import java.util.*;
 import java.awt.geom.Point2D;
 
 public class Place extends Connectable {
-
     public String label;
 
     private int tokenCount;
@@ -25,6 +24,10 @@ public class Place extends Connectable {
         String place_id = "p_"+PetriNetController.getPetriNet().getNextElementId();
         this.setId(place_id);
         PetriNetController.addElement(this, PetriNetController.ELEMENT_PLACE);
+    }
+
+    public int getElementType() {
+        return PetriNetController.ELEMENT_PLACE;
     }
 
     public void delete() {
