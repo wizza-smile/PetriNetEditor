@@ -63,28 +63,38 @@ public class PetriNetController {
 
 
 
-
-    public static void addPetriNetElement(Point2D position, int type) {
+    public static void newConnectableElementAtPosition(Point2D position, int type) {
         Integer next_element_id = petriNet.getNextElementId();
         String elementId;
         PetriNetElement element;
 
         switch (type) {
             case PetriNetController.ELEMENT_PLACE:
-                elementId = "p_" + next_element_id.toString();
-                element = new Place(elementId, position);
-                petriNet.place_ids.add(elementId);
+                new Place(position);
                 break;
             case PetriNetController.ELEMENT_TRANSITION:
-                elementId = "t_" + next_element_id.toString();
-                element = new Transition(elementId, position);
-                petriNet.transition_ids.add(elementId);
+                new Transition(position);
                 break;
             default:
                 return;
         }
+    }
 
-        petriNet.addElement(elementId, element);
+
+    public static void addElement(PetriNetElement element, int type) {
+        petriNet.addElement(element.getId(), element);
+
+        switch (type) {
+            case PetriNetController.ELEMENT_PLACE:
+                petriNet.place_ids.add(element.getId());
+                break;
+            case PetriNetController.ELEMENT_TRANSITION:
+                petriNet.transition_ids.add(element.getId());
+            case PetriNetController.ELEMENT_ARC:
+                // petriNet.transition_ids.add(element.getId());
+            default:
+                return;
+        }
     }
 
 
@@ -124,52 +134,6 @@ public class PetriNetController {
         petriNet.removePlaceId(place_id);
     }
 
-
-
-
-    /**
-     * Iterate over All PetriNetElements to compute a surrounding Rectangle
-     * @return the surrounding Rectangle
-     */
-    // public static Rectangle getPetriNetRectangle() {
-    //     Double width, height;
-    //     Double upper_left_x = .0;
-    //     Double upper_left_y = .0;
-
-    //     Point2D lower_right = new Point2D.Double(0, 0);
-
-    //     boolean initialized = false;
-
-
-    //     for (String elem_id : PetriNetController.getConnectablesIds()) {
-    //         PetriNetElement elem = PetriNetController.getElementById(elem_id);
-
-
-
-    //         Point2D position = elem.getPosition();
-
-    //         if (initialized) {
-    //             upper_left_x = Math.min(upper_left_x, position.getX());
-    //             upper_left_y = Math.min(upper_left_y, position.getY());
-    //         } else {
-    //             upper_left_x = position.getX();
-    //             upper_left_y = position.getY();
-    //             initialized = true;
-    //         }
-    //         lower_right.setLocation(Math.max(lower_right.getX(), position.getX()), Math.max(lower_right.getY(), position.getY()));
-    //     }
-
-
-    //     //ADD PADDING
-    //     upper_left_x = upper_left_x - PETRINET_PADDING;
-    //     upper_left_y = upper_left_y - PETRINET_PADDING;
-    //     lower_right.setLocation(lower_right.getX() + PETRINET_PADDING, lower_right.getY() + PETRINET_PADDING);
-
-    //     width = lower_right.getX() - upper_left_x;
-    //     height = lower_right.getY() - upper_left_y;
-
-    //     return new Rectangle(upper_left_x.intValue(), upper_left_y.intValue(), width.intValue(), height.intValue());
-    // }
 
 
 

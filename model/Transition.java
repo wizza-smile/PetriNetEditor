@@ -11,14 +11,18 @@ public class Transition extends Connectable {
 
     public String label;
 
-    public Transition(String elementId, Point2D position) {
-        this.setId(elementId);
+    public Transition(Point2D position) {
+        register();
         this.position = position;
         this.setLabel("T LABEL");
-        //cache a figure
         this.getFigure();
-        // this.tokenFigure = new TokenSetFigure(this);
-        // this.ellipse = generateEllipse();
+    }
+
+
+    public void register() {
+        String transition_id = "t_"+PetriNetController.getPetriNet().getNextElementId();
+        this.setId(transition_id);
+        PetriNetController.addElement(this, PetriNetController.ELEMENT_TRANSITION);
     }
 
     public void addArcId(String arc_id) {

@@ -10,7 +10,8 @@ import java.util.*;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.Point2D;
+import java.awt.geom.*;
+
 
 import javax.swing.*;
 
@@ -88,6 +89,50 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     public void setCanvasSize(Dimension dim) {
         this.setPreferredSize(dim);
     }
+
+
+
+
+    //get the rectangle that encloses all labels
+    public Rectangle2D getLabelsBounds() {
+        Rectangle2D labelsBounds = new Rectangle2D.Double(0, 0, 0, 0);
+        boolean initialized = false;
+
+        for (String label_figure_id : label_figure_ids) {
+            LabelFigure labelFigure = (LabelFigure)getFigureById(label_figure_id);
+            if (initialized) {
+                labelsBounds.add(labelFigure.getBounds());
+            } else {
+                labelsBounds = labelFigure.getBounds();
+                initialized = true;
+            }
+        }
+
+        return labelsBounds;
+    }
+
+    //get the rectangle that encloses all transitions and places
+    public Rectangle2D getPetriNetFiguresBounds() {
+        Rectangle2D petriNetBounds = new Rectangle2D.Double(0, 0, 0, 0);
+        boolean initialized = false;
+
+        for (String figure_id : CanvasController.getPlacesAndTransitionFiguresIds()) {
+            Positionable figure = (Positionable)getFigureById(figure_id);
+            if (initialized) {
+                petriNetBounds.add(figure.getBounds());
+            } else {
+                petriNetBounds = figure.getBounds();
+                initialized = true;
+            }
+        }
+
+        return petriNetBounds;
+    }
+
+
+
+
+
 
     public void mouseClicked(MouseEvent e) {
         CanvasController.mouseClicked(e);

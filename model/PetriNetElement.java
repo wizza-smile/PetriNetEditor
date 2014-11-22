@@ -21,6 +21,7 @@ public abstract class PetriNetElement {
     //return associated figure Object
     public abstract BaseFigure getFigure();
     public abstract void delete();
+    // public abstract void register(PetriNetElement pne);
 
 
     /////////////////////
@@ -41,8 +42,7 @@ public abstract class PetriNetElement {
         }
 
         public void actionPerformed(ActionEvent e) {
-            System.out.println( "delte Arc" );
-            // element.delete();
+            element.delete();
         }
 
     }

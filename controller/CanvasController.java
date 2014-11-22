@@ -220,55 +220,26 @@ public class CanvasController {
         if (SwingUtilities.isLeftMouseButton(e)) {
             switch (GlobalController.mode) {
                 case GlobalController.MODE_SELECT:
-                    BaseFigure figureUnderMousePointer = SelectionController.getFigureUnderMousePointer(mousePressPoint);
-
-                    if (figureUnderMousePointer != null) {
-                        //check if a label is under mouse pointer
-                        //if yes: only this label will be selected (and dragged)
-                        if(figureUnderMousePointer instanceof LabelFigure) {
-                            SelectionController.clearSelection();
-                            SelectionController.addFigureToSelection((Positionable)figureUnderMousePointer);
-                            GlobalController.setMode(GlobalController.MODE_DRAG_SELECTION);
-                        }
-
-                        //check if a Positionable is under mouse pointer
-                        if (figureUnderMousePointer instanceof Positionable) {
-                            //now its clear its a transition or place!
-                            //check if its already selected!
-                            if (((Positionable)figureUnderMousePointer).isSelected()) {
-                                //user wants to drag selected elements!
-                                GlobalController.setMode(GlobalController.MODE_DRAG_SELECTION);
-                            } else {
-                                //select the element start dragging
-                                SelectionController.clearSelection();
-                                SelectionController.addFigureToSelection((Positionable)figureUnderMousePointer);
-                                GlobalController.setMode(GlobalController.MODE_DRAG_SELECTION);
-                            }
-                        }
-                        SelectionController.setOffsetToSelectedElements(mousePressPoint);
-                    } else {
-                        SelectionController.clearSelection();
-                    }
+                    SelectionController.mouseClickedInModeSelect(e);
                     break;
                 case GlobalController.MODE_PLACE:
-                    PetriNetController.addPetriNetElement(mousePressPoint, PetriNetController.ELEMENT_PLACE);
+                    PetriNetController.newConnectableElementAtPosition(mousePressPoint, PetriNetController.ELEMENT_PLACE);
                     break;
                 case GlobalController.MODE_TRANSITION:
-                    PetriNetController.addPetriNetElement(mousePressPoint, PetriNetController.ELEMENT_TRANSITION);
+                    PetriNetController.newConnectableElementAtPosition(mousePressPoint, PetriNetController.ELEMENT_TRANSITION);
                     break;
                 case GlobalController.MODE_ARC:
                     handleMousePressedModeArc();
                     break;
                 case GlobalController.MODE_ARC_SELECT_TARGET:
-                    //check if a Place is under mousepointer
+                    //check if a Place/Transition is under mousepointer
                     BaseFigure figure = SelectionController.getFigureUnderMousePointer(mousePressPoint);
                     //if not: do nothing
-                    //if yes: add arc to place
+                    //if yes: add arc to Place/Transition
                     if (figure != null && !(figure instanceof LabelFigure)) {
                         Arc arc = (Arc)PetriNetController.getElementById(arc_no_target_id);
                         if (arc.selectTarget(figure.getId())) {
                             GlobalController.setMode(GlobalController.MODE_ARC);
-                            // figure.getElement().addArcId(arc_no_target_id);
                         }
                     }
                     break;
@@ -281,14 +252,11 @@ public class CanvasController {
         if (SwingUtilities.isRightMouseButton(e)) {
             switch (GlobalController.mode) {
                 case GlobalController.MODE_SELECT:
-
                     //if a figure is under mouse, show its popup
                     BaseFigure figureUnderMousePointer = SelectionController.getFigureUnderMousePointer(mousePressPoint);
-
                     if (figureUnderMousePointer != null) {
                         figureUnderMousePointer.showPopup(e);
                     }
-
                     break;
                 default:
                     System.out.println("RIGHT MOUSE");
@@ -336,9 +304,6 @@ public class CanvasController {
             case GlobalController.MODE_DRAG_SELECTION:
                 GlobalController.setMode(GlobalController.MODE_SELECT);
                 break;
-            case GlobalController.MODE_PLACE:
-                //
-                break;
             default:
                 break;
         }
@@ -349,13 +314,13 @@ public class CanvasController {
 
     public static void mouseMoved(MouseEvent e) {
         currentMousePoint = new Point2D.Double(e.getX(), e.getY());
-        switch (GlobalController.mode) {
-            case GlobalController.MODE_ARC_SELECT_TARGET:
+        // switch (GlobalController.mode) {
+        //     case GlobalController.MODE_ARC_SELECT_TARGET:
 
-                break;
-            default:
-                break;
-        }
+        //         break;
+        //     default:
+        //         break;
+        // }
 
         CanvasController.repaintCanvas();
     }
@@ -369,45 +334,17 @@ public class CanvasController {
         canvas.repaint();
     }
 
-    //get the rectangle that encloses all labels
-    public static Rectangle2D getLabelsBounds() {
-        Rectangle2D labelsBounds = new Rectangle2D.Double(0, 0, 0, 0);
-        boolean initialized = false;
 
-        for (String label_figure_id : CanvasController.getCanvas().label_figure_ids) {
-            LabelFigure labelFigure = (LabelFigure)CanvasController.getFigureById(label_figure_id);
-            if (initialized) {
-                labelsBounds.add(labelFigure.getBounds());
-            } else {
-                labelsBounds = labelFigure.getBounds();
-                initialized = true;
-            }
-        }
 
-        return labelsBounds;
-    }
 
-    //get the rectangle that encloses all transitions and places
-    public static Rectangle2D getPetriNetFiguresBounds() {
-        Rectangle2D petriNetBounds = new Rectangle2D.Double(0, 0, 0, 0);
-        boolean initialized = false;
 
-        for (String figure_id : CanvasController.getPlacesAndTransitionFiguresIds()) {
-            Positionable figure = (Positionable)CanvasController.getFigureById(figure_id);
-            if (initialized) {
-                petriNetBounds.add(figure.getBounds());
-            } else {
-                petriNetBounds = figure.getBounds();
-                initialized = true;
-            }
-        }
-
-        return petriNetBounds;
-    }
-
+    /**
+     * compute a surrounding Rectangle of all Figures
+     * @return the surrounding Rectangle
+     */
     public static Rectangle2D getFiguresBounds() {
-        Rectangle2D petriNetBounds = getPetriNetFiguresBounds();
-        petriNetBounds.add(getLabelsBounds());
+        Rectangle2D petriNetBounds = canvas.getPetriNetFiguresBounds();
+        petriNetBounds.add(canvas.getLabelsBounds());
 
         //add padding
         Rectangle2D figuresBounds = new Rectangle2D.Double(
@@ -416,7 +353,6 @@ public class CanvasController {
             petriNetBounds.getWidth() + 2*PETRINET_PADDING,
             petriNetBounds.getHeight() + 2*PETRINET_PADDING
         );
-
 
         return figuresBounds;
     }

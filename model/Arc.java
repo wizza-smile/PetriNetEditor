@@ -172,6 +172,7 @@ public class Arc extends PetriNetElement {
         return arcPopupMenu;
     }
 
+
     protected class DeleteArcMenuAction extends DeletePetriNetObjectAction {
         int target_type;
 

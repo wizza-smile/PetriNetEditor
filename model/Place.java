@@ -13,16 +13,19 @@ public class Place extends Connectable {
 
     private int tokenCount;
 
-    public Place(String elementId, Point2D position) {
-        this.setId(elementId);
+    public Place(Point2D position) {
+        register();
         this.position = position;
         this.setLabel("LABEL");
-        //cache a figure
+        //create/'cache??' a figure
         this.getFigure();
-        // this.tokenFigure = new TokenSetFigure(this);
-        // this.ellipse = generateEllipse();
     }
 
+    public void register() {
+        String place_id = "p_"+PetriNetController.getPetriNet().getNextElementId();
+        this.setId(place_id);
+        PetriNetController.addElement(this, PetriNetController.ELEMENT_PLACE);
+    }
 
     public void delete() {
         SelectionController.clearSelection();
