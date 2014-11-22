@@ -48,8 +48,6 @@ public class PetriNetController {
         allElementIds.addAll(petriNet.transition_ids);
         allElementIds.addAll(petriNet.getArcIds());
 
-        System.out.println( petriNet.getArcIds() );
-
         return allElementIds;
     }
 

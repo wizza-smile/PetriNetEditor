@@ -20,9 +20,8 @@ public class Arc extends PetriNetElement {
     protected String transition_id, place_id;//, source_id, target_id;
 
     public Arc(String source_id, int type) {
-        System.out.println( "NEW SOURCE TYPE " + type );
         register();
-        // this.source_id = source_id;
+
         if (type == PetriNetController.ELEMENT_TRANSITION) {
             this.transition_id = source_id;
             this.target_type = TARGET_PLACE;
@@ -61,7 +60,6 @@ public class Arc extends PetriNetElement {
     public ArcFigure getFigure() {
         if (arcfigure == null) {
             arcfigure = new ArcFigure(this);
-            // CanvasController.addArcFigure(arcfigure.getId(), arcfigure);
         }
 
         return arcfigure;

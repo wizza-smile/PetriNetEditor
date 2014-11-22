@@ -135,9 +135,6 @@ public class CanvasController {
             if (figure.getElement() instanceof Connectable) {
                 ((Connectable)figure.getElement()).addNewArc();
             }
-            // if (figure.getElement() instanceof Place) {
-            //     PetriNetController.addArc(figure.getId(), PetriNetController.ELEMENT_PLACE);
-            // }
             GlobalController.setMode(GlobalController.MODE_ARC_SELECT_TARGET);
         }
     }
@@ -171,33 +168,18 @@ public class CanvasController {
         }
     }
 
-    // public static void addArcFigure(String figureId, ArcFigure figure) {
-    //     canvas.addFigure(figureId, figure);
-    //     canvas.arc_figure_ids.add(figureId);
-    // }
+    public static void removeFigure(String figureId) {
+        BaseFigure baseFigure = canvas.getFigureById(figureId);
+        baseFigure.delete();
+    }
 
-
-    // public static void addPlaceFigure(String figureId, PlaceFigure figure) {
-    //     canvas.addFigure(figureId, figure);
-    //     canvas.place_figure_ids.add(figureId);
-    // }
-
+    //DEPRECATED
     public static void addLabelFigure(String figureId, LabelFigure figure) {
         canvas.addFigure(figureId, figure);
         canvas.label_figure_ids.add(figureId);
     }
 
-    // public static void addTransitionFigure(String figureId, TransitionFigure figure) {
-    //     canvas.addFigure(figureId, figure);
-    //     canvas.transition_figure_ids.add(figureId);
-    // }
 
-    public static void removeFigure(String figureId) {
-        System.out.println( "REMOVE FIG ID "+figureId );
-        BaseFigure baseFigure = canvas.getFigureById(figureId);
-        System.out.println( baseFigure );
-        baseFigure.delete();
-    }
 
     public static void removeTransitionFigure(String figureId) {
         canvas.removeFigure(figureId);
