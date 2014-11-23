@@ -113,8 +113,32 @@ public class TransitionFigure extends Positionable {
             g.setPaint(strokeColor);
         }
         g.draw(transitionRectangle);
+
+        if (!selected && this.isActivated()) {
+            g.setPaint(Color.GREEN);
+            transitionRectangle.setRect(
+                transitionRectangle.getX()+1,
+                transitionRectangle.getY()+1,
+                transitionRectangle.getWidth()-2,
+                transitionRectangle.getHeight()-2
+            );
+            g.draw(transitionRectangle);
+        }
     }
 
+    public boolean isActivated() {
+        boolean isActivated = true;
+        for (String arc_id : this.getElement().getArcIds()) {
+            Arc arc = (Arc)PetriNetController.getElementById(arc_id);
+            if (arc.getTargetType() != Arc.TARGET_PLACE) {
+                if (arc.getPlace() != null && arc.getPlace().getTokenCount() == 0){
+                    isActivated = false;
+                }
+            }
+        }
+
+        return isActivated;
+    }
 
 
     public Rectangle2D getBounds() {

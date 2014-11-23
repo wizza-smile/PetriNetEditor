@@ -18,6 +18,10 @@ public abstract class Connectable extends PetriNetElement {
     }
 
 
+    public ArrayList<String> getArcIds() {
+        return arc_ids;
+    }
+
     public void addArcId(String arc_id) {
         arc_ids.add(arc_id);
     }
