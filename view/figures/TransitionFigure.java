@@ -126,18 +126,10 @@ public class TransitionFigure extends Positionable {
         }
     }
 
-    public boolean isActivated() {
-        boolean isActivated = true;
-        for (String arc_id : this.getElement().getArcIds()) {
-            Arc arc = (Arc)PetriNetController.getElementById(arc_id);
-            if (arc.getTargetType() != Arc.TARGET_PLACE) {
-                if (arc.getPlace() != null && arc.getPlace().getTokenCount() == 0){
-                    isActivated = false;
-                }
-            }
-        }
 
-        return isActivated;
+
+    public boolean isActivated() {
+        return this.getTransition().isActivated();
     }
 
 

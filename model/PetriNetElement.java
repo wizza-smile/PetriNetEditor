@@ -1,6 +1,7 @@
 package model;
 
 import view.figures.*;
+import controller.*;
 
 import java.awt.event.*;
 import java.awt.geom.Point2D;
@@ -32,17 +33,18 @@ public abstract class PetriNetElement {
     public void setId(String id) { this.id = id; }
 
 
-    protected class DeletePetriNetObjectAction extends AbstractAction {
+    protected class DeletePetriNetElementAction extends AbstractAction {
         protected PetriNetElement element;
 
-        DeletePetriNetObjectAction() {}
+        DeletePetriNetElementAction() {}
 
-        DeletePetriNetObjectAction(PetriNetElement elem) {
+        DeletePetriNetElementAction(PetriNetElement elem) {
             element = elem;
         }
 
         public void actionPerformed(ActionEvent e) {
             element.delete();
+            CanvasController.repaintCanvas();
         }
 
     }

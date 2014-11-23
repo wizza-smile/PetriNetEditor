@@ -11,6 +11,7 @@ import java.lang.Math;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.font.*;
 import java.awt.geom.*;
 
 import javax.swing.*;
@@ -34,11 +35,7 @@ public class PlaceFigure extends Positionable {
         this.element = (PetriNetElement)place;
         register();
 
-
         setEllipse(generateEllipse());
-        if (1==1 || this.getPlace().getTokenCount() == 1) {
-            this.tokenPoint = generateTokenPoint();
-        }
 
         LabelFigure labelFigure = new LabelFigure(this, this.getPlace().getPosition());
         this.labelFigureId = labelFigure.getId();
@@ -58,6 +55,7 @@ public class PlaceFigure extends Positionable {
     public void showPopup(MouseEvent e) {
         MainWindowController.showPlacePopupMenu(e, this.getId());
     }
+
 
     public Place getPlace() {
         return (Place)this.getElement();
@@ -84,30 +82,39 @@ public class PlaceFigure extends Positionable {
         this.getLabelFigure().draw(g);
     }
 
-    // public RectangularShape getBounds() {
-    //     return new Ellipse2D.Double(place.getPosition().getX() - DIAMETER / 2, place.getPosition().getY() - DIAMETER / 2, DIAMETER, DIAMETER);
-    // }
 
-    // public Point2D getLowerRightCorner() {
-    //     Point2D position = getPosition();
-    //     Point2D lrc = new Point2D.Double(position.getX() + DIAMETER/2, position.getY() + DIAMETER/2);
-
-    //     return lrc;
-    // }
 
     public void draw(Graphics2D g) {
+
         // regenrate Ellipse token
         setEllipse(generateEllipse());
-        if (1==1 || this.getPlace().getTokenCount() == 1) {
-            this.tokenPoint = generateTokenPoint();
-        }
-
 
         drawFill(g);
         drawBorder(g);
-        drawToken(g);
 
         drawLabel(g);
+
+
+        Integer tokenCount = this.getPlace().getTokenCount();
+        if (tokenCount == 1 && !isSelected()) {
+            this.tokenPoint = generateTokenPoint();
+            drawToken(g);
+        } else if (tokenCount > 1 && !isSelected()) {
+            int fontSize = 14;
+            Font font = new Font(null, java.awt.Font.BOLD, fontSize);
+            g.setFont(font);
+            FontRenderContext fontRenderContext = g.getFontRenderContext();
+            TextLayout textLayout = new TextLayout(tokenCount.toString(), font, fontRenderContext);
+
+            Rectangle2D textBounds = textLayout.getPixelBounds(fontRenderContext,0,0);
+
+            g.setStroke(new java.awt.BasicStroke(1f));
+            g.setPaint(strokeColor);
+            g.drawString(tokenCount.toString(),
+                (float) (getPlace().getPosition().getX() - textBounds.getWidth()/2),
+                (float) (getPlace().getPosition().getY() + (fontSize*3/8))
+            );
+        }
 
     }
 
@@ -164,23 +171,6 @@ public class PlaceFigure extends Positionable {
 
 
     public Ellipse2D generateEllipse() {
-        // //check if position is inside canvas/viewport
-        // //if not move the net diagonally, so that this Element is fully inside
-        // Double minX = getPlace().getPosition().getX() - DIAMETER / 2;
-        // Double minY = getPlace().getPosition().getY() - DIAMETER / 2;
-
-
-        // if (minX < 0 || minY < 0) {
-        //     CanvasController.shrink = true;
-
-        //     System.out.println("SHRINK TRUE");
-
-        //     Double x_off = minX < 0 ? Math.abs(minX) : 0;
-        //     Double y_off = minY < 0 ? Math.abs(minY) : 0;
-
-        //     PetriNetController.moveAllElementDownDiagonally(x_off, y_off);
-        // }
-
         return new Ellipse2D.Double(
             getPlace().getPosition().getX() - DIAMETER / 2,
             getPlace().getPosition().getY() - DIAMETER / 2,
@@ -216,21 +206,4 @@ public class PlaceFigure extends Positionable {
         return (Connectable)super.getElement();
     }
 
-
-
-    // public void setPosition(Point2D newPosition) {
-    //     place.getPosition() = newPosition;
-    //     label.setRelativePosition(newPosition);
-    //     tokenFigure.setRelativePosition(newPosition);
-    // }
-
-
-    // public String getElementId() {
-    //     return this.placeId;
-    // }
-
-
-    // public void setElementId(String id) {
-    //     throw new UnsupportedOperationException("Not supported yet.");
-    // }
 }

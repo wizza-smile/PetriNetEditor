@@ -172,7 +172,7 @@ public class Arc extends PetriNetElement {
     //POPUP    ////
     public JPopupMenu getPopup(String arc_id, int target_type) {
         JPopupMenu arcPopupMenu = new JPopupMenu();
-        JMenuItem menuItem = new JMenuItem(new DeleteArcMenuAction(this, target_type));//new DeletePetriNetObjectAction(myObject)
+        JMenuItem menuItem = new JMenuItem(new DeleteArcMenuAction(this, target_type));//new DeletePetriNetElementAction(myObject)
         menuItem.setText("Delete Arrow Head");
         arcPopupMenu.add(menuItem);
         arcPopupMenu.addSeparator();
@@ -181,7 +181,7 @@ public class Arc extends PetriNetElement {
     }
 
 
-    protected class DeleteArcMenuAction extends DeletePetriNetObjectAction {
+    protected class DeleteArcMenuAction extends DeletePetriNetElementAction {
         int target_type;
 
         public DeleteArcMenuAction(PetriNetElement elem, int target_type) {

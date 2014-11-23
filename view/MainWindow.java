@@ -122,53 +122,8 @@ public class MainWindow extends JFrame {//implements Scrollable
 
 
 
-    public void showTransitionPopupMenu(MouseEvent e, String transition_id) {
-        TransitionPopupMenu contextMenu = new TransitionPopupMenu(transition_id);
-        contextMenu.show(e.getComponent(), e.getX(), e.getY());
-    }
 
 
-    public void showPlacePopupMenu(MouseEvent e, String place_id) {
-        PlacePopupMenu contextMenu = new PlacePopupMenu(place_id);
-        contextMenu.show(e.getComponent(), e.getX(), e.getY());
-    }
-
-
-
-
-
-    private class TransitionPopupMenu extends JPopupMenu {
-        JMenuItem anItem;
-        public TransitionPopupMenu(String transition_id) {
-            //local variable target_type is accessed from within inner class; needs to be declared final
-            final String t_id = transition_id;
-            anItem = new JMenuItem("delete Transition");
-            anItem.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent event) {
-                    Transition transition = (Transition)PetriNetController.getElementById(t_id);
-                    transition.delete();
-                    CanvasController.repaintCanvas();
-                }
-            });
-            add(anItem);
-        }
-    }
-    private class PlacePopupMenu extends JPopupMenu {
-        JMenuItem anItem;
-        public PlacePopupMenu(String place_id) {
-            //local variable target_type is accessed from within inner class; needs to be declared final
-            final String p_id = place_id;
-            anItem = new JMenuItem("delete Place");
-            anItem.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent event) {
-                    Place place = (Place)PetriNetController.getElementById(p_id);
-                    place.delete();
-                    CanvasController.repaintCanvas();
-                }
-            });
-            add(anItem);
-        }
-    }
 
 }
 

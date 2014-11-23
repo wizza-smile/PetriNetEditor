@@ -272,7 +272,10 @@ public class CanvasController {
                     //if a figure is under mouse, show its popup
                     BaseFigure figureUnderMousePointer = SelectionController.getFigureUnderMousePointer(mousePressPoint);
                     if (figureUnderMousePointer != null) {
-                        figureUnderMousePointer.showPopup(e);
+                        if (SelectionController.getSelectedElementsIds().size() < 2) {
+                            SelectionController.clearSelection();
+                            figureUnderMousePointer.showPopup(e);
+                        }
                     }
                     break;
                 default:

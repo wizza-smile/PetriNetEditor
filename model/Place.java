@@ -5,7 +5,9 @@ import controller.*;
 
 import java.util.*;
 
-import java.awt.geom.Point2D;
+import java.awt.event.*;
+import java.awt.geom.*;
+import javax.swing.*;
 
 public class Place extends Connectable {
     public String label;
@@ -49,6 +51,10 @@ public class Place extends Connectable {
         return tokenCount;
     }
 
+    public void setTokenCount(int tokenCount) {
+        this.tokenCount = tokenCount;
+    }
+
     public BaseFigure getFigure() {
         if (figureId == null) {
             PlaceFigure placeFigure = new PlaceFigure(this);
@@ -59,6 +65,35 @@ public class Place extends Connectable {
             return CanvasController.getFigureById(this.getId());
         }
     }
+
+
+
+    ///////////////
+    //POPUP    ////
+    public JPopupMenu getPopup(String place_id) {
+        JPopupMenu placePopupMenu = new JPopupMenu();
+        JMenuItem menuItemDelete = new JMenuItem(new DeletePetriNetElementAction(this));
+        menuItemDelete.setText("Delete Place");
+        placePopupMenu.add(menuItemDelete);
+        placePopupMenu.addSeparator();
+
+        JMenuItem menuItemToken = new JMenuItem();
+        menuItemToken.setText("set TokenCount");
+        menuItemToken.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                String input = JOptionPane.showInputDialog("Enter tokenCount:");
+                if (input != null) {
+                    Place place = (Place)PetriNetController.getElementById(place_id);
+                    place.setTokenCount(Integer.parseInt(input));
+                }
+                CanvasController.repaintCanvas();
+            }
+        });
+        placePopupMenu.add(menuItemToken);
+
+        return placePopupMenu;
+    }
+
 
 
 }

@@ -40,12 +40,16 @@ public class MainWindowController {
     }
 
     public static void showTransitionPopupMenu(MouseEvent e, String transition_id) {
-        main_window.showTransitionPopupMenu(e, transition_id);
+        Transition transition = (Transition)PetriNetController.getElementById(transition_id);
+        JPopupMenu contextMenu = transition.getPopup(transition_id);
+        contextMenu.show(e.getComponent(), e.getX(), e.getY());
     }
 
 
     public static void showPlacePopupMenu(MouseEvent e, String place_id) {
-        main_window.showPlacePopupMenu(e, place_id);
+        Place place = (Place)PetriNetController.getElementById(place_id);
+        JPopupMenu contextMenu = place.getPopup(place_id);
+        contextMenu.show(e.getComponent(), e.getX(), e.getY());
     }
 
 
