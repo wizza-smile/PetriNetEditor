@@ -253,7 +253,7 @@ public class CanvasController {
                     BaseFigure figure = SelectionController.getFigureUnderMousePointer(mousePressPoint);
                     //if not: do nothing
                     //if yes: add arc to Place/Transition
-                    if (figure != null && !(figure instanceof LabelFigure)) {
+                    if (figure != null && (figure instanceof Positionable) && !(figure instanceof LabelFigure)) {
                         Arc arc = (Arc)PetriNetController.getElementById(arc_no_target_id);
                         if (arc.selectTarget(figure.getId())) {
                             GlobalController.setMode(GlobalController.MODE_ARC);
