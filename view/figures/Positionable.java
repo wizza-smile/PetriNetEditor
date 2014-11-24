@@ -14,10 +14,14 @@ import java.awt.geom.*;
 
 public abstract class Positionable extends BaseFigure {
 
+    protected Color strokeColor = new Color(0, 0, 0);
+    protected Color fillColor = new Color(255, 255, 255);
+    protected Color fillColorAlpha = new Color(255, 255, 255, 195);
     protected boolean selected = false;
-    protected boolean highlighted = false;
-    protected Color selectedColor = new Color(183, 55, 55, 40);
-    protected Color highlightedColor = new Color(115, 230, 0);
+    protected Color selectedColorAlpha = new Color(183, 55, 55, 40);
+    protected Color selectedColor = new Color(234, 191, 247);
+
+
     //offset to mouse pointer (for dragging)
     protected Point2D offset;
 

@@ -13,6 +13,7 @@ import javax.swing.*;
 public class GlobalController {
 
     public static Double size = 1.;
+    public static boolean opacity = true;
 
     public static int mode = 0;
     public static final int MODE_SELECT = 0;
@@ -84,6 +85,11 @@ public class GlobalController {
         TransitionFigure.DIMENSION = TransitionFigure.DIMENSION_BASE * size;
         CanvasController.PETRINET_PADDING = CanvasController.PETRINET_PADDING_BASE * size;
 
+        CanvasController.repaintCanvas();
+    }
+
+    public static void toggleOpacity() {
+        GlobalController.opacity = !GlobalController.opacity;
         CanvasController.repaintCanvas();
     }
 

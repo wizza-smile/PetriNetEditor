@@ -19,9 +19,6 @@ public abstract class BaseFigure {
     protected String elementId;
     protected PetriNetElement element;
 
-    protected Color strokeColor = new Color(0, 0, 0);
-    protected Color fillColor = new Color(255, 255, 255, 195);//195
-
     public abstract void delete();
     public abstract boolean contains(Point2D position);
     public abstract void draw(Graphics2D g);

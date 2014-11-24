@@ -90,9 +90,9 @@ public class TransitionFigure extends Positionable {
 
     public void drawFill(Graphics2D g) {
         if (selected) {
-            g.setPaint(selectedColor);
+            g.setPaint(GlobalController.opacity ? selectedColor : selectedColorAlpha);
         } else {
-            g.setPaint(fillColor);
+            g.setPaint(GlobalController.opacity ? fillColor : fillColorAlpha);
         }
         g.fill(transitionRectangle);
     }
@@ -107,11 +107,7 @@ public class TransitionFigure extends Positionable {
             g.setStroke(new BasicStroke(2f));
         }
 
-        if (highlighted) {
-            g.setPaint(highlightedColor);
-        } else {
-            g.setPaint(strokeColor);
-        }
+        g.setPaint(strokeColor);
         g.draw(transitionRectangle);
 
         if (!selected && this.isActivated()) {
