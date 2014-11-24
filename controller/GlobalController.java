@@ -13,7 +13,7 @@ import javax.swing.*;
 public class GlobalController {
 
     public static Double size = 1.;
-    public static boolean opacity = true;
+    public static boolean opacity = false;
 
     public static int mode = 0;
     public static final int MODE_SELECT = 0;
