@@ -53,6 +53,8 @@ public class MainWindowController {
     }
 
 
+
+
     public static void injectCanvas(view.Canvas canvas) {
         main_window.injectCanvas(canvas);
     }

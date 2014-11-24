@@ -267,19 +267,17 @@ public class CanvasController {
         //RECHTER MOUSE PRESS
         if (SwingUtilities.isRightMouseButton(e)) {
             System.out.println("RIGHT MOUSE");
-            switch (GlobalController.mode) {
-                case GlobalController.MODE_SELECT:
-                    //if a figure is under mouse, show its popup
-                    BaseFigure figureUnderMousePointer = SelectionController.getFigureUnderMousePointer(mousePressPoint);
-                    if (figureUnderMousePointer != null) {
-                        if (SelectionController.getSelectedElementsIds().size() < 2) {
-                            SelectionController.clearSelection();
-                            figureUnderMousePointer.showPopup(e);
-                        }
+            if (GlobalController.mode != GlobalController.MODE_ARC_SELECT_TARGET) {
+                //if a figure is under mouse, show its popup
+                BaseFigure figureUnderMousePointer = SelectionController.getFigureUnderMousePointer(mousePressPoint);
+                if (figureUnderMousePointer != null) {
+                    if (SelectionController.getSelectedElementsIds().size() < 2) {
+                        SelectionController.clearSelection();
+                        figureUnderMousePointer.showPopup(e);
+                    } else {
+                        figureUnderMousePointer.getElement().showMultiSelectionPopup(e);
                     }
-                    break;
-                default:
-                    break;
+                }
             }
         }
 

@@ -141,7 +141,12 @@ public class SelectionController {
             ((Positionable)CanvasController.getFigureById(id)).setSelected(false);
         }
         selectedElements_ids = new ArrayList<String>();
+    }
 
+    public static void deleteSelection() {
+        for (String id : selectedElements_ids ) {
+            ((Positionable)CanvasController.getFigureById(id)).getElement().delete();
+        }
     }
 
 }
