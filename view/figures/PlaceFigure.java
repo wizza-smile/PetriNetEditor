@@ -95,7 +95,8 @@ public class PlaceFigure extends Positionable {
             this.tokenPoint = generateTokenPoint();
             drawToken(g);
         } else if (tokenCount > 1 && !isSelected()) {
-            int fontSize = 14;
+            Double fontSizeD = 14 * (GlobalController.size+0.3);
+            int fontSize = fontSizeD.intValue();
             Font font = new Font(null, java.awt.Font.BOLD, fontSize);
             g.setFont(font);
             FontRenderContext fontRenderContext = g.getFontRenderContext();
@@ -106,7 +107,7 @@ public class PlaceFigure extends Positionable {
             g.setStroke(new java.awt.BasicStroke(1f));
             g.setPaint(strokeColor);
             g.drawString(tokenCount.toString(),
-                (float) (getPlace().getPosition().getX() - textBounds.getWidth()/2),
+                (float) (getPlace().getPosition().getX() - textBounds.getWidth()/1.7),
                 (float) (getPlace().getPosition().getY() + (fontSize*3/8))
             );
         }

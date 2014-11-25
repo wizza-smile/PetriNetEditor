@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
+import javax.swing.event.*;
 import javax.swing.border.*;
 import javax.swing.JToolBar.*;
 
@@ -161,19 +162,41 @@ class ButtonBar extends JToolBar {
         Separator jSeparator = new Separator();
         this.add(jSeparator);
 
+
         blockParams = new Object[]{"mode", 60};
         addButtonBlock(modeButtons, blockParams);
 
-        // this.setRollover(true);
+        Separator jSeparator2 = new Separator();
+        this.add(jSeparator2);
+
+        JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 38);
+            slider.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                Double size = 0.7 + (((JSlider)e.getSource()).getValue() * (0.8/100));
+                GlobalController.setSize(size);
+                CanvasController.repaintCanvas();
+            }
+        });
+
+        slider.setMaximumSize(new Dimension(150, 30));
+        slider.setPreferredSize(new Dimension(150, 30));
+
+        // //Create the label.
+        // JLabel sliderLabel = new JLabel("Size:", JLabel.CENTER);
+        // sliderLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 13));
+        // sliderLabel.setForeground(Color.white);
+        // this.add(sliderLabel);
+
+        this.add(slider);
     }
 
     private void addButtonBlock(Object[][] block, Object[] blockParams) {
         ButtonGroup grp = new ButtonGroup();
         for (Object[] button_info : block) {
-           this.addSeparator(new Dimension(8, 1));
-           JButton btn = createButton(button_info, blockParams, grp);
-           grp.add(btn);
-           this.add(btn);
+            this.addSeparator(new Dimension(8, 1));
+            JButton btn = createButton(button_info, blockParams, grp);
+            grp.add(btn);
+            this.add(btn);
         }
     }
 
