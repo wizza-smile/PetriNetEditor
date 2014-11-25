@@ -122,22 +122,6 @@ public class MainWindow extends JFrame {//implements Scrollable
         return statusLabel;
     }
 
-
-
-    public void showLabelInput(MouseEvent e, String label_figure_id) {
-        LabelFigure labelFigure = (LabelFigure)CanvasController.getFigureById(label_figure_id);
-        //Input dialog with a text field
-        String input = JOptionPane.showInputDialog(e.getComponent(), "Enter a new Label:", labelFigure.getLabel());
-        if (input != null) {
-            labelFigure.setLabel(input);
-        }
-    }
-
-
-
-
-
-
 }
 
 

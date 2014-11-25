@@ -28,9 +28,9 @@ public class MainWindowController {
     }
 
 
-    public static void showLabelInput(MouseEvent e, String label_figure_id) {
-        main_window.showLabelInput(e, label_figure_id);
-    }
+    // public static void showLabelInput(MouseEvent e, String label_figure_id) {
+    //     main_window.showLabelInput(e, label_figure_id);
+    // }
 
     // //target type of the arrow head clicked on
     // public static void showArcPopupMenu(MouseEvent e, String arc_id, int target_type) {

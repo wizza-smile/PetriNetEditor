@@ -10,6 +10,8 @@ import java.awt.event.*;
 import java.awt.font.*;
 import java.awt.geom.*;
 
+import javax.swing.*;
+
 
 public class LabelFigure extends Positionable {
 
@@ -34,10 +36,6 @@ public class LabelFigure extends Positionable {
 
     }
 
-
-    public void showPopup(MouseEvent e) {
-        MainWindowController.showLabelInput(e, this.getId());
-    }
 
     public boolean contains(Point2D position) {
         return this.label_border_rect.contains(position);
@@ -138,5 +136,16 @@ public class LabelFigure extends Positionable {
     }
 
 
+
+    ///////////////
+    //POPUP    ////
+
+    public void showPopup(MouseEvent e) {
+        //Input dialog with a text field
+        String input = JOptionPane.showInputDialog(e.getComponent(), "Enter a new Label:", this.getLabel());
+        if (input != null) {
+            this.setLabel(input);
+        }
+    }
 
 }
