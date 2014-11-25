@@ -88,18 +88,6 @@ public class LabelFigure extends Positionable {
             (float) (getPosition().getY() + (fontSize*3/8))//
         );
 
-
-
-
-        // Rectangle2D text_border_rect = new Rectangle2D.Double(
-        //     getPosition().getX() - textBounds.getWidth() / 2,
-        //     (float) (getPosition().getY() - textBounds.getHeight() / 2),// - label_y_offset,
-        //     textBounds.getWidth(),
-        //     textBounds.getHeight());
-        // g.setPaint(labelStrokeColor);
-        // g.draw(text_border_rect);
-
-
     }
 
 
@@ -129,11 +117,6 @@ public class LabelFigure extends Positionable {
         return selected;
     }
 
-
-    // public String getId() {
-    //     return id;
-    // }
-
     public String getLabeledFigureId() {
         return this.elementId;
     }
@@ -154,62 +137,6 @@ public class LabelFigure extends Positionable {
         return (Connectable)super.getElement();
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public void drawStroke(Graphics2D g) {
-        drawText(g);
-    }
-
-    public String getText() {
-        // String lbl = Global.petriNet.getNetElement(parent.getElementId()).getLabel();
-        // if(!lbl.equals(parent.getElementId())){
-        //     lbl = parent.getElementId()+":"+lbl;
-        // }
-        return labelText;
-    }
-
-    public String getTextLabel() {
-        return "QCIAO";
-        // return controller.PetriNetController.petriNet.getNetElement(parent.getElementId()).getLabel();
-    }
-
-    public void drawText(Graphics2D g) {
-
-        // g.setStroke(new java.awt.BasicStroke(1f));
-        // g.setPaint(strokeColor);
-
-        // Font font = new Font(null, java.awt.Font.BOLD, 12);
-        // FontRenderContext fontRenderContext = g.getFontRenderContext();
-        // TextLayout textLayout = new TextLayout(getText(),
-        //         font, fontRenderContext);
-
-        // Rectangle2D rectangle2D = textLayout.getBounds();
-
-        // rectangle = new Rectangle2D.Double(position.getX() -
-        //         rectangle2D.getWidth() / 2, position.getY() -
-        //         rectangle2D.getHeight() / 2, rectangle2D.getWidth(),
-        //         rectangle2D.getHeight());
-
-        // g.drawString(getText(),
-        //         (float) (position.getX() - rectangle2D.getWidth() / 2),
-        //         (float) (position.getY() + rectangle2D.getHeight() / 2));
-
-    }
 
 
 }

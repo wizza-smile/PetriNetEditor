@@ -85,29 +85,5 @@ public class Transition extends Connectable {
     }
 
 
-    ///////////////
-    //POPUP    ////
-    public JPopupMenu getPopup(String transition_id) {
-        JPopupMenu transitionPopupMenu = new JPopupMenu();
-        JMenuItem menuItem = new JMenuItem(new DeletePetriNetElementAction(this));//new DeletePetriNetObjectAction(myObject)
-        menuItem.setText("Delete Transition");
-        transitionPopupMenu.add(menuItem);
-        transitionPopupMenu.addSeparator();
-
-        if (this.isActivated()) {
-            JMenuItem menuItemActivate = new JMenuItem();
-            menuItemActivate.setText("activate Transition");
-            menuItemActivate.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent event) {
-                    System.out.println( "activateTransition" );
-                    CanvasController.repaintCanvas();
-                }
-            });
-            transitionPopupMenu.add(menuItemActivate);
-        }
-
-        return transitionPopupMenu;
-    }
-
 
 }

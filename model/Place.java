@@ -67,33 +67,4 @@ public class Place extends Connectable {
     }
 
 
-
-    ///////////////
-    //POPUP    ////
-    public JPopupMenu getPopup(String place_id) {
-        JPopupMenu placePopupMenu = new JPopupMenu();
-        JMenuItem menuItemDelete = new JMenuItem(new DeletePetriNetElementAction(this));
-        menuItemDelete.setText("Delete Place");
-        placePopupMenu.add(menuItemDelete);
-        placePopupMenu.addSeparator();
-
-        JMenuItem menuItemToken = new JMenuItem();
-        menuItemToken.setText("set TokenCount");
-        menuItemToken.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                String input = JOptionPane.showInputDialog("Enter tokenCount:");
-                if (input != null) {
-                    Place place = (Place)PetriNetController.getElementById(place_id);
-                    place.setTokenCount(Integer.parseInt(input));
-                }
-                CanvasController.repaintCanvas();
-            }
-        });
-        placePopupMenu.add(menuItemToken);
-
-        return placePopupMenu;
-    }
-
-
-
 }

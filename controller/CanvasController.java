@@ -275,7 +275,7 @@ public class CanvasController {
                         SelectionController.clearSelection();
                         figureUnderMousePointer.showPopup(e);
                     } else {
-                        figureUnderMousePointer.getElement().showMultiSelectionPopup(e);
+                        figureUnderMousePointer.showMultiSelectionPopup(e);
                     }
                 }
             }

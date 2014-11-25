@@ -32,25 +32,25 @@ public class MainWindowController {
         main_window.showLabelInput(e, label_figure_id);
     }
 
-    //target type of the arrow head clicked on
-    public static void showArcPopupMenu(MouseEvent e, String arc_id, int target_type) {
-        Arc arc = (Arc)PetriNetController.getElementById(arc_id);
-        JPopupMenu contextMenu = arc.getPopup(arc_id, target_type);
-        contextMenu.show(e.getComponent(), e.getX(), e.getY());
-    }
+    // //target type of the arrow head clicked on
+    // public static void showArcPopupMenu(MouseEvent e, String arc_id, int target_type) {
+    //     Arc arc = (Arc)PetriNetController.getElementById(arc_id);
+    //     JPopupMenu contextMenu = arc.getPopup(arc_id, target_type);
+    //     contextMenu.show(e.getComponent(), e.getX(), e.getY());
+    // }
 
-    public static void showTransitionPopupMenu(MouseEvent e, String transition_id) {
-        Transition transition = (Transition)PetriNetController.getElementById(transition_id);
-        JPopupMenu contextMenu = transition.getPopup(transition_id);
-        contextMenu.show(e.getComponent(), e.getX(), e.getY());
-    }
+    // public static void showTransitionPopupMenu(MouseEvent e, String transition_id) {
+    //     Transition transition = (Transition)PetriNetController.getElementById(transition_id);
+    //     JPopupMenu contextMenu = transition.getPopup(transition_id);
+    //     contextMenu.show(e.getComponent(), e.getX(), e.getY());
+    // }
 
 
-    public static void showPlacePopupMenu(MouseEvent e, String place_id) {
-        Place place = (Place)PetriNetController.getElementById(place_id);
-        JPopupMenu contextMenu = place.getPopup(place_id);
-        contextMenu.show(e.getComponent(), e.getX(), e.getY());
-    }
+    // public static void showPlacePopupMenu(MouseEvent e, String place_id) {
+    //     Place place = (Place)PetriNetController.getElementById(place_id);
+    //     JPopupMenu contextMenu = place.getPopup(place_id);
+    //     contextMenu.show(e.getComponent(), e.getX(), e.getY());
+    // }
 
 
 

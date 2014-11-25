@@ -53,10 +53,6 @@ public class TransitionFigure extends Positionable {
     }
 
 
-    public void showPopup(MouseEvent e) {
-        MainWindowController.showTransitionPopupMenu(e, this.getId());
-    }
-
     public LabelFigure getLabelFigure() {
         return (LabelFigure)CanvasController.getFigureById(this.labelFigureId);
     }
@@ -168,5 +164,40 @@ public class TransitionFigure extends Positionable {
     public Rectangle2D getTransitionRectangle() {
         return generateTransitionRectangle();
     }
+
+
+    ///////////////
+    //POPUP    ////
+
+    public void showPopup(MouseEvent e) {
+        JPopupMenu contextMenu = this.getPopup(this.getId());
+        contextMenu.show(e.getComponent(), e.getX(), e.getY());
+    }
+
+    public JPopupMenu getPopup(String transition_id) {
+        JPopupMenu transitionPopupMenu = new JPopupMenu();
+
+        //menu point "activate transition"
+        if (this.isActivated()) {
+            JMenuItem menuItemActivate = new JMenuItem();
+            menuItemActivate.setText("activate Transition");
+            menuItemActivate.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent event) {
+                    System.out.println( "activateTransition" );
+                    CanvasController.repaintCanvas();
+                }
+            });
+            transitionPopupMenu.add(menuItemActivate);
+            transitionPopupMenu.addSeparator();
+        }
+
+        //menu point "delete transition"
+        JMenuItem menuItem = new JMenuItem(new DeletePetriNetElementAction(this.getElement()));//new DeletePetriNetObjectAction(myObject)
+        menuItem.setText("Delete Transition");
+        transitionPopupMenu.add(menuItem);
+
+        return transitionPopupMenu;
+    }
+
 
 }

@@ -52,11 +52,6 @@ public class PlaceFigure extends Positionable {
     }
 
 
-    public void showPopup(MouseEvent e) {
-        MainWindowController.showPlacePopupMenu(e, this.getId());
-    }
-
-
     public Place getPlace() {
         return (Place)this.getElement();
     }
@@ -201,5 +196,44 @@ public class PlaceFigure extends Positionable {
     public Connectable getElement() {
         return (Connectable)super.getElement();
     }
+
+
+
+    ///////////////
+    //POPUP    ////
+
+    public void showPopup(MouseEvent e) {
+        JPopupMenu contextMenu = this.getPopup(this.getId());
+        contextMenu.show(e.getComponent(), e.getX(), e.getY());
+    }
+
+    public JPopupMenu getPopup(String p_id) {
+        final String place_id = p_id;
+        JPopupMenu placePopupMenu = new JPopupMenu();
+
+        //menu point "set token"
+        JMenuItem menuItemToken = new JMenuItem();
+        menuItemToken.setText("set TokenCount");
+        menuItemToken.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                String input = JOptionPane.showInputDialog("Enter tokenCount:");
+                if (input != null) {
+                    Place place = (Place)PetriNetController.getElementById(place_id);
+                    place.setTokenCount(Integer.parseInt(input));
+                }
+                CanvasController.repaintCanvas();
+            }
+        });
+        placePopupMenu.add(menuItemToken);
+        placePopupMenu.addSeparator();
+
+        //menu point "delete place"
+        JMenuItem menuItemDelete = new JMenuItem(new DeletePetriNetElementAction(this.getElement()));
+        menuItemDelete.setText("Delete Place");
+        placePopupMenu.add(menuItemDelete);
+
+        return placePopupMenu;
+    }
+
 
 }

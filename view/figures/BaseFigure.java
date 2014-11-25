@@ -11,6 +11,8 @@ import java.awt.event.*;
 import java.awt.font.*;
 import java.awt.geom.*;
 
+import javax.swing.*;
+
 ///SELECTABLE FIGURES ARC / PLACE / TRANSIITONS
 public abstract class BaseFigure {
     protected String id;
@@ -40,6 +42,46 @@ public abstract class BaseFigure {
 
 
 
+    ///////////////
+    //POPUP    ////
+
+    public void showMultiSelectionPopup(MouseEvent e) {
+        JPopupMenu contextMenu = getMultiSelectionPopup();
+        contextMenu.show(e.getComponent(), e.getX(), e.getY());
+    }
+
+    public JPopupMenu getMultiSelectionPopup() {
+        JPopupMenu multiSelectionMenu = new JPopupMenu();
+        JMenuItem menuItemDelete = new JMenuItem();
+        menuItemDelete.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                SelectionController.deleteSelection();
+                CanvasController.repaintCanvas();
+            }
+        });
+        menuItemDelete.setText("Delete Selected Elements");
+        multiSelectionMenu.add(menuItemDelete);
+        multiSelectionMenu.addSeparator();
+
+        return multiSelectionMenu;
+    }
+
+
+    protected class DeletePetriNetElementAction extends AbstractAction {
+        protected PetriNetElement element;
+
+        DeletePetriNetElementAction() {}
+
+        DeletePetriNetElementAction(PetriNetElement elem) {
+            element = elem;
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            element.delete();
+            CanvasController.repaintCanvas();
+        }
+
+    }
 
 
 

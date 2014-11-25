@@ -57,9 +57,6 @@ public class ArcFigure extends BaseFigure {
         CanvasController.removeArcFigure(this.getId());
     }
 
-    public void showPopup(MouseEvent e) {
-        MainWindowController.showArcPopupMenu(e, this.getId(), selectedArrowHeadsTargetType);
-    }
 
     //check if arrowHead's been clicked on, then store its target
     public boolean contains(Point2D position) {
@@ -85,36 +82,10 @@ public class ArcFigure extends BaseFigure {
         return this.getArc().getPlace();
     }
 
-    // public void removeTarget(int target_type) {
-    //     if (this.getArc().getTargetType() == target_type ) {
-    //         this.getArc().removeTarget(target_type);
-    //     }
-    // }
 
     public int getTargetType() {
         return this.getArc().getTargetType();
     }
-
-    // public Integer arrowHeadsContain(Point2D position) {
-
-    //     if (getTargetType() == Arc.TARGET_BOTH) {
-    //         for (ArrowHead ah : arrow_heads ) {
-    //             if (ah.contains(position)) {
-    //                 return ah.TARGET_TYPE;
-    //             }
-    //         }
-    //     } else if (getTargetType() == Arc.TARGET_TRANSITION) {
-    //         if (arrow_heads[0].contains(position)) {
-    //             return arrow_heads[0].TARGET_TYPE;
-    //         }
-    //     } else {
-    //         if (arrow_heads[1].contains(position)) {
-    //             return arrow_heads[1].TARGET_TYPE;
-    //         }
-    //     }
-
-    //     return null;
-    // }
 
 
     protected void computeGradientTriangle() {
@@ -424,6 +395,42 @@ public class ArcFigure extends BaseFigure {
     }
 
 
+
+
+    ///////////////
+    //POPUP    ////
+
+    public void showPopup(MouseEvent e) {
+        JPopupMenu contextMenu = this.getPopup(this.getId(), this.getTargetType());
+        contextMenu.show(e.getComponent(), e.getX(), e.getY());
+    }
+
+
+    public JPopupMenu getPopup(String arc_id, int target_type) {
+        JPopupMenu arcPopupMenu = new JPopupMenu();
+        JMenuItem menuItem = new JMenuItem(new DeleteArcMenuAction(this.getElement(), target_type));
+        menuItem.setText("Delete Arrow Head");
+        arcPopupMenu.add(menuItem);
+        arcPopupMenu.addSeparator();
+
+        return arcPopupMenu;
+    }
+
+
+    protected class DeleteArcMenuAction extends DeletePetriNetElementAction {
+        int target_type;
+
+        public DeleteArcMenuAction(PetriNetElement elem, int target_type) {
+            this.element = elem;
+            this.target_type = target_type;
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            ((Arc)element).removeTarget(target_type);
+            CanvasController.repaintCanvas();
+        }
+
+    }
 
 
 

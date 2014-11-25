@@ -193,11 +193,11 @@ class ButtonBar extends JToolBar {
         }
     }
 
-    private JButton createButton(Object[] button_info, Object[] blockParams, ButtonGroup group) {
+    private JButton createButton(Object[] button_info, Object[] blockParams, ButtonGroup grp) {
         ImageIcon icon = new ImageIcon(this.getClass().getResource("images/" + button_info[0] + ".png"));
-        JButton button = new JButton(icon);
+        final JButton button = new JButton(icon);
         final Object[] final_button_info = button_info;
-        final ButtonGroup grp = group;
+        final ButtonGroup group = grp;
 
         button.setToolTipText((String)button_info[1]);
 
@@ -215,11 +215,13 @@ class ButtonBar extends JToolBar {
 
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                Enumeration<AbstractButton> enb = group.getElements();
-                while(enb.hasMoreElements()){
-                    JButton jb = (JButton) enb.nextElement();
+                //unselect all other buttons from related group
+                Enumeration<AbstractButton> button_enum = group.getElements();
+                while(button_enum.hasMoreElements()){
+                    JButton jb = (JButton) button_enum.nextElement();
                     jb.setSelected(false);
                 }
+                //select this button and execute action
                 button.setSelected(true);
                 MainWindowController.executeButtonBarAction((String)final_button_info[0]);
             }
