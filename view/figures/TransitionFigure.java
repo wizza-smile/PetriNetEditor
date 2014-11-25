@@ -125,6 +125,7 @@ public class TransitionFigure extends Positionable {
     }
 
 
+
     public Rectangle2D getBounds() {
         return this.transitionRectangle;
     }
@@ -170,20 +171,21 @@ public class TransitionFigure extends Positionable {
     //POPUP    ////
 
     public void showPopup(MouseEvent e) {
-        JPopupMenu contextMenu = this.getPopup(this.getId());
+        JPopupMenu contextMenu = this.getPopup();
         contextMenu.show(e.getComponent(), e.getX(), e.getY());
     }
 
-    public JPopupMenu getPopup(String transition_id) {
+    public JPopupMenu getPopup() {
         JPopupMenu transitionPopupMenu = new JPopupMenu();
 
+        Transition transition = this.getTransition();
         //menu point "activate transition"
         if (this.isActivated()) {
             JMenuItem menuItemActivate = new JMenuItem();
             menuItemActivate.setText("activate Transition");
             menuItemActivate.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent event) {
-                    System.out.println( "activateTransition" );
+                    transition.activate();
                     CanvasController.repaintCanvas();
                 }
             });

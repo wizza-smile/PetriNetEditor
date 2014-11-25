@@ -34,7 +34,7 @@ public class Arc extends PetriNetElement {
         }
         //cache a figure
         this.getFigure();
-
+        this.getSource().addArcId(this.getId());
         selectTarget(target_id);
     }
 

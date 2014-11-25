@@ -17,6 +17,7 @@ public class Place extends Connectable {
     public Place(String place_id) {
         register(place_id);
         this.position = new Point2D.Double(0.,0.);
+        this.setTokenCount(0);
         this.setLabel("P LABEL");
         this.getFigure();
     }
@@ -24,6 +25,7 @@ public class Place extends Connectable {
     public Place(Point2D position) {
         register();
         this.position = position;
+        this.setTokenCount(0);
         this.setLabel("P LABEL");
         //create/'cache??' a figure
         this.getFigure();

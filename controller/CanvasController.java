@@ -234,7 +234,6 @@ public class CanvasController {
     public static void mousePressed(MouseEvent e) {
         mousePressPoint = new Point2D.Double(e.getX(), e.getY());
         if (SwingUtilities.isLeftMouseButton(e)) {
-            System.out.println("LEFT MOUSE PRESS");
             switch (GlobalController.mode) {
                 case GlobalController.ACTION_SELECT:
                     SelectionController.mouseClickedInModeSelect(e);
@@ -266,7 +265,6 @@ public class CanvasController {
         }
         //RECHTER MOUSE PRESS
         if (SwingUtilities.isRightMouseButton(e)) {
-            System.out.println("RIGHT MOUSE");
             if (GlobalController.mode != GlobalController.ACTION_ARC_SELECT_TARGET) {
                 //if a figure is under mouse, show its popup
                 BaseFigure figureUnderMousePointer = SelectionController.getFigureUnderMousePointer(mousePressPoint);

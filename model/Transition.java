@@ -96,6 +96,19 @@ public class Transition extends Connectable {
         return isActivated;
     }
 
+    public void activate() {
+        for (String arc_id : this.getArcIds()) {
+            Arc arc = (Arc)PetriNetController.getElementById(arc_id);
+            if (arc.getTargetType() != Arc.TARGET_TRANSITION) {
+                arc.getPlace().setTokenCount(arc.getPlace().getTokenCount()+1);
+            }
+            if (arc.getTargetType() != Arc.TARGET_PLACE) {
+                arc.getPlace().setTokenCount(arc.getPlace().getTokenCount()-1);
+            }
+
+        }
+    }
+
 
 
 }
