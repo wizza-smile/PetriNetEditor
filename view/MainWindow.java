@@ -162,7 +162,6 @@ class ButtonBar extends JToolBar {
         Separator jSeparator = new Separator();
         this.add(jSeparator);
 
-
         blockParams = new Object[]{"mode", 60};
         addButtonBlock(modeButtons, blockParams);
 
@@ -199,6 +198,7 @@ class ButtonBar extends JToolBar {
             this.add(btn);
         }
     }
+
 
     private JButton createButton(Object[] button_info, Object[] blockParams, ButtonGroup grp) {
         ImageIcon icon = new ImageIcon(this.getClass().getResource("images/" + button_info[0] + ".png"));

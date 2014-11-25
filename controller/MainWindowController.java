@@ -3,17 +3,20 @@ package controller;
 import model.*;
 import view.figures.*;
 import view.*;
+import parser.*;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 
 import javax.swing.*;
+import java.io.File;
 
 
 public class MainWindowController {
 
     public static MainWindow main_window;
+    static File current_directory;
 
 
 
@@ -60,11 +63,25 @@ public class MainWindowController {
         switch (button_id) {
             //File buttons
             case "create_new":
-                GlobalController.setSize(1.5);
                 System.out.println("CREATE NEW");
                 break;
             case "open":
-                GlobalController.setSize(0.7);
+                final JFileChooser fileChooser = new JFileChooser(current_directory);
+                fileChooser.addActionListener(new ActionListener() {
+                  public void actionPerformed(ActionEvent e) {
+
+                    current_directory = fileChooser.getCurrentDirectory();
+                    System.out.println(fileChooser.getCurrentDirectory());
+
+                  }
+                });
+                int returnVal = fileChooser.showOpenDialog(main_window);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file = fileChooser.getSelectedFile();
+                    // System.out.println( file );
+                    final String[] args = {file.toString()};
+                    parser.PNMLParser.main(args);
+                }
                 break;
             case "save":
                 GlobalController.setSize(1.);
@@ -74,16 +91,16 @@ public class MainWindowController {
                 break;
             //Mode buttons
             case "select_mode":
-                GlobalController.setMode(GlobalController.MODE_SELECT);
+                GlobalController.setMode(GlobalController.ACTION_SELECT);
                 break;
             case "place_mode":
-                GlobalController.setMode(GlobalController.MODE_PLACE);
+                GlobalController.setMode(GlobalController.ACTION_PLACE);
                 break;
             case "transition_mode":
-                GlobalController.setMode(GlobalController.MODE_TRANSITION);
+                GlobalController.setMode(GlobalController.ACTION_TRANSITION);
                 break;
             case "arc_mode":
-                GlobalController.setMode(GlobalController.MODE_ARC);
+                GlobalController.setMode(GlobalController.ACTION_ARC);
                 break;
 
         }

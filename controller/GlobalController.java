@@ -12,16 +12,16 @@ import javax.swing.*;
 
 public class GlobalController {
 
-    public static Double size = 0.86;
+    public static Double size = 1.;
     public static boolean opacity = false;
 
     public static int mode = 0;
-    public static final int MODE_SELECT = 0;
-    public static final int MODE_DRAG_SELECTION = 1;
-    public static final int MODE_PLACE = 2;
-    public static final int MODE_TRANSITION = 3;
-    public static final int MODE_ARC = 4;
-    public static final int MODE_ARC_SELECT_TARGET = 5;
+    public static final int ACTION_SELECT = 0;
+    public static final int ACTION_DRAG_SELECTION = 1;
+    public static final int ACTION_PLACE = 2;
+    public static final int ACTION_TRANSITION = 3;
+    public static final int ACTION_ARC = 4;
+    public static final int ACTION_ARC_SELECT_TARGET = 5;
 
 
     public static boolean STOP_PAINT = false;
@@ -40,9 +40,10 @@ public class GlobalController {
 
                 view.Canvas canvas = CanvasController.createCanvas();
                 canvas.setSize(new Dimension(200, 200));
-                // canvas.setSize(new Dimension(200, 200));
-                // // canvas.setWidth(200);
+
                 MainWindowController.injectCanvas(canvas);
+                //set initialSize
+                GlobalController.setSize(0.86);
             }
         });
     }
@@ -51,7 +52,7 @@ public class GlobalController {
     public static void setMode(int mode) {
         //cleanup after
         switch (GlobalController.mode) {
-            case MODE_ARC_SELECT_TARGET:
+            case ACTION_ARC_SELECT_TARGET:
                 if (CanvasController.arc_no_target_id != null) {
                     Arc arc = (Arc)PetriNetController.getElementById(CanvasController.arc_no_target_id);
                     arc.delete();
@@ -63,10 +64,10 @@ public class GlobalController {
         }
         //cleanup before
         switch (mode) {
-            case MODE_PLACE:
-            case MODE_TRANSITION:
-            case MODE_ARC:
-            case MODE_ARC_SELECT_TARGET:
+            case ACTION_PLACE:
+            case ACTION_TRANSITION:
+            case ACTION_ARC:
+            case ACTION_ARC_SELECT_TARGET:
                 SelectionController.clearSelection();
                 CanvasController.repaintCanvas();
                 break;

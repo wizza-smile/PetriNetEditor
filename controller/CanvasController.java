@@ -135,7 +135,7 @@ public class CanvasController {
             if (figure.getElement() instanceof Connectable) {
                 ((Connectable)figure.getElement()).addNewArc();
             }
-            GlobalController.setMode(GlobalController.MODE_ARC_SELECT_TARGET);
+            GlobalController.setMode(GlobalController.ACTION_ARC_SELECT_TARGET);
         }
     }
 
@@ -214,14 +214,14 @@ public class CanvasController {
 
     public static void mouseClicked(MouseEvent e) {
         switch (GlobalController.mode) {
-            case GlobalController.MODE_SELECT:
+            case GlobalController.ACTION_SELECT:
                 //on dbl-click: clear selection and select figure under pointer, if any
                 if (e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e)) {
                     SelectionController.clearSelection();
                     BaseFigure figureUnderMousePointer = SelectionController.getFigureUnderMousePointer(mousePressPoint);
                     if (figureUnderMousePointer instanceof Positionable){
                         SelectionController.addFigureToSelection((Positionable)figureUnderMousePointer);
-                        GlobalController.setMode(GlobalController.MODE_SELECT);
+                        GlobalController.setMode(GlobalController.ACTION_SELECT);
                     }
                 }
                 break;
@@ -236,19 +236,19 @@ public class CanvasController {
         if (SwingUtilities.isLeftMouseButton(e)) {
             System.out.println("LEFT MOUSE PRESS");
             switch (GlobalController.mode) {
-                case GlobalController.MODE_SELECT:
+                case GlobalController.ACTION_SELECT:
                     SelectionController.mouseClickedInModeSelect(e);
                     break;
-                case GlobalController.MODE_PLACE:
+                case GlobalController.ACTION_PLACE:
                     PetriNetController.newConnectableElementAtPosition(mousePressPoint, PetriNetController.ELEMENT_PLACE);
                     break;
-                case GlobalController.MODE_TRANSITION:
+                case GlobalController.ACTION_TRANSITION:
                     PetriNetController.newConnectableElementAtPosition(mousePressPoint, PetriNetController.ELEMENT_TRANSITION);
                     break;
-                case GlobalController.MODE_ARC:
+                case GlobalController.ACTION_ARC:
                     handleMousePressedModeArc();
                     break;
-                case GlobalController.MODE_ARC_SELECT_TARGET:
+                case GlobalController.ACTION_ARC_SELECT_TARGET:
                     //check if a Place/Transition is under mousepointer
                     BaseFigure figure = SelectionController.getFigureUnderMousePointer(mousePressPoint);
                     //if not: do nothing
@@ -256,7 +256,7 @@ public class CanvasController {
                     if (figure != null && (figure instanceof Positionable) && !(figure instanceof LabelFigure)) {
                         Arc arc = (Arc)PetriNetController.getElementById(arc_no_target_id);
                         if (arc.selectTarget(figure.getId())) {
-                            GlobalController.setMode(GlobalController.MODE_ARC);
+                            GlobalController.setMode(GlobalController.ACTION_ARC);
                         }
                     }
                     break;
@@ -267,7 +267,7 @@ public class CanvasController {
         //RECHTER MOUSE PRESS
         if (SwingUtilities.isRightMouseButton(e)) {
             System.out.println("RIGHT MOUSE");
-            if (GlobalController.mode != GlobalController.MODE_ARC_SELECT_TARGET) {
+            if (GlobalController.mode != GlobalController.ACTION_ARC_SELECT_TARGET) {
                 //if a figure is under mouse, show its popup
                 BaseFigure figureUnderMousePointer = SelectionController.getFigureUnderMousePointer(mousePressPoint);
                 if (figureUnderMousePointer != null) {
@@ -289,10 +289,10 @@ public class CanvasController {
         currentMousePoint = new Point2D.Double(e.getX(), e.getY());
         if (SwingUtilities.isLeftMouseButton(e)) {
             switch (GlobalController.mode) {
-                case  GlobalController.MODE_SELECT:
+                case  GlobalController.ACTION_SELECT:
                     SelectionController.updateSelection();
                     break;
-                case GlobalController.MODE_DRAG_SELECTION:
+                case GlobalController.ACTION_DRAG_SELECTION:
                     //move all selected Elements to mouse position/ consider offset
                     ArrayList<String> selectedElements_ids = SelectionController.getSelectedElementsIds();
                     boolean clearSelection = true;
@@ -315,11 +315,11 @@ public class CanvasController {
     public static void mouseReleased(MouseEvent e) {
         currentMousePoint = new Point2D.Double(e.getX(), e.getY());
         switch (GlobalController.mode) {
-            case GlobalController.MODE_SELECT:
+            case GlobalController.ACTION_SELECT:
                 SelectionController.removeSelectionRectangle();
                 break;
-            case GlobalController.MODE_DRAG_SELECTION:
-                GlobalController.setMode(GlobalController.MODE_SELECT);
+            case GlobalController.ACTION_DRAG_SELECTION:
+                GlobalController.setMode(GlobalController.ACTION_SELECT);
                 break;
             default:
                 break;

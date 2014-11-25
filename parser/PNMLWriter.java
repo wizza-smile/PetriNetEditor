@@ -1,3 +1,5 @@
+package parser;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -15,9 +17,9 @@ public final class PNMLWriter {
     /**
      * Mit dieser Main Methode kann der PNMLWriter zum Testen
      * aufgerufen werden. Als erster und einziger Paramter muss
-     * dazu der Pfad der zu erstellenden PNML Datei angegeben 
+     * dazu der Pfad der zu erstellenden PNML Datei angegeben
      * werden.
-     * 
+     *
      * @param args
      *      Die Konsolen Parameter, mit denen das Programm aufgerufen wird.
      */
@@ -60,7 +62,7 @@ public final class PNMLWriter {
     /**
      * Dieser Konstruktor erstellt einen neuen Writer für PNML Dateien,
      * dem die PNML Datei als Java {@link File} übergeben wird.
-     * 
+     *
      * @param pnml
      *      Java {@link File} Objekt der PNML Datei
      */
@@ -115,7 +117,7 @@ public final class PNMLWriter {
     /**
      * Diese Methode fügt eine neue Transition zum XML Dokument hinzu. Vor dieser Methode muss
      * startXMLDocument() aufgerufen worden sein.
-     * 
+     *
      * @param id
      *      Indentifikationstext der Transition
      * @param label
@@ -162,7 +164,7 @@ public final class PNMLWriter {
     /**
      * Diese Methode fügt eine neue Stelle zum XML Dokument hinzu. Vor dieser Methode muss
      * startXMLDocument() aufgerufen worden sein.
-     * 
+     *
      * @param id
      *      Indentifikationstext der Stelle
      * @param label
@@ -220,7 +222,7 @@ public final class PNMLWriter {
     /**
      * Diese Methode fügt eine neue Kante zum XML Dokument hinzu. Vor dieser Methode muss
      * startXMLDocument() aufgerufen worden sein.
-     * 
+     *
      * @param id
      *      Indentifikationstext der Stelle
      * @param source
