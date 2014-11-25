@@ -278,6 +278,9 @@ public class CanvasController {
                         figureUnderMousePointer.showMultiSelectionPopup(e);
                     }
                 }
+            } else {
+                //delete unfinished/red Arc
+                GlobalController.setMode(GlobalController.ACTION_ARC);
             }
         }
 
