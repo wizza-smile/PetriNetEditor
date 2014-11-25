@@ -35,7 +35,7 @@ public class MainWindow extends JFrame {//implements Scrollable
         this.addComponentListener(new ResizeListener());
 
         this.setTitle("PetriNetEditor");
-        this.setSize(800, 600);
+        this.setSize(657, 500);
         this.setMinimumSize(new Dimension(400, 400));
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -169,7 +169,7 @@ class ButtonBar extends JToolBar {
         Separator jSeparator2 = new Separator();
         this.add(jSeparator2);
 
-        JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 38);
+        JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 20);
             slider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                 Double size = 0.7 + (((JSlider)e.getSource()).getValue() * (0.8/100));

@@ -12,7 +12,7 @@ import javax.swing.*;
 
 public class GlobalController {
 
-    public static Double size = 1.;
+    public static Double size = 0.86;
     public static boolean opacity = false;
 
     public static int mode = 0;
