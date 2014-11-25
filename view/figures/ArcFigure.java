@@ -401,7 +401,7 @@ public class ArcFigure extends BaseFigure {
     //POPUP    ////
 
     public void showPopup(MouseEvent e) {
-        JPopupMenu contextMenu = this.getPopup(this.getId(), this.getTargetType());
+        JPopupMenu contextMenu = this.getPopup(this.getId(), this.selectedArrowHeadsTargetType);
         contextMenu.show(e.getComponent(), e.getX(), e.getY());
     }
 

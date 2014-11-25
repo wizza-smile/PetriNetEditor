@@ -6,6 +6,8 @@ import view.*;
 import view.figures.*;
 import controller.*;
 
+import java.util.*;
+
 import java.awt.geom.*;
 
 import java.io.File;
@@ -28,6 +30,8 @@ import javax.xml.stream.events.XMLEvent;
  */
 public class PNMLParser {
 
+    private ArrayList<String[]> arcs_info = new ArrayList<String[]>();
+
     /**
      * Mit dieser Main Methode kann der Parser zum Testen
      * aufgerufen werden. Als erster und einziger Paramter muss
@@ -43,6 +47,7 @@ public class PNMLParser {
                 PNMLParser pnmlParser = new PNMLParser(pnmlDatei);
                 pnmlParser.initParser();
                 pnmlParser.parse();
+                pnmlParser.addArcs();
             } else {
                 System.err.println("Die Datei " + pnmlDatei.getAbsolutePath()
                         + " wurde nicht gefunden!");
@@ -281,12 +286,22 @@ public class PNMLParser {
     }
 
     /**
+     * Diese Methode wird aufgerufen, um am Schluß alle Arcs hinzuzufügen.
+     */
+    private void addArcs() {
+        for (String[] arc_info : arcs_info) {
+            newArc(arc_info[0], arc_info[1], arc_info[2]);
+        }
+    }
+
+    /**
      * Diese Methode wird aufgerufen, wenn ein Kantenelement gelesen wird.
      *
      * @param element
      *      das Kantenelement
      */
     private void handleArc(final StartElement element) {
+            System.out.println( "ARC" );
         String arcId = null;
         String source = null;
         String target = null;
@@ -302,7 +317,9 @@ public class PNMLParser {
             }
         }
         if (arcId != null && source != null && target != null) {
-            newArc(arcId, source, target);
+            System.out.println( "ARC" );
+            String arc_info[] = {arcId, source, target};
+            arcs_info.add(arc_info);
         } else {
             System.err.println("Unvollständige Kante wurde verworfen!");
         }
@@ -343,7 +360,7 @@ public class PNMLParser {
      *      Identifikationstext des Endelements der Kante
      */
     public void newArc(final String id, final String source, final String target) {
-        new Arc(source, target);
+        new Arc(id, source, target);
         System.out.println("Kante mit id " + id + " von " + source + " nach "
                 + target + " wurde gefunden.");
     }

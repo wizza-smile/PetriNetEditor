@@ -18,6 +18,7 @@ public class LabelFigure extends Positionable {
 
     protected Color labelStrokeColor = new Color(0, 0, 0);
     protected Color labelFillColor = new Color(245, 245, 245, 245);
+    protected Color labelFillColorSelected = new Color(183, 55, 55, 40);
 
     protected String labelText;
     public Point2D position;
@@ -75,7 +76,11 @@ public class LabelFigure extends Positionable {
             5
         );
 
-        g.setPaint(labelFillColor);
+        if (this.getLabeledFigure().isSelected()) {
+            g.setPaint(labelFillColorSelected);
+        } else {
+            g.setPaint(labelFillColor);
+        }
         g.fill(label_border_rect);
 
         g.setStroke(new java.awt.BasicStroke(1f));

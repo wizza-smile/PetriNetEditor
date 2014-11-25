@@ -19,8 +19,8 @@ public class Arc extends PetriNetElement {
 
     protected String transition_id, place_id;
 
-    public Arc(String source_id, String target_id) {
-        register();
+    public Arc(String arc_id, String source_id, String target_id) {
+        register(arc_id);
 
         Connectable source_element = (Connectable)PetriNetController.getElementById(source_id);
 
@@ -51,6 +51,11 @@ public class Arc extends PetriNetElement {
         }
         //cache a figure
         this.getFigure();
+    }
+
+    public void register(String arc_id) {
+        this.setId(arc_id);
+        PetriNetController.addElement(this, PetriNetController.ELEMENT_ARC);
     }
 
     public void register() {
@@ -104,6 +109,23 @@ public class Arc extends PetriNetElement {
         return;
     }
 
+    public int getTargetType() {
+        return this.target_type;
+    }
+
+    public void removeTarget(int target_type) {
+        if (this.target_type == TARGET_BOTH) {
+            System.out.println( "BOV" +target_type);
+            this.target_type -= target_type+1;
+        }
+        if (this.target_type == target_type ) {
+            this.delete();
+        }
+    }
+
+    public boolean isTargetSet() {
+        return transition_id == null || place_id == null ? false : true;
+    }
 
     public boolean selectTarget(String target_id) {
         String source_id = this.getSourceId();
@@ -182,23 +204,6 @@ public class Arc extends PetriNetElement {
 
     public Connectable getSource() {
         return (Connectable)PetriNetController.getElementById(getSourceId());
-    }
-
-    public int getTargetType() {
-        return this.target_type;
-    }
-
-    public void removeTarget(int target_type) {
-        if (this.target_type == TARGET_BOTH) {
-            this.target_type -= target_type+1;
-        }
-        if (this.target_type == target_type ) {
-            this.delete();
-        }
-    }
-
-    public boolean isTargetSet() {
-        return transition_id == null || place_id == null ? false : true;
     }
 
 
