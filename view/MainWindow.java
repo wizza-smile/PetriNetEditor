@@ -215,16 +215,11 @@ class ButtonBar extends JToolBar {
 
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                // ButtonGroup grp = button.getGroup();
-                // for (JButton jb : group.getElements()) {
-                //     jb.setSelected(false);
-                // }
                 Enumeration<AbstractButton> enb = group.getElements();
                 while(enb.hasMoreElements()){
                     JButton jb = (JButton) enb.nextElement();
                     jb.setSelected(false);
                 }
-                group.clearSelection();
                 button.setSelected(true);
                 MainWindowController.executeButtonBarAction((String)final_button_info[0]);
             }
