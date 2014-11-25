@@ -4,6 +4,8 @@ import model.*;
 import view.figures.*;
 import controller.*;
 
+import java.util.*;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -182,16 +184,20 @@ class ButtonBar extends JToolBar {
     }
 
     private void addButtonBlock(Object[][] block, Object[] blockParams) {
+        ButtonGroup grp = new ButtonGroup();
         for (Object[] button_info : block) {
            this.addSeparator(new Dimension(8, 1));
-           this.add(createButton(button_info, blockParams));
+           JButton btn = createButton(button_info, blockParams, grp);
+           grp.add(btn);
+           this.add(btn);
         }
     }
 
-    private JButton createButton(Object[] button_info, Object[] blockParams) {
+    private JButton createButton(Object[] button_info, Object[] blockParams, ButtonGroup group) {
         ImageIcon icon = new ImageIcon(this.getClass().getResource("images/" + button_info[0] + ".png"));
         JButton button = new JButton(icon);
         final Object[] final_button_info = button_info;
+        final ButtonGroup grp = group;
 
         button.setToolTipText((String)button_info[1]);
 
@@ -209,6 +215,17 @@ class ButtonBar extends JToolBar {
 
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
+                // ButtonGroup grp = button.getGroup();
+                // for (JButton jb : group.getElements()) {
+                //     jb.setSelected(false);
+                // }
+                Enumeration<AbstractButton> enb = group.getElements();
+                while(enb.hasMoreElements()){
+                    JButton jb = (JButton) enb.nextElement();
+                    jb.setSelected(false);
+                }
+                group.clearSelection();
+                button.setSelected(true);
                 MainWindowController.executeButtonBarAction((String)final_button_info[0]);
             }
         });

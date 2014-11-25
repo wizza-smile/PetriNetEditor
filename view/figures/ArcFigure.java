@@ -304,7 +304,7 @@ public class ArcFigure extends BaseFigure {
         return p;
     }
 
-    //determines, if negative or positiove for x/y direction
+    //determines, if negative or positive for x/y direction
     public Point getFactor_X_Y(boolean target_is_left, boolean target_is_up) {
         Point factor_x_y;
 
