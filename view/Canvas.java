@@ -47,7 +47,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         }
 
         //Draw all arcs first
-        for (String arc_id : PetriNetController.getPetriNet().arc_ids) {
+        for (String arc_id : PetriNetController.getArcIds()) {
             Arc arc = (Arc)PetriNetController.getElementById(arc_id);
             arc.getFigure().draw(g2);
         }

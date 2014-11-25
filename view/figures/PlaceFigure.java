@@ -56,13 +56,6 @@ public class PlaceFigure extends Positionable {
         return (Place)this.getElement();
     }
 
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-    }
-
-    public boolean isSelected() {
-        return selected;
-    }
 
     public boolean contains(Point2D position) {
         return this.ellipse.contains(position);
@@ -193,6 +186,8 @@ public class PlaceFigure extends Positionable {
     public Point2D getPosition() { return getElement().getPosition(); }
 
     public void setPosition(Point2D position) { getElement().setPosition(position); }
+
+
 
     public Connectable getElement() {
         return (Connectable)super.getElement();

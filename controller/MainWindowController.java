@@ -59,32 +59,47 @@ public class MainWindowController {
     }
 
 
+    public static void openFile() {
+        final JFileChooser fileChooser = new JFileChooser(current_directory);
+        fileChooser.addActionListener(new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            current_directory = fileChooser.getCurrentDirectory();
+            System.out.println(fileChooser.getCurrentDirectory());
+
+          }
+        });
+        int returnVal = fileChooser.showOpenDialog(main_window);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            final String[] args = {file.toString()};
+            parser.PNMLParser.main(args);
+        }
+    }
+
+
+    public static void saveFile() {
+        final JFileChooser fileChooser = new JFileChooser(current_directory);
+        int returnVal = fileChooser.showSaveDialog(main_window);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            final String[] args = {file.toString()};
+            parser.PNMLWriter.main(args);
+        }
+    }
+
+
     public static void executeButtonBarAction(String button_id) {
+
         switch (button_id) {
             //File buttons
             case "create_new":
                 System.out.println("CREATE NEW");
                 break;
             case "open":
-                final JFileChooser fileChooser = new JFileChooser(current_directory);
-                fileChooser.addActionListener(new ActionListener() {
-                  public void actionPerformed(ActionEvent e) {
-
-                    current_directory = fileChooser.getCurrentDirectory();
-                    System.out.println(fileChooser.getCurrentDirectory());
-
-                  }
-                });
-                int returnVal = fileChooser.showOpenDialog(main_window);
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    File file = fileChooser.getSelectedFile();
-                    // System.out.println( file );
-                    final String[] args = {file.toString()};
-                    parser.PNMLParser.main(args);
-                }
+                openFile();
                 break;
             case "save":
-                GlobalController.setSize(1.);
+                saveFile();
                 break;
             case "exit":
                 System.exit(0);

@@ -1,5 +1,13 @@
 package parser;
 
+
+import model.*;
+import view.*;
+import view.figures.*;
+import controller.*;
+
+import java.awt.geom.*;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -309,6 +317,7 @@ public class PNMLParser {
      *      Identifikationstext der Transition
      */
     public void newTransition(final String id) {
+        new Transition(id);
         System.out.println("Transition mit id " + id + " wurde gefunden.");
     }
 
@@ -319,6 +328,7 @@ public class PNMLParser {
      *      Identifikationstext der Stelle
      */
     public void newPlace(final String id) {
+        new Place(id);
         System.out.println("Stelle mit id " + id + " wurde gefunden.");
     }
 
@@ -333,6 +343,7 @@ public class PNMLParser {
      *      Identifikationstext des Endelements der Kante
      */
     public void newArc(final String id, final String source, final String target) {
+        new Arc(source, target);
         System.out.println("Kante mit id " + id + " von " + source + " nach "
                 + target + " wurde gefunden.");
     }
@@ -349,6 +360,8 @@ public class PNMLParser {
      *      y Position des Elements
      */
     public void setPosition(final String id, final String x, final String y) {
+        Positionable figure = (Positionable)CanvasController.getFigureById(id);
+        figure.setPosition(new Point2D.Double(Double.parseDouble(x), Double.parseDouble(y) ));
         System.out.println("Setze die Position des Elements " + id + " auf ("
                 + x + ", " + y + ")");
     }
@@ -363,6 +376,8 @@ public class PNMLParser {
      *      Beschriftungstext des Elements
      */
     public void setName(final String id, final String name) {
+        Connectable connectable = (Connectable)PetriNetController.getElementById(id);
+        connectable.setLabel(name);
         System.out.println("Setze den Namen des Elements " + id + " auf "
                 + name);
     }
@@ -377,6 +392,8 @@ public class PNMLParser {
      *      Markierung des Elements
      */
     public void setMarking(final String id, final String marking) {
+        Place place = (Place)PetriNetController.getElementById(id);
+        place.setTokenCount(Integer.parseInt(marking));
         System.out.println("Setze die Markierung des Elements " + id + " auf "
                 + marking);
     }

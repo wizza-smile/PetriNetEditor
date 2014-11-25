@@ -14,12 +14,24 @@ public class Place extends Connectable {
 
     private int tokenCount;
 
+    public Place(String place_id) {
+        register(place_id);
+        this.position = new Point2D.Double(0.,0.);
+        this.setLabel("P LABEL");
+        this.getFigure();
+    }
+
     public Place(Point2D position) {
         register();
         this.position = position;
-        this.setLabel("LABEL");
+        this.setLabel("P LABEL");
         //create/'cache??' a figure
         this.getFigure();
+    }
+
+    public void register(String place_id) {
+        this.setId(place_id);
+        PetriNetController.addElement(this, PetriNetController.ELEMENT_PLACE);
     }
 
     public void register() {

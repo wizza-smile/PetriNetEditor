@@ -1,5 +1,11 @@
 package parser;
 
+
+import model.*;
+import controller.*;
+
+import java.awt.geom.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -29,18 +35,33 @@ public final class PNMLWriter {
             PNMLWriter pnmlWriter = new PNMLWriter(pnmlDatei);
             pnmlWriter.startXMLDocument();
 
-            pnmlWriter
-                    .addTransition("transition1", "Transition A", "200", "200");
-            pnmlWriter
-                    .addTransition("transition2", "Transition B", "200", "400");
 
-            pnmlWriter.addPlace("place1", "Stelle 1", "100", "300", "1");
-            pnmlWriter.addPlace("place2", "Stelle 2", "300", "300", "0");
+            for (String elem_id : PetriNetController.getPlaceIds()) {
+                Place place = (Place)PetriNetController.getElementById(elem_id);
+                Point2D position = place.getPosition();
+                Double position_x = position.getX();
+                Double position_y = position.getY();
+                pnmlWriter.addPlace(place.getId(), place.getLabel(), String.valueOf(position_x), String.valueOf(position_y), String.valueOf(place.getTokenCount()));
+            }
 
-            pnmlWriter.addArc("arc1", "transition1", "place1");
-            pnmlWriter.addArc("arc2", "place1", "transition2");
-            pnmlWriter.addArc("arc3", "transition2", "place2");
-            pnmlWriter.addArc("arc4", "place2", "transition1");
+            for (String elem_id : PetriNetController.getTransitionIds()) {
+                Transition transition = (Transition)PetriNetController.getElementById(elem_id);
+                Point2D position = transition.getPosition();
+                Double position_x = position.getX();
+                Double position_y = position.getY();
+                pnmlWriter.addTransition(transition.getId(), transition.getLabel(), String.valueOf(position_x), String.valueOf(position_y));
+            }
+
+            for (String elem_id : PetriNetController.getArcIds()) {
+                Arc arc = (Arc)PetriNetController.getElementById(elem_id);
+                if (arc.getTargetType() == Arc.TARGET_BOTH) {
+                    pnmlWriter.addArc(arc.getId(), arc.getTransition().getId(),  arc.getPlace().getId());
+                    pnmlWriter.addArc(arc.getId()+"_t2", arc.getPlace().getId(),  arc.getTransition().getId());
+                } else {
+                    pnmlWriter.addArc(arc.getId(), arc.getSourceId(), arc.getTargetId());
+                }
+            }
+
 
             pnmlWriter.finishXMLDocument();
         } else {

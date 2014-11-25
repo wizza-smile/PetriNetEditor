@@ -17,7 +17,26 @@ public class Arc extends PetriNetElement {
 
     protected int target_type;
 
-    protected String transition_id, place_id;//, source_id, target_id;
+    protected String transition_id, place_id;
+
+    public Arc(String source_id, String target_id) {
+        register();
+
+        Connectable source_element = (Connectable)PetriNetController.getElementById(source_id);
+
+        if (source_element instanceof Transition) {
+            this.transition_id = source_id;
+            this.target_type = TARGET_PLACE;
+        }
+        if (source_element instanceof Place) {
+            this.place_id = source_id;
+            this.target_type = TARGET_TRANSITION;
+        }
+        //cache a figure
+        this.getFigure();
+
+        selectTarget(target_id);
+    }
 
     public Arc(String source_id, int type) {
         register();
@@ -139,9 +158,26 @@ public class Arc extends PetriNetElement {
         return (Place)PetriNetController.getElementById(this.place_id);
     }
 
-    //if Arc has only one current element, return this elements id
+    //if Arc has definite source element, return this elements id
     public String getSourceId() {
-        return this.transition_id == null ? this.place_id : this.transition_id;
+        if (this.target_type == TARGET_PLACE) {
+            return this.transition_id;
+        }
+        if (this.target_type == TARGET_TRANSITION) {
+            return this.place_id;
+        }
+        return null;
+    }
+
+    //if Arc has definite source element, return this elements id
+    public String getTargetId() {
+        if (this.target_type == TARGET_PLACE) {
+            return this.place_id;
+        }
+        if (this.target_type == TARGET_TRANSITION) {
+            return this.transition_id;
+        }
+        return null;
     }
 
     public Connectable getSource() {

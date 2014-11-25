@@ -27,6 +27,7 @@ public class PetriNetController {
     public static Integer getPetriNetElementCount() {
         return petriNet.getElementCount();
     }
+
     public static void createPetriNet() {
         petriNet = new PetriNet();
     }
@@ -44,8 +45,8 @@ public class PetriNetController {
 
     public static ArrayList<String> getAllElementIds() {
         ArrayList<String> allElementIds = new ArrayList<String>();
-        allElementIds.addAll(petriNet.place_ids);
-        allElementIds.addAll(petriNet.transition_ids);
+        allElementIds.addAll(petriNet.getPlaceIds());
+        allElementIds.addAll(petriNet.getTransitionIds());
         allElementIds.addAll(petriNet.getArcIds());
 
         return allElementIds;
@@ -53,12 +54,23 @@ public class PetriNetController {
 
     public static ArrayList<String> getConnectablesIds() {
         ArrayList<String> allElementIds = new ArrayList<String>();
-        allElementIds.addAll(petriNet.place_ids);
-        allElementIds.addAll(petriNet.transition_ids);
+        allElementIds.addAll(petriNet.getPlaceIds());
+        allElementIds.addAll(petriNet.getTransitionIds());
 
         return allElementIds;
     }
 
+    public static java.util.List<String> getPlaceIds() {
+        return petriNet.getPlaceIds();
+    }
+
+    public static java.util.List<String> getTransitionIds() {
+        return petriNet.getTransitionIds();
+    }
+
+    public static java.util.List<String> getArcIds() {
+        return petriNet.getArcIds();
+    }
 
 
     public static void newConnectableElementAtPosition(Point2D position, int type) {
@@ -84,13 +96,13 @@ public class PetriNetController {
 
         switch (type) {
             case PetriNetController.ELEMENT_PLACE:
-                petriNet.place_ids.add(element.getId());
+                petriNet.getPlaceIds().add(element.getId());
                 break;
             case PetriNetController.ELEMENT_TRANSITION:
-                petriNet.transition_ids.add(element.getId());
+                petriNet.getTransitionIds().add(element.getId());
                 break;
             case PetriNetController.ELEMENT_ARC:
-                petriNet.arc_ids.add(element.getId());
+                petriNet.getArcIds().add(element.getId());
                 break;
             default:
                 return;
