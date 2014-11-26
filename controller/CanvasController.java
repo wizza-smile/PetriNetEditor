@@ -36,8 +36,6 @@ public class CanvasController {
 
 
 
-
-
     public static ArrayList<String> getAllFigureIds() {
         ArrayList<String> allFigureIds = new ArrayList<String>();
         allFigureIds.addAll(canvas.label_figure_ids);

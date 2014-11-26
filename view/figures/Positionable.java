@@ -11,7 +11,9 @@ import java.awt.Font;
 import java.awt.font.*;
 import java.awt.geom.*;
 
-
+/**
+ * is superclass of all positionable Figures (Label/Transition/Place)
+ */
 public abstract class Positionable extends BaseFigure {
 
     protected Color strokeColor = new Color(0, 0, 0);
@@ -19,15 +21,12 @@ public abstract class Positionable extends BaseFigure {
     protected Color fillColorAlpha = new Color(255, 255, 255, 195);
     protected boolean selected = false;
     protected Color selectedColorAlpha = new Color(183, 55, 55, 40);
-    protected Color selectedColor = new Color(234, 191, 247);
-
+    protected Color selectedColor = new Color(201, 157, 172);
 
     //offset to mouse pointer (for dragging)
     protected Point2D offset;
 
     public abstract boolean intersects(Rectangle2D r);
-    public abstract Point2D getPosition();
-    public abstract void setPosition(Point2D position);
     public abstract void updatePosition();
 
     public Point2D getOffset() { return offset; }
@@ -39,19 +38,28 @@ public abstract class Positionable extends BaseFigure {
         this.offset = new Point2D.Double(offset_x, offset_y);
     }
 
+    public Point2D getPosition() {
+        return getElement().getPosition();
+    }
 
-
+    public void setPosition(Point2D position) {
+        getElement().setPosition(position);
+    }
 
     public Rectangle2D getBounds() {
         return new Rectangle2D.Double(0, 0, 0, 0);
     }
 
-    public void setSelected(boolean selected) {
+    public void markSelected(boolean selected) {
         this.selected = selected;
     }
 
     public boolean isSelected() {
         return selected;
+    }
+
+    public Connectable getElement() {
+        return (Connectable)super.getElement();
     }
 
 }

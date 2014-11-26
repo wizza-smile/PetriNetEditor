@@ -19,23 +19,18 @@ import javax.swing.*;
 
 public class PlaceFigure extends Positionable {
 
-
     private Ellipse2D ellipse;
     private Ellipse2D tokenPoint;
     private String labelFigureId;
 
-
-
     final public static double DIAMETER_BASE = Grid.cellSize/1;
     public static double DIAMETER = DIAMETER_BASE;
-    //protected TokenSetFigure tokenFigure;
+
 
     public PlaceFigure(Place place) {
         this.setId(place.getId());
         this.element = (PetriNetElement)place;
         register();
-
-        setEllipse(generateEllipse());
 
         LabelFigure labelFigure = new LabelFigure(this, this.getPlace().getPosition());
         this.labelFigureId = labelFigure.getId();
@@ -47,15 +42,17 @@ public class PlaceFigure extends Positionable {
     }
 
     public void delete() {
-        CanvasController.removeLabelFigure(this.labelFigureId);
+        getLabelFigure().delete();
         CanvasController.removePlaceFigure(this.getId());
     }
-
 
     public Place getPlace() {
         return (Place)this.getElement();
     }
 
+    public LabelFigure getLabelFigure() {
+        return (LabelFigure)CanvasController.getFigureById(this.labelFigureId);
+    }
 
     public boolean contains(Point2D position) {
         return this.ellipse.contains(position);
@@ -65,15 +62,11 @@ public class PlaceFigure extends Positionable {
         return this.ellipse.intersects(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
     }
 
-
     public void drawLabel(Graphics2D g) {
         this.getLabelFigure().draw(g);
     }
 
-
-
     public void draw(Graphics2D g) {
-
         // regenrate Ellipse token
         setEllipse(generateEllipse());
 
@@ -81,7 +74,6 @@ public class PlaceFigure extends Positionable {
         drawBorder(g);
 
         drawLabel(g);
-
 
         Integer tokenCount = this.getPlace().getTokenCount();
         if (tokenCount == 1 && !isSelected()) {
@@ -104,9 +96,7 @@ public class PlaceFigure extends Positionable {
                 (float) (getPlace().getPosition().getY() + (fontSize*3/8))
             );
         }
-
     }
-
 
     public void drawFill(Graphics2D g) {
         if (selected) {
@@ -117,9 +107,7 @@ public class PlaceFigure extends Positionable {
         g.fill(ellipse);
     }
 
-
     public void drawBorder(Graphics2D g) {
-
         if (selected) {
             float dash1[] = {5f, 3f};
             g.setStroke(new BasicStroke(2f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1f, dash1, 0f));
@@ -131,19 +119,10 @@ public class PlaceFigure extends Positionable {
         g.draw(ellipse);
     }
 
-
-
-
-
     public void drawToken(Graphics2D g) {
         g.setPaint(new Color(0, 0, 0));
         g.fill(tokenPoint);
-
-        // System.out.println("PAINT TOKEN!");
     }
-
-
-
 
     public Ellipse2D generateTokenPoint() {
         return new Ellipse2D.Double(
@@ -154,7 +133,6 @@ public class PlaceFigure extends Positionable {
         );
     }
 
-
     public Ellipse2D generateEllipse() {
         return new Ellipse2D.Double(
             getPlace().getPosition().getX() - DIAMETER / 2,
@@ -164,35 +142,17 @@ public class PlaceFigure extends Positionable {
         );
     }
 
-
     public void updatePosition() {
         getLabelFigure().updatePosition();
     }
-
-
 
     public void setEllipse(Ellipse2D e) {
         this.ellipse = e;
     }
 
-    public LabelFigure getLabelFigure() {
-        return (LabelFigure)CanvasController.getFigureById(this.labelFigureId);
-    }
-
     public Rectangle2D getBounds() {
         return this.ellipse.getBounds();
     }
-
-    public Point2D getPosition() { return getElement().getPosition(); }
-
-    public void setPosition(Point2D position) { getElement().setPosition(position); }
-
-
-
-    public Connectable getElement() {
-        return (Connectable)super.getElement();
-    }
-
 
 
     ///////////////

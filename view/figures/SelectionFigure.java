@@ -1,13 +1,14 @@
 package view.figures;
 
-
 import controller.*;
 
 import java.awt.*;
 import java.awt.geom.*;
 
+/**
+ * the colored rectangle that is used to select connectable PetriNetFigures
+ */
 public class SelectionFigure {
-
     static Rectangle2D rectangle;
 
     protected static Color strokeColor = new Color(0, 255, 0);
@@ -18,7 +19,6 @@ public class SelectionFigure {
         drawFill(g);
         drawStroke(g);
     }
-
 
     public static void drawFill(Graphics2D g) {
         g.setPaint(fillColor);

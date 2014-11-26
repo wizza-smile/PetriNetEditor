@@ -17,9 +17,6 @@ public class SelectionController {
     public static Rectangle2D selectionRectangle;
     private static ArrayList<String> selectedElements_ids = new ArrayList<String>();
 
-
-
-
     public static void mouseClickedInModeSelect(MouseEvent e) {
         Point2D mousePressPoint = CanvasController.mousePressPoint;
         BaseFigure figureUnderMousePointer = SelectionController.getFigureUnderMousePointer(mousePressPoint);
@@ -29,24 +26,24 @@ public class SelectionController {
             //if yes: only this label will be selected (and dragged)
             if(figureUnderMousePointer instanceof LabelFigure) {
                 SelectionController.clearSelection();
-                SelectionController.addFigureToSelection((Positionable)figureUnderMousePointer);
+                SelectionController.addFigureToSelection((LabelFigure)figureUnderMousePointer);
                 GlobalController.setMode(GlobalController.ACTION_DRAG_SELECTION);
-            }
-
-            //check if a Positionable is under mouse pointer
-            if (figureUnderMousePointer instanceof Positionable) {
-                //now its clear its a transition or place!
-                //check if its already selected!
-                if (((Positionable)figureUnderMousePointer).isSelected()) {
-                    //user wants to drag selected elements!
-                    GlobalController.setMode(GlobalController.ACTION_DRAG_SELECTION);
-                } else {
-                    //select the element start dragging
-                    SelectionController.clearSelection();
-                    SelectionController.addFigureToSelection((Positionable)figureUnderMousePointer);
-                    GlobalController.setMode(GlobalController.ACTION_DRAG_SELECTION);
+            } else {
+                if (figureUnderMousePointer instanceof Positionable) {
+                    //now its clear its a transition or place!
+                    //check if its already in selected elements!
+                    if (selectedElements_ids.contains(figureUnderMousePointer.getId())) {
+                        //user wants to drag selected elements!
+                        GlobalController.setMode(GlobalController.ACTION_DRAG_SELECTION);
+                    } else {
+                        //select the element start dragging
+                        SelectionController.clearSelection();
+                        SelectionController.addFigureToSelection((Positionable)figureUnderMousePointer);
+                        GlobalController.setMode(GlobalController.ACTION_DRAG_SELECTION);
+                    }
                 }
             }
+
             SelectionController.setOffsetToSelectedElements(mousePressPoint);
         } else {
             SelectionController.clearSelection();
@@ -65,7 +62,7 @@ public class SelectionController {
 
         selectionRectangle = new Rectangle2D.Double(x, y, width, height);
 
-        for (String id : CanvasController.getPositionablesIds() ) {
+        for (String id : CanvasController.getPlacesAndTransitionFiguresIds() ) {
             Positionable figure = (Positionable)CanvasController.getFigureById(id);
             boolean inSelectionRectangle = figure.intersects(selectionRectangle);
             if (inSelectionRectangle) {
@@ -74,11 +71,7 @@ public class SelectionController {
                 SelectionController.removeFigureFromSelection(figure);
             }
         }
-
     }
-
-
-
 
     public static void setOffsetToSelectedElements(Point2D point) {
         for (String id : selectedElements_ids ) {
@@ -87,15 +80,11 @@ public class SelectionController {
         }
     }
 
-
-
-
     public static void drawSelectionFigure(Graphics2D g) {
         if (selectionRectangle != null) {
             SelectionFigure.draw(g);
         }
     }
-
 
     //get figure, if one is under pointer (TransitionFigure, PlaceFigure, LabelFigure, ArcFigure)
     public static BaseFigure getFigureUnderMousePointer(Point2D pointer) {
@@ -110,27 +99,21 @@ public class SelectionController {
         return null;
     }
 
-
-
     public static void addFigureToSelection(Positionable figure) {
         if (!selectedElements_ids.contains(figure.getId())) {
             selectedElements_ids.add(figure.getId());
-            figure.setSelected(true);
+            figure.markSelected(true);
         }
     }
-
-
 
     public static void removeSelectionRectangle() {
         selectionRectangle = null;
     }
 
-
     public static void removeFigureFromSelection(Positionable figure) {
         selectedElements_ids.remove(figure.getId());
-        figure.setSelected(false);
+        figure.markSelected(false);
     }
-
 
     public static ArrayList<String> getSelectedElementsIds() {
         return selectedElements_ids;
@@ -138,7 +121,7 @@ public class SelectionController {
 
     public static void clearSelection() {
         for (String id : selectedElements_ids ) {
-            ((Positionable)CanvasController.getFigureById(id)).setSelected(false);
+            ((Positionable)CanvasController.getFigureById(id)).markSelected(false);
         }
         selectedElements_ids = new ArrayList<String>();
     }

@@ -1,4 +1,3 @@
-
 package view.figures;
 
 import model.*;
@@ -6,8 +5,6 @@ import view.Grid;
 import controller.*;
 
 import java.lang.Math;
-
-
 
 import java.awt.*;
 import java.awt.event.*;
@@ -18,15 +15,17 @@ import javax.swing.*;
 
 public class TransitionFigure extends Positionable {
 
-
     private Rectangle2D transitionRectangle;
     private String labelFigureId;
-
 
     final public static double DIMENSION_BASE = 45;
     public static double DIMENSION = DIMENSION_BASE;
 
 
+    /**
+     * the constructor will register the new TransitionFigure in the PetriNetElements-HashMap
+     * @param  transition - the transition that will be figured
+     */
     public TransitionFigure(Transition transition) {
         this.setId(transition.getId());
         this.element = (PetriNetElement)transition;
@@ -41,28 +40,22 @@ public class TransitionFigure extends Positionable {
         CanvasController.addFigure(this, CanvasController.FIGURE_TRANSITION);
     }
 
-
     public void delete() {
-        CanvasController.removeLabelFigure(this.labelFigureId);
+        getLabelFigure().delete();
         CanvasController.removeTransitionFigure(this.getId());
     }
 
     public void drawLabel(Graphics2D g) {
         this.getLabelFigure().draw(g);
-
     }
-
 
     public LabelFigure getLabelFigure() {
         return (LabelFigure)CanvasController.getFigureById(this.labelFigureId);
     }
 
-
     public Transition getTransition() {
         return (Transition)this.element;
     }
-
-
 
     public boolean contains(Point2D position) {
         return this.transitionRectangle.contains(position);
@@ -72,17 +65,13 @@ public class TransitionFigure extends Positionable {
         return this.transitionRectangle.intersects(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
     }
 
-
-
     public void draw(Graphics2D g) {
-        // regenrate transitionRectangle
         setTransitionRectangle(generateTransitionRectangle());
 
         drawFill(g);
         drawBorder(g);
         drawLabel(g);
     }
-
 
     public void drawFill(Graphics2D g) {
         if (selected) {
@@ -92,7 +81,6 @@ public class TransitionFigure extends Positionable {
         }
         g.fill(transitionRectangle);
     }
-
 
     public void drawBorder(Graphics2D g) {
 
@@ -118,19 +106,13 @@ public class TransitionFigure extends Positionable {
         }
     }
 
-
-
     public boolean isActivated() {
         return this.getTransition().isActivated();
     }
 
-
-
     public Rectangle2D getBounds() {
         return this.transitionRectangle;
     }
-
-
 
     public Rectangle2D generateTransitionRectangle() {
         return new Rectangle2D.Double(
@@ -141,22 +123,9 @@ public class TransitionFigure extends Positionable {
         );
     }
 
-
-
     public void updatePosition() {
         getLabelFigure().updatePosition();
     }
-
-
-
-    public Point2D getPosition() { return getElement().getPosition(); }
-
-    public void setPosition(Point2D position) { getElement().setPosition(position); }
-
-    public Connectable getElement() {
-        return (Connectable)super.getElement();
-    }
-
 
     public void setTransitionRectangle(Rectangle2D r) {
         this.transitionRectangle = r;

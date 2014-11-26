@@ -1,9 +1,7 @@
-
 package view.figures;
 
 import model.*;
 import controller.*;
-
 
 import java.awt.*;
 import java.awt.event.*;
@@ -14,11 +12,9 @@ import javax.swing.*;
 
 
 public class LabelFigure extends Positionable {
-
-
     protected Color labelStrokeColor = new Color(0, 0, 0);
     protected Color labelFillColor = new Color(245, 245, 245, 245);
-    protected Color labelFillColorSelected = new Color(183, 55, 55, 40);
+    protected Color labelFillColorSelected = new Color(227, 168, 188);
 
     protected String labelText;
     public Point2D position;
@@ -34,9 +30,8 @@ public class LabelFigure extends Positionable {
     }
 
     public void delete() {
-
+        CanvasController.removeLabelFigure(this.getId());
     }
-
 
     public boolean contains(Point2D position) {
         return this.label_border_rect.contains(position);
@@ -90,10 +85,7 @@ public class LabelFigure extends Positionable {
             (float) (getPosition().getX() - 1 - textBounds.getWidth()/2),
             (float) (getPosition().getY() + (fontSize*3/8))//
         );
-
     }
-
-
 
     public Point2D getPosition() {
         return position;
@@ -102,22 +94,15 @@ public class LabelFigure extends Positionable {
     public void setPosition(Point2D position) {
         this.position = position;
         this.offsetToLabeledFigure = new Point2D.Double(this.position.getX() - this.getLabeledFigure().getPosition().getX(), this.position.getY() - this.getLabeledFigure().getPosition().getY());
-
     }
-
 
     public Positionable getLabeledFigure() {
         return (Positionable)CanvasController.getFigureById(elementId);
     }
 
-
-
-    public void setSelected(boolean selected) {
+    public void markSelected(boolean selected) {
         this.selected = selected;
-    }
-
-    public boolean isSelected() {
-        return selected;
+        // this.getLabeledFigure().markSelected(selected);
     }
 
     public String getLabeledFigureId() {
@@ -135,11 +120,6 @@ public class LabelFigure extends Positionable {
     public Rectangle2D getBounds() {
         return label_border_rect.getBounds();
     }
-
-    public Connectable getElement() {
-        return (Connectable)super.getElement();
-    }
-
 
 
     ///////////////

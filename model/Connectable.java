@@ -17,7 +17,6 @@ public abstract class Connectable extends PetriNetElement {
         addArcId(arc.getId());
     }
 
-
     public ArrayList<String> getArcIds() {
         return arc_ids;
     }
@@ -40,6 +39,11 @@ public abstract class Connectable extends PetriNetElement {
 
     public Point2D getPosition() { return position; }
 
+    /**
+     * whenever the position of a connectable is set the related Figure's updatePosition() method gets called,
+     * so that the Label's positon will be updated too.
+     * @param position [description]
+     */
     public void setPosition(Point2D position) {
         this.position = position;
         //update figure position!

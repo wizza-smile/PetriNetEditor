@@ -54,11 +54,9 @@ public class MainWindow extends JFrame {//implements Scrollable
         this.add(canvasPane, BorderLayout.CENTER);
     }
 
-
     public void injectCanvas(Canvas canvas) {
         canvasPane.setViewportView(canvas);
     }
-
 
     private JScrollPane createCanvasPane() {
         canvasPane = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -70,44 +68,35 @@ public class MainWindow extends JFrame {//implements Scrollable
         return canvasPane;
     }
 
-
-
-
     private JMenuBar createMenuBar() {
         JMenuBar menubar = new JMenuBar();
 
         ImageIcon icon = new ImageIcon("exit.png");
 
+        //File Menu
         JMenu file = new JMenu("File");
-
         JMenuItem eMenuItem = new JMenuItem("Exit", icon);
         eMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 System.exit(0);
             }
         });
-
         file.add(eMenuItem);
-
         menubar.add(file);
 
-
+        //Options Menu
         JMenu options = new JMenu("Options");
-
         JMenuItem opacityMenuItem = new JMenuItem("toggle opacity", icon);
         opacityMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 GlobalController.toggleOpacity();
             }
         });
-
         options.add(opacityMenuItem);
-
         menubar.add(options);
 
         return menubar;
     }
-
 
     public void setStatusBarText(String s) {
         statusbar.setText(s);
@@ -124,8 +113,6 @@ public class MainWindow extends JFrame {//implements Scrollable
     }
 
 }
-
-
 
 
 class ButtonBar extends JToolBar {
@@ -236,11 +223,6 @@ class ButtonBar extends JToolBar {
 
         return button;
     }
-
-
-
-
-
 
 }
 

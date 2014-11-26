@@ -13,7 +13,9 @@ import java.awt.geom.*;
 
 import javax.swing.*;
 
-///SELECTABLE FIGURES ARC / PLACE / TRANSIITONS
+/**
+ * is superclass of all PetriNetFigures (Arc/Label/Transition/Place)
+ */
 public abstract class BaseFigure {
     protected String id;
 
@@ -34,12 +36,8 @@ public abstract class BaseFigure {
         return this.element;
     }
 
-
-
-
     public String getId() {return this.id;}
     public void setId(String id) {this.id = id;}
-
 
 
     ///////////////
@@ -66,7 +64,6 @@ public abstract class BaseFigure {
         return multiSelectionMenu;
     }
 
-
     protected class DeletePetriNetElementAction extends AbstractAction {
         protected PetriNetElement element;
 
@@ -80,9 +77,6 @@ public abstract class BaseFigure {
             element.delete();
             CanvasController.repaintCanvas();
         }
-
     }
-
-
 
 }
