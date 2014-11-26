@@ -31,33 +31,15 @@ public class Place extends Connectable {
         this.getFigure();
     }
 
-    public void register(String place_id) {
-        this.setId(place_id);
-        PetriNetController.addElement(this, PetriNetController.ELEMENT_PLACE);
-    }
-
-    public void register() {
-        String place_id = "p_"+PetriNetController.getPetriNet().getNextElementId();
-        this.setId(place_id);
-        PetriNetController.addElement(this, PetriNetController.ELEMENT_PLACE);
+    public String generateId() {
+        return "p_"+PetriNetController.getPetriNet().getNextElementId();
     }
 
     public int getElementType() {
         return PetriNetController.ELEMENT_PLACE;
     }
 
-    public void delete() {
-        SelectionController.clearSelection();
-        Arc[] all_arcs = new Arc[arc_ids.size()];
-        int index = 0;
-        for (String arc_id : arc_ids ) {
-            Arc arc = (Arc)PetriNetController.getElementById(arc_id);
-            all_arcs[index++] = arc;
-        }
-        for (Arc arc  : all_arcs) {
-            arc.delete();
-        }
-        CanvasController.removeFigure(this.getId());
+    public void unregister() {
         PetriNetController.removePlace(this.getId());
     }
 
@@ -69,15 +51,8 @@ public class Place extends Connectable {
         this.tokenCount = tokenCount;
     }
 
-    public BaseFigure getFigure() {
-        if (figureId == null) {
-            PlaceFigure placeFigure = new PlaceFigure(this);
-            figureId = placeFigure.getId();
-            // CanvasController.addPlaceFigure(figureId, placeFigure);
-            return (BaseFigure)placeFigure;
-        } else {
-            return CanvasController.getFigureById(this.getId());
-        }
+    public PlaceFigure createFigure() {
+        return new PlaceFigure(this);
     }
 
 

@@ -13,8 +13,6 @@ public class Arc extends PetriNetElement {
     public static final int TARGET_TRANSITION = 1;
     public static final int TARGET_BOTH = 2;
 
-    protected ArcFigure arcfigure;
-
     protected int target_type;
 
     protected String transition_id, place_id;
@@ -53,15 +51,13 @@ public class Arc extends PetriNetElement {
         this.getFigure();
     }
 
-    public void register(String arc_id) {
-        this.setId(arc_id);
-        PetriNetController.addElement(this, PetriNetController.ELEMENT_ARC);
+
+    public String generateId() {
+        return "a_"+PetriNetController.getPetriNet().getNextElementId();
     }
 
-    public void register() {
-        String arc_id = "a_"+PetriNetController.getPetriNet().getNextElementId();
-        this.setId(arc_id);
-        PetriNetController.addElement(this, PetriNetController.ELEMENT_ARC);
+    public void unregister() {
+        PetriNetController.removeArc(this.getId());
     }
 
     public int getElementType() {
@@ -78,16 +74,8 @@ public class Arc extends PetriNetElement {
             transition.removeArcId(this.getId());
         }
         CanvasController.removeFigure(this.getId());
-        PetriNetController.removeArc(this.getId());
+        unregister();
     }
-
-    public ArcFigure getFigure() {
-        if (arcfigure == null) {
-            arcfigure = new ArcFigure(this);
-        }
-
-        return arcfigure;
-    };
 
     public boolean connectsSameElements(String elem_id_1, String elem_id_2) {
         if (elem_id_1 == this.place_id && elem_id_2 == this.transition_id
@@ -205,5 +193,8 @@ public class Arc extends PetriNetElement {
         return (Connectable)PetriNetController.getElementById(getSourceId());
     }
 
+    public ArcFigure createFigure() {
+        return new ArcFigure(this);
+    }
 
 }

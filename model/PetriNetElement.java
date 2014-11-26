@@ -11,27 +11,54 @@ public abstract class PetriNetElement {
 
     protected Point2D position;
     protected String id;
-    protected String figureId;
-    // protected final int elementType = -1;
+    protected BaseFigure figure;
 
     ///////////////////
     //abstract methods
     ////////////////////
 
-    // public abstract PetriNetElement cloneElement();
-    //return associated figure Object
-    public abstract BaseFigure getFigure();
     public abstract void delete();
+    public abstract BaseFigure createFigure();
     public abstract int getElementType();
+    public abstract String generateId();
+    public abstract void unregister();
 
 
     /////////////////////
     //implemented methods
     //////////////////////
 
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public void register(String element_id) {
+        this.setId(element_id);
+        PetriNetController.addElement(this, getElementType());
+    }
 
+    public void register() {
+        String element_id = generateId();
+        this.setId(element_id);
+        PetriNetController.addElement(this, getElementType());
+    }
+
+    /**
+     * when called for the first time:
+     * creates a related figure and keeps refernce
+     * @return the related figure
+     */
+    public BaseFigure getFigure() {
+        if (figure == null) {
+            figure = createFigure();
+        }
+
+        return figure;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
 }
 

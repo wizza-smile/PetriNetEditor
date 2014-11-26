@@ -1,6 +1,7 @@
 package model;
 
 import view.figures.*;
+import controller.*;
 
 import java.util.*;
 
@@ -11,6 +12,21 @@ public abstract class Connectable extends PetriNetElement {
     public String label;
     protected ArrayList<String> arc_ids = new ArrayList<String>();
 
+
+    public void delete() {
+        SelectionController.clearSelection();
+        Arc[] all_arcs = new Arc[arc_ids.size()];
+        int index = 0;
+        for (String arc_id : arc_ids ) {
+            Arc arc = (Arc)PetriNetController.getElementById(arc_id);
+            all_arcs[index++] = arc;
+        }
+        for (Arc arc  : all_arcs) {
+            arc.delete();
+        }
+        this.getFigure().delete();
+        unregister();
+    }
 
     public void addNewArc() {
         Arc arc = new Arc(this.getId(), this.getElementType());
