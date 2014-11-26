@@ -40,7 +40,6 @@ public class LabelFigure extends Positionable {
     }
 
     public boolean contains(Point2D position) {
-
         return hasLabel() ? this.label_border_rect.contains(position) : false;
     }
 
@@ -130,10 +129,12 @@ public class LabelFigure extends Positionable {
         //Input dialog with a text field
         String preset = this.getLabel() != Connectable.NO_LABEL_IDENTIFIER ? this.getLabel() : "";
         String input = JOptionPane.showInputDialog(MainWindowController.main_window, "Enter a new Label:", preset);
-        if(input != null && !input.isEmpty()) {
-            this.setLabel(input);
-        } else {
-            getElement().setLabel(Connectable.NO_LABEL_IDENTIFIER);
+        if(input != null) {
+            if (!input.isEmpty()) {
+                this.setLabel(input);
+            } else {
+                getElement().setLabel(Connectable.NO_LABEL_IDENTIFIER);
+            }
         }
     }
 

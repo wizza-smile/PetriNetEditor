@@ -128,7 +128,7 @@ public class CanvasController {
         BaseFigure figure = SelectionController.getFigureUnderMousePointer(mousePressPoint);
         //if not: do nothing
         //if yes: create new arc with source = transition
-        if (figure != null) {
+        if (figure != null && !(figure instanceof LabelFigure)) {
             if (figure.getElement() instanceof Connectable) {
                 ((Connectable)figure.getElement()).addNewArc();
             }
