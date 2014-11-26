@@ -12,6 +12,9 @@ import javax.swing.*;
 
 
 public class LabelFigure extends Positionable {
+    protected int fontSize = 13;
+    Font font = new Font(null, java.awt.Font.PLAIN, fontSize);
+
     protected Color labelStrokeColor = new Color(0, 0, 0);
     protected Color labelFillColor = new Color(245, 245, 245, 245);
     protected Color labelFillColorSelected = new Color(227, 168, 188);
@@ -37,11 +40,12 @@ public class LabelFigure extends Positionable {
     }
 
     public boolean contains(Point2D position) {
-        return this.label_border_rect.contains(position);
+
+        return hasLabel() ? this.label_border_rect.contains(position) : false;
     }
 
     public Rectangle2D getBounds() {
-        return label_border_rect.getBounds();
+        return hasLabel() ? label_border_rect.getBounds() : null;
     }
 
     public void updatePosition() {
@@ -50,25 +54,25 @@ public class LabelFigure extends Positionable {
         this.setPosition(newPosition);
     }
 
+    public boolean hasLabel() {
+        return getLabel() != Connectable.NO_LABEL_IDENTIFIER;
+    }
+
     public void draw(Graphics2D g) {
         Double labelPadding = 6.;
 
         String label = getLabel();
 
-        if (label != Connectable.NO_LABEL_IDENTIFIER) {
-            int fontSize = 13;
-            Font font = new Font(null, java.awt.Font.PLAIN, fontSize);
+        if (hasLabel()) {
             g.setFont(font);
             FontRenderContext fontRenderContext = g.getFontRenderContext();
             TextLayout textLayout = new TextLayout(label, font, fontRenderContext);
 
-            Rectangle2D textBounds = textLayout.getPixelBounds(fontRenderContext,0,0);
-
-            Double label_y_offset = 0.;
+            Rectangle2D textBounds = textLayout.getPixelBounds(fontRenderContext, 0, 0);
 
             label_border_rect = new RoundRectangle2D.Double(
                 (Double)(getPosition().getX() - (textBounds.getWidth()+labelPadding) / 2),
-                (Double)(getPosition().getY() - (textBounds.getHeight()+labelPadding) / 2 ),// - label_y_offset,
+                (Double)(getPosition().getY() - (textBounds.getHeight()+labelPadding) / 2 ),
                 (Double)(textBounds.getWidth()+labelPadding),
                 (Double)(textBounds.getHeight()+labelPadding),
                 5,
@@ -107,29 +111,29 @@ public class LabelFigure extends Positionable {
 
     public void markSelected(boolean selected) {
         this.selected = selected;
-        // this.getLabeledFigure().markSelected(selected);
+        this.getLabeledFigure().markSelected(selected);
     }
 
     public String getLabeledFigureId() {
         return this.elementId;
     }
 
-    public String getLabel() {
-        return getElement().getLabel();
+    public LabelFigure getLabelFigure() {
+        return this;
     }
 
-    public void setLabel(String label) {
-        getElement().setLabel(label);
-    }
 
     ///////////////
     //POPUP    ////
 
-    public void showPopup(MouseEvent e) {
+    public void showPopup(Point2D position) {
         //Input dialog with a text field
-        String input = JOptionPane.showInputDialog(e.getComponent(), "Enter a new Label:", this.getLabel());
-        if (input != null) {
+        String preset = this.getLabel() != Connectable.NO_LABEL_IDENTIFIER ? this.getLabel() : "";
+        String input = JOptionPane.showInputDialog(MainWindowController.main_window, "Enter a new Label:", preset);
+        if(input != null && !input.isEmpty()) {
             this.setLabel(input);
+        } else {
+            getElement().setLabel(Connectable.NO_LABEL_IDENTIFIER);
         }
     }
 

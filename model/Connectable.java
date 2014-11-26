@@ -12,7 +12,7 @@ import java.awt.geom.Point2D;
  */
 public abstract class Connectable extends PetriNetElement {
 
-    public final String NO_LABEL_IDENTIFIER = "no_label";
+    public static final String NO_LABEL_IDENTIFIER = "no_label";
     public String label;
     protected ArrayList<String> arc_ids = new ArrayList<String>();
 

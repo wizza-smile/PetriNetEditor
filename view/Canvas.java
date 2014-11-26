@@ -95,16 +95,18 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
     //get the rectangle that encloses all labels
     public Rectangle2D getLabelsBounds() {
-        Rectangle2D labelsBounds = new Rectangle2D.Double(0, 0, 0, 0);
+        Rectangle2D labelsBounds = null;
         boolean initialized = false;
 
         for (String label_figure_id : label_figure_ids) {
             LabelFigure labelFigure = (LabelFigure)getFigureById(label_figure_id);
-            if (initialized) {
-                labelsBounds.add(labelFigure.getBounds());
-            } else {
-                labelsBounds = labelFigure.getBounds();
-                initialized = true;
+            if (labelFigure.hasLabel()) {
+                if (initialized) {
+                    labelsBounds.add(labelFigure.getBounds());
+                } else {
+                    labelsBounds = labelFigure.getBounds();
+                    initialized = true;
+                }
             }
         }
 

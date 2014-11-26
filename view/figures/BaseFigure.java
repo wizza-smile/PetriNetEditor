@@ -26,7 +26,8 @@ public abstract class BaseFigure {
     public abstract void delete();
     public abstract boolean contains(Point2D position);
     public abstract void draw(Graphics2D g);
-    public abstract void showPopup(MouseEvent e);
+    public abstract void showPopup(Point2D position);
+
 
     //do NOT call this function in Constructor!
     public PetriNetElement getElement() {
@@ -42,6 +43,7 @@ public abstract class BaseFigure {
 
     ///////////////
     //POPUP    ////
+
 
     public void showMultiSelectionPopup(MouseEvent e) {
         JPopupMenu contextMenu = getMultiSelectionPopup();
@@ -62,6 +64,22 @@ public abstract class BaseFigure {
         multiSelectionMenu.addSeparator();
 
         return multiSelectionMenu;
+    }
+
+    protected class AddLabelToConnectableAction extends AbstractAction {
+        protected Connectable element;
+
+        AddLabelToConnectableAction() {}
+
+        AddLabelToConnectableAction(Connectable elem) {
+            element = elem;
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            LabelFigure labelFigure = ((Positionable)element.getFigure()).getLabelFigure();
+            labelFigure.showPopup(labelFigure.getPosition());
+            CanvasController.repaintCanvas();
+        }
     }
 
     protected class DeletePetriNetElementAction extends AbstractAction {

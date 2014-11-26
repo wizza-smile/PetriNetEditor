@@ -29,7 +29,7 @@ public abstract class Positionable extends BaseFigure {
     public abstract boolean intersects(Rectangle2D r);
     public abstract void updatePosition();
     public abstract Rectangle2D getBounds();
-
+    public abstract LabelFigure getLabelFigure();
 
     public Point2D getPosition() {
         return getElement().getPosition();
@@ -49,6 +49,14 @@ public abstract class Positionable extends BaseFigure {
 
     public Point2D getOffset() {
         return offset;
+    }
+
+    public String getLabel() {
+        return getElement().getLabel();
+    }
+
+    public void setLabel(String label) {
+        getElement().setLabel(label);
     }
 
     public void setOffset(Point2D referencePoint) {

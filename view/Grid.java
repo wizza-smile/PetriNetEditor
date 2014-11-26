@@ -11,7 +11,6 @@ public class Grid {
     //should always be 0 or negative
     static Point2D gridOriginReferencePoint = new Point2D.Double(.0,.0);
 
-
     private int width;
     private int height;
     public static int cellSize = 50;

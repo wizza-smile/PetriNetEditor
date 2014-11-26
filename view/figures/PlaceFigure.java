@@ -158,13 +158,15 @@ public class PlaceFigure extends Positionable {
     ///////////////
     //POPUP    ////
 
-    public void showPopup(MouseEvent e) {
-        JPopupMenu contextMenu = this.getPopup(this.getId());
-        contextMenu.show(e.getComponent(), e.getX(), e.getY());
+    public void showPopup(Point2D position) {
+        JPopupMenu contextMenu = this.getPopup();
+        Double position_x = position.getX();
+        Double position_y = position.getY();
+        contextMenu.show(MainWindowController.main_window, position_x.intValue(), position_y.intValue());
     }
 
-    public JPopupMenu getPopup(String p_id) {
-        final String place_id = p_id;
+    public JPopupMenu getPopup() {
+        final String place_id = this.getId();
         JPopupMenu placePopupMenu = new JPopupMenu();
 
         //menu point "set token"
@@ -181,6 +183,14 @@ public class PlaceFigure extends Positionable {
             }
         });
         placePopupMenu.add(menuItemToken);
+
+        //menu point "add label"
+        JMenuItem menuItemAddLabel = new JMenuItem(new AddLabelToConnectableAction(this.getElement()));
+        if (this.getLabel() == Connectable.NO_LABEL_IDENTIFIER) {
+            menuItemAddLabel.setText("Add Label");
+            placePopupMenu.add(menuItemAddLabel);
+        }
+
         placePopupMenu.addSeparator();
 
         //menu point "delete place"

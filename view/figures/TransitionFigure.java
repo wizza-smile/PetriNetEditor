@@ -139,9 +139,11 @@ public class TransitionFigure extends Positionable {
     ///////////////
     //POPUP    ////
 
-    public void showPopup(MouseEvent e) {
+    public void showPopup(Point2D position) {
         JPopupMenu contextMenu = this.getPopup();
-        contextMenu.show(e.getComponent(), e.getX(), e.getY());
+        Double position_x = position.getX();
+        Double position_y = position.getY();
+        contextMenu.show(MainWindowController.main_window, position_x.intValue(), position_y.intValue());
     }
 
     public JPopupMenu getPopup() {

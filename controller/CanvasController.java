@@ -270,7 +270,7 @@ public class CanvasController {
                 if (figureUnderMousePointer != null) {
                     if (SelectionController.getSelectedElementsIds().size() < 2) {
                         SelectionController.clearSelection();
-                        figureUnderMousePointer.showPopup(e);
+                        figureUnderMousePointer.showPopup(new Point(e.getX(),e.getY()));
                     } else {
                         figureUnderMousePointer.showMultiSelectionPopup(e);
                     }
@@ -353,7 +353,10 @@ public class CanvasController {
      */
     public static Rectangle2D getFiguresBounds() {
         Rectangle2D petriNetBounds = canvas.getPetriNetFiguresBounds();
-        petriNetBounds.add(canvas.getLabelsBounds());
+        Rectangle2D labelsBounds = canvas.getPetriNetFiguresBounds();
+        if (labelsBounds != null) {
+            petriNetBounds.add(labelsBounds);
+        }
 
         //add padding
         Rectangle2D figuresBounds = new Rectangle2D.Double(
