@@ -1,4 +1,4 @@
-package parser;
+package PNMLTools;
 
 
 import model.*;

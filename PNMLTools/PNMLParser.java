@@ -1,4 +1,4 @@
-package parser;
+package PNMLTools;
 
 
 import model.*;
@@ -301,7 +301,6 @@ public class PNMLParser {
      *      das Kantenelement
      */
     private void handleArc(final StartElement element) {
-            System.out.println( "ARC" );
         String arcId = null;
         String source = null;
         String target = null;
@@ -317,7 +316,6 @@ public class PNMLParser {
             }
         }
         if (arcId != null && source != null && target != null) {
-            System.out.println( "ARC" );
             String arc_info[] = {arcId, source, target};
             arcs_info.add(arc_info);
         } else {

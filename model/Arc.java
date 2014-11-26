@@ -115,7 +115,6 @@ public class Arc extends PetriNetElement {
 
     public void removeTarget(int target_type) {
         if (this.target_type == TARGET_BOTH) {
-            System.out.println( "BOV" +target_type);
             this.target_type -= target_type+1;
         }
         if (this.target_type == target_type ) {

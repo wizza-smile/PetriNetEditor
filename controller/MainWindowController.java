@@ -3,7 +3,7 @@ package controller;
 import model.*;
 import view.figures.*;
 import view.*;
-import parser.*;
+import PNMLTools.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -72,7 +72,7 @@ public class MainWindowController {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             final String[] args = {file.toString()};
-            parser.PNMLParser.main(args);
+            PNMLParser.main(args);
         }
     }
 
@@ -83,7 +83,7 @@ public class MainWindowController {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             final String[] args = {file.toString()};
-            parser.PNMLWriter.main(args);
+            PNMLWriter.main(args);
         }
     }
 
