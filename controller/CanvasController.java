@@ -35,7 +35,6 @@ public class CanvasController {
     public static String arc_no_target_id;
 
 
-
     public static ArrayList<String> getAllFigureIds() {
         ArrayList<String> allFigureIds = new ArrayList<String>();
         allFigureIds.addAll(canvas.label_figure_ids);
@@ -67,12 +66,12 @@ public class CanvasController {
         return canvas.getFigureById(figureId);
     }
 
-
     public static view.Canvas createCanvas() {
         canvas = new view.Canvas();
 
         return canvas;
     }
+
     public static view.Canvas getCanvas() {
         return canvas;
     }
@@ -138,8 +137,10 @@ public class CanvasController {
     }
 
 
-    //adjust the reference point from which the grid will be painted
-    //should always be 0 or negative
+    /**
+     * adjusts the reference point from which the grid will be painted.
+     * @param p - the x/y amount by which the reference point will be adjusted
+     */
     public static void addToGridReferencePoint(Point2D p) {
         Grid.addToReferencePoint(p);
     }

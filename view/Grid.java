@@ -6,21 +6,18 @@ import java.awt.geom.*;
 
 public class Grid {
 
+    //the reference point from which drawing of Grid will be started
+    //is imported to keep the illusion of non shifting viewport on canvas resizing
+    //should always be 0 or negative
     static Point2D gridOriginReferencePoint = new Point2D.Double(.0,.0);
 
-    /** Grid width.*/
+
     private int width;
-    /** Grid height.*/
     private int height;
-    /** Size of the foreground cell.*/
     public static int cellSize = 50;
-    /** Color of foreground cell.*/
     private Color strongColor = new Color(215, 215, 215);
-    /** Color of the background cell.*/
     private Color weakColor = new Color(190, 190, 190);
-    /** Background grid.*/
     private GeneralPath backgroundGrid;
-    /** Foreground grid.*/
     private GeneralPath foregroundGrid;
 
 
@@ -34,6 +31,10 @@ public class Grid {
         Grid.gridOriginReferencePoint = p;
     }
 
+    /**
+     * adjusts the reference point from which the grid will be painted.
+     * @param p - the x/y amount by which the reference point will be adjusted
+     */
     public static void addToReferencePoint(Point2D p) {
         Point2D new_point = new Point2D.Double(Grid.gridOriginReferencePoint.getX()-p.getX(), Grid.gridOriginReferencePoint.getY()-p.getY());
         Grid.gridOriginReferencePoint = new_point;

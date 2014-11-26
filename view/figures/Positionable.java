@@ -28,15 +28,8 @@ public abstract class Positionable extends BaseFigure {
 
     public abstract boolean intersects(Rectangle2D r);
     public abstract void updatePosition();
+    public abstract Rectangle2D getBounds();
 
-    public Point2D getOffset() { return offset; }
-
-    public void setOffset(Point2D referencePoint) {
-        Double offset_x = this.getPosition().getX() - referencePoint.getX();
-        Double offset_y = this.getPosition().getY() - referencePoint.getY();
-
-        this.offset = new Point2D.Double(offset_x, offset_y);
-    }
 
     public Point2D getPosition() {
         return getElement().getPosition();
@@ -46,16 +39,23 @@ public abstract class Positionable extends BaseFigure {
         getElement().setPosition(position);
     }
 
-    public Rectangle2D getBounds() {
-        return new Rectangle2D.Double(0, 0, 0, 0);
-    }
-
     public void markSelected(boolean selected) {
         this.selected = selected;
     }
 
     public boolean isSelected() {
         return selected;
+    }
+
+    public Point2D getOffset() {
+        return offset;
+    }
+
+    public void setOffset(Point2D referencePoint) {
+        Double offset_x = this.getPosition().getX() - referencePoint.getX();
+        Double offset_y = this.getPosition().getY() - referencePoint.getY();
+
+        this.offset = new Point2D.Double(offset_x, offset_y);
     }
 
     public Connectable getElement() {

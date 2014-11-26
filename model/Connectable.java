@@ -7,11 +7,34 @@ import java.util.*;
 
 import java.awt.geom.Point2D;
 
+/**
+ * Connectable PetriNet Elements (Transition/Place)
+ */
 public abstract class Connectable extends PetriNetElement {
 
+    public final String NO_LABEL_IDENTIFIER = "no_label";
     public String label;
     protected ArrayList<String> arc_ids = new ArrayList<String>();
 
+    /**
+     * Constructor to be called by PNML Parser
+     */
+    Connectable (String connectable_id) {
+        register(connectable_id);
+        this.position = new Point2D.Double(0.,0.);
+        this.setLabel(NO_LABEL_IDENTIFIER);
+        this.getFigure();
+    }
+
+    /**
+     * Constructor to be called when user clicks into canvas
+     */
+    Connectable(Point2D position) {
+        register();
+        this.position = position;
+        this.setLabel(NO_LABEL_IDENTIFIER);
+        this.getFigure();
+    }
 
     public void delete() {
         SelectionController.clearSelection();
@@ -57,7 +80,7 @@ public abstract class Connectable extends PetriNetElement {
 
     /**
      * whenever the position of a connectable is set the related Figure's updatePosition() method gets called,
-     * so that the Label's positon will be updated too.
+     * so that eventually the Label's positon will be updated too.
      * @param position [description]
      */
     public void setPosition(Point2D position) {

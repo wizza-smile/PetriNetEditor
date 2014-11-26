@@ -19,7 +19,6 @@ public class LabelFigure extends Positionable {
     protected String labelText;
     public Point2D position;
     private Point2D offsetToLabeledFigure = new Point2D.Double(30, 50);
-    // private String labeledFigureId;
     private RoundRectangle2D label_border_rect;
 
     public LabelFigure(BaseFigure labeledFigure, Point2D labeledFigurePosition) {
@@ -33,8 +32,16 @@ public class LabelFigure extends Positionable {
         CanvasController.removeLabelFigure(this.getId());
     }
 
+    public boolean intersects(Rectangle2D r) {
+        return false;
+    }
+
     public boolean contains(Point2D position) {
         return this.label_border_rect.contains(position);
+    }
+
+    public Rectangle2D getBounds() {
+        return label_border_rect.getBounds();
     }
 
     public void updatePosition() {
@@ -43,48 +50,46 @@ public class LabelFigure extends Positionable {
         this.setPosition(newPosition);
     }
 
-    public boolean intersects(Rectangle2D r) {
-        return false;
-    }
-
     public void draw(Graphics2D g) {
         Double labelPadding = 6.;
 
         String label = getLabel();
 
-        int fontSize = 13;
-        Font font = new Font(null, java.awt.Font.PLAIN, fontSize);
-        g.setFont(font);
-        FontRenderContext fontRenderContext = g.getFontRenderContext();
-        TextLayout textLayout = new TextLayout(label, font, fontRenderContext);
+        if (label != Connectable.NO_LABEL_IDENTIFIER) {
+            int fontSize = 13;
+            Font font = new Font(null, java.awt.Font.PLAIN, fontSize);
+            g.setFont(font);
+            FontRenderContext fontRenderContext = g.getFontRenderContext();
+            TextLayout textLayout = new TextLayout(label, font, fontRenderContext);
 
-        Rectangle2D textBounds = textLayout.getPixelBounds(fontRenderContext,0,0);
+            Rectangle2D textBounds = textLayout.getPixelBounds(fontRenderContext,0,0);
 
-        Double label_y_offset = 0.;
+            Double label_y_offset = 0.;
 
-        label_border_rect = new RoundRectangle2D.Double(
-            (Double)(getPosition().getX() - (textBounds.getWidth()+labelPadding) / 2),
-            (Double)(getPosition().getY() - (textBounds.getHeight()+labelPadding) / 2 ),// - label_y_offset,
-            (Double)(textBounds.getWidth()+labelPadding),
-            (Double)(textBounds.getHeight()+labelPadding),
-            5,
-            5
-        );
+            label_border_rect = new RoundRectangle2D.Double(
+                (Double)(getPosition().getX() - (textBounds.getWidth()+labelPadding) / 2),
+                (Double)(getPosition().getY() - (textBounds.getHeight()+labelPadding) / 2 ),// - label_y_offset,
+                (Double)(textBounds.getWidth()+labelPadding),
+                (Double)(textBounds.getHeight()+labelPadding),
+                5,
+                5
+            );
 
-        if (this.getLabeledFigure().isSelected()) {
-            g.setPaint(labelFillColorSelected);
-        } else {
-            g.setPaint(labelFillColor);
+            if (this.getLabeledFigure().isSelected()) {
+                g.setPaint(labelFillColorSelected);
+            } else {
+                g.setPaint(labelFillColor);
+            }
+            g.fill(label_border_rect);
+
+            g.setStroke(new java.awt.BasicStroke(1f));
+            g.setPaint(labelStrokeColor);
+
+            g.drawString(label,
+                (float) (getPosition().getX() - 1 - textBounds.getWidth()/2),
+                (float) (getPosition().getY() + (fontSize*3/8))//
+            );
         }
-        g.fill(label_border_rect);
-
-        g.setStroke(new java.awt.BasicStroke(1f));
-        g.setPaint(labelStrokeColor);
-
-        g.drawString(label,
-            (float) (getPosition().getX() - 1 - textBounds.getWidth()/2),
-            (float) (getPosition().getY() + (fontSize*3/8))//
-        );
     }
 
     public Point2D getPosition() {
@@ -116,11 +121,6 @@ public class LabelFigure extends Positionable {
     public void setLabel(String label) {
         getElement().setLabel(label);
     }
-
-    public Rectangle2D getBounds() {
-        return label_border_rect.getBounds();
-    }
-
 
     ///////////////
     //POPUP    ////

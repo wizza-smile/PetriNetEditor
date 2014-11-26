@@ -15,20 +15,11 @@ public class Place extends Connectable {
     private int tokenCount;
 
     public Place(String place_id) {
-        register(place_id);
-        this.position = new Point2D.Double(0.,0.);
-        this.setTokenCount(0);
-        this.setLabel("P LABEL");
-        this.getFigure();
+        super(place_id);
     }
 
     public Place(Point2D position) {
-        register();
-        this.position = position;
-        this.setTokenCount(0);
-        this.setLabel("P LABEL");
-        //create/'cache??' a figure
-        this.getFigure();
+        super(position);
     }
 
     public String generateId() {
