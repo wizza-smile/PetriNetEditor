@@ -178,7 +178,7 @@ public class TransitionFigure extends Positionable {
     public JPopupMenu getPopup() {
         JPopupMenu transitionPopupMenu = new JPopupMenu();
 
-        Transition transition = this.getTransition();
+        final Transition transition = this.getTransition();
         //menu point "activate transition"
         if (this.isActivated()) {
             JMenuItem menuItemActivate = new JMenuItem();
