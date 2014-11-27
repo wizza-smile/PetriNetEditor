@@ -41,9 +41,9 @@ public class SelectionController {
                         SelectionController.addFigureToSelection((Positionable)figureUnderMousePointer);
                         GlobalController.setActionMode(GlobalController.ACTION_DRAG_SELECTION);
                     }
+                    onUpdateSelectedElements();
                 }
             }
-
             SelectionController.setOffsetToSelectedElements(mousePressPoint);
         } else {
             SelectionController.clearSelection();
@@ -71,6 +71,17 @@ public class SelectionController {
                 SelectionController.removeFigureFromSelection(figure);
             }
         }
+
+        onUpdateSelectedElements();
+    }
+
+    /**
+     * remove and add again all selected transition and place ids to their id Collection,
+     * so that they willalways be drawn ontop of unselected elements
+     */
+    public static void onUpdateSelectedElements() {
+        CanvasController.getPlacesAndTransitionFiguresIds().removeAll(selectedElements_ids);
+        CanvasController.getPlacesAndTransitionFiguresIds().addAll(selectedElements_ids);
     }
 
     public static void setOffsetToSelectedElements(Point2D point) {

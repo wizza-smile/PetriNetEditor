@@ -7,11 +7,9 @@ import view.figures.*;
 import java.util.*;
 import java.lang.Math;
 
-
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
-
 
 import javax.swing.*;
 import javax.swing.SwingUtilities;
@@ -38,19 +36,14 @@ public class CanvasController {
     public static ArrayList<String> getAllFigureIds() {
         ArrayList<String> allFigureIds = new ArrayList<String>();
         allFigureIds.addAll(canvas.label_figure_ids);
-        allFigureIds.addAll(canvas.place_figure_ids);
-        allFigureIds.addAll(canvas.transition_figure_ids);
+        allFigureIds.addAll(canvas.place_and_transition_figure_ids);
         allFigureIds.addAll(canvas.arc_figure_ids);
 
         return allFigureIds;
     }
 
-    public static ArrayList<String> getPlacesAndTransitionFiguresIds() {
-        ArrayList<String> placesAndTransitionFiguresIds = new ArrayList<String>();
-        placesAndTransitionFiguresIds.addAll(canvas.place_figure_ids);
-        placesAndTransitionFiguresIds.addAll(canvas.transition_figure_ids);
-
-        return placesAndTransitionFiguresIds;
+    public static java.util.List<String> getPlacesAndTransitionFiguresIds() {
+        return canvas.place_and_transition_figure_ids;
     }
 
     public static ArrayList<String> getArcFiguresIds() {
@@ -60,8 +53,7 @@ public class CanvasController {
     public static ArrayList<String> getPositionablesIds() {
         ArrayList<String> positionablesIds = new ArrayList<String>();
         positionablesIds.addAll(canvas.label_figure_ids);
-        positionablesIds.addAll(canvas.place_figure_ids);
-        positionablesIds.addAll(canvas.transition_figure_ids);
+        positionablesIds.addAll(canvas.place_and_transition_figure_ids);
 
         return positionablesIds;
     }
@@ -76,9 +68,9 @@ public class CanvasController {
         return canvas;
     }
 
-    public static view.Canvas getCanvas() {
-        return canvas;
-    }
+    // public static view.Canvas getCanvas() {
+    //     return canvas;
+    // }
 
     /* Resize the Canvas and move Elements and Viewport to create illusion of endless canvas */
     public static void cleanUpCanvas() {
@@ -151,20 +143,25 @@ public class CanvasController {
 
 
     public static void addFigure(BaseFigure figure, int type) {
+        addFigureId(figure.getId(), type);
         canvas.addFigure(figure.getId(), figure);
+    }
 
+    public static void addFigureId(String figureId, int type) {
         switch (type) {
             case CanvasController.FIGURE_PLACE:
-                canvas.place_figure_ids.add(figure.getId());
+                // canvas.place_figure_ids.add(figureId);
+                canvas.place_and_transition_figure_ids.add(figureId);
                 break;
             case CanvasController.FIGURE_TRANSITION:
-                canvas.transition_figure_ids.add(figure.getId());
+                // canvas.transition_figure_ids.add(figureId);
+                canvas.place_and_transition_figure_ids.add(figureId);
                 break;
             case CanvasController.FIGURE_ARC:
-                canvas.arc_figure_ids.add(figure.getId());
+                canvas.arc_figure_ids.add(figureId);
                 break;
             case CanvasController.FIGURE_LABEL:
-                canvas.label_figure_ids.add(figure.getId());
+                canvas.label_figure_ids.add(figureId);
                 break;
             default:
                 return;
@@ -172,60 +169,28 @@ public class CanvasController {
     }
 
     public static void removeFigure(String figureId, int type) {
+        removeFigureId(figureId, type);
+        canvas.removeFigure(figureId);
+    }
+
+    public static void removeFigureId(String figureId, int type) {
         switch (type) {
             case CanvasController.FIGURE_PLACE:
-                canvas.place_figure_ids.remove(figureId);
+                canvas.place_and_transition_figure_ids.remove(figureId);
                 break;
             case CanvasController.FIGURE_TRANSITION:
-                canvas.transition_figure_ids.remove(figureId);
+                canvas.place_and_transition_figure_ids.remove(figureId);
                 break;
             case CanvasController.FIGURE_ARC:
                 canvas.arc_figure_ids.remove(figureId);
                 break;
             case CanvasController.FIGURE_LABEL:
-                System.out.println( "delete LABELFIG "+figureId );
-                System.out.println( canvas.label_figure_ids );
                 canvas.label_figure_ids.remove(figureId);
-                System.out.println( canvas.label_figure_ids );
                 break;
             default:
                 return;
         }
-
-        canvas.removeFigure(figureId);
     }
-
-    //DEPRECATED
-    public static void addLabelFigure(String figureId, LabelFigure figure) {
-        canvas.addFigure(figureId, figure);
-        canvas.label_figure_ids.add(figureId);
-    }
-
-
-    //DEPRECATED
-    public static void removeTransitionFigure(String figureId) {
-        canvas.removeFigure(figureId);
-        canvas.transition_figure_ids.remove(figureId);
-    }
-    //DEPRECATED
-    public static void removeArcFigure(String figureId) {
-        canvas.removeFigure(figureId);
-        canvas.arc_figure_ids.remove(figureId);
-    }
-    //DEPRECATED
-    public static void removePlaceFigure(String figureId) {
-        canvas.removeFigure(figureId);
-        canvas.place_figure_ids.remove(figureId);
-    }
-    //DEPRECATED
-    public static void removeLabelFigure(String figureId) {
-        canvas.removeFigure(figureId);
-        canvas.label_figure_ids.remove(figureId);
-    }
-
-
-
-
 
 
 

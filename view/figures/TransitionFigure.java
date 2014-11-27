@@ -44,6 +44,10 @@ public class TransitionFigure extends Positionable {
         CanvasController.removeFigure(this.getId(), CanvasController.FIGURE_TRANSITION);
     }
 
+    public int getFigureType() {
+        return CanvasController.FIGURE_TRANSITION;
+    }
+
     public void drawLabel(Graphics2D g) {
         this.getLabelFigure().draw(g);
     }

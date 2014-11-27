@@ -45,6 +45,10 @@ public class PlaceFigure extends Positionable {
         CanvasController.removeFigure(this.getId(), CanvasController.FIGURE_PLACE);
     }
 
+    public int getFigureType() {
+        return CanvasController.FIGURE_PLACE;
+    }
+
     public Place getPlace() {
         return (Place)this.getElement();
     }

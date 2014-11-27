@@ -8,8 +8,6 @@ import controller.*;
 import java.lang.Math;
 import java.util.*;
 
-
-
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
@@ -34,7 +32,6 @@ public class ArcFigure extends BaseFigure {
     boolean place_is_left;
     boolean place_is_up;
 
-
     Point2D intersection_place, intersection_transition;
 
 
@@ -44,19 +41,21 @@ public class ArcFigure extends BaseFigure {
         register();
     }
 
-    public void register() {
-        CanvasController.addFigure(this, CanvasController.FIGURE_ARC);
-    }
-
     public Arc getArc() {
         return (Arc)this.element;
     }
 
-
-    public void delete() {
-        CanvasController.removeArcFigure(this.getId());
+    public void register() {
+        CanvasController.addFigure(this, CanvasController.FIGURE_ARC);
     }
 
+    public void delete() {
+        CanvasController.removeFigure(this.getId(), CanvasController.FIGURE_ARC);
+    }
+
+    public int getFigureType() {
+        return CanvasController.FIGURE_ARC;
+    }
 
     //check if arrowHead's been clicked on, then store its target
     public boolean contains(Point2D position) {
@@ -171,8 +170,8 @@ public class ArcFigure extends BaseFigure {
 
     public void draw(Graphics2D g) {
 
-        //a traget is not yet set, follow the mouse!!
         if (!getArc().isTargetSet()) {
+            //a traget is not yet set, follow the mouse with a red line!!
             Arc arc = getArc();
             Point2D source_position = arc.getSource().getPosition();
             Point2D target_position = CanvasController.getCurrentMousePoint();
@@ -185,14 +184,17 @@ public class ArcFigure extends BaseFigure {
             g.draw(line);
 
         } else {
-
+            //this is an arc, that connects two elements.
+            //determine where to draw arrow head(s)
             Transition transition = getTransition();
             Place place = getPlace();
 
+            //unlikely case that place and transition share the same position. do nothing.
             if (transition.getPosition().equals(place.getPosition())) return;
 
-            //first draw the line
             line = new Line2D.Double(transition.getPosition(), place.getPosition());
+
+            //first draw the full line between mid points
             g.setStroke(new java.awt.BasicStroke(1f));
             g.setPaint(new Color(123, 123, 123));
             g.draw(line);

@@ -24,10 +24,11 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     Dimension minSize = new Dimension(300, 250);
 
     private HashMap<String, BaseFigure> figures = new HashMap<String, BaseFigure>();
-    public ArrayList<String> place_figure_ids = new ArrayList<String>();
-    public ArrayList<String> transition_figure_ids = new ArrayList<String>();
+    // public ArrayList<String> place_figure_ids = new ArrayList<String>();
+    // public ArrayList<String> transition_figure_ids = new ArrayList<String>();
     public ArrayList<String> arc_figure_ids = new ArrayList<String>();
     public ArrayList<String> label_figure_ids = new ArrayList<String>();
+    public ArrayList<String> place_and_transition_figure_ids = new ArrayList<String>();
 
     public Canvas() {
         this.setCanvasSize(MainWindowController.getViewport().getSize());

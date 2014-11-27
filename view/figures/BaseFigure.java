@@ -23,13 +23,14 @@ public abstract class BaseFigure {
     protected String elementId;
     protected PetriNetElement element;
 
+    public abstract int getFigureType();
+    public abstract void register();
     public abstract void delete();
     public abstract boolean contains(Point2D position);
     public abstract void draw(Graphics2D g);
     public abstract void showPopup(Point2D position);
 
 
-    //do NOT call this function in Constructor!
     public PetriNetElement getElement() {
         if (this.element == null) {
             this.element = PetriNetController.getElementById(this.elementId);
@@ -43,7 +44,6 @@ public abstract class BaseFigure {
 
     ///////////////
     //POPUP    ////
-
 
     public void showMultiSelectionPopup(MouseEvent e) {
         JPopupMenu contextMenu = getMultiSelectionPopup();

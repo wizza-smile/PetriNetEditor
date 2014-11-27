@@ -30,7 +30,6 @@ public class LabelFigure extends Positionable {
         this.setId("label_" + this.elementId);
         register();
 
-        // this.labelFigureId = labelFigure.getId();
         this.position = new Point2D.Double(offsetToLabeledFigure.getX() + labeledFigurePosition.getX(), offsetToLabeledFigure.getY() + labeledFigurePosition.getY());
     }
 
@@ -40,6 +39,10 @@ public class LabelFigure extends Positionable {
 
     public void delete() {
         CanvasController.removeFigure(this.getId(), CanvasController.FIGURE_LABEL);
+    }
+
+    public int getFigureType() {
+        return CanvasController.FIGURE_LABEL;
     }
 
     public boolean intersects(Rectangle2D r) {
@@ -111,7 +114,7 @@ public class LabelFigure extends Positionable {
     }
 
     public Positionable getLabeledFigure() {
-        return (Positionable)CanvasController.getFigureById(elementId);
+        return (Positionable)getElement().getFigure();
     }
 
     public void markSelected(boolean selected) {
