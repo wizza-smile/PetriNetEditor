@@ -68,8 +68,12 @@ public abstract class Connectable extends PetriNetElement {
         arc_ids.remove(arc_id);
     }
 
+    public boolean hasLabel() {
+        return !this.label.equals(Connectable.NO_LABEL_IDENTIFIER);
+    }
+
     public String getLabel() {
-        return this.label;
+        return hasLabel() ? this.label : "";
     }
 
     public void setLabel(String label) {

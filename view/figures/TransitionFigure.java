@@ -161,8 +161,16 @@ public class TransitionFigure extends Positionable {
                 }
             });
             transitionPopupMenu.add(menuItemActivate);
-            transitionPopupMenu.addSeparator();
         }
+
+        //menu point "add label"
+        JMenuItem menuItemAddLabel = new JMenuItem(new AddLabelToConnectableAction(this.getElement()));
+        if (!this.getElement().hasLabel()) {
+            menuItemAddLabel.setText("Add Label");
+            transitionPopupMenu.add(menuItemAddLabel);
+        }
+
+        transitionPopupMenu.addSeparator();
 
         //menu point "delete transition"
         JMenuItem menuItem = new JMenuItem(new DeletePetriNetElementAction(this.getElement()));//new DeletePetriNetObjectAction(myObject)

@@ -54,15 +54,14 @@ public class LabelFigure extends Positionable {
     }
 
     public boolean hasLabel() {
-        return getLabel() != Connectable.NO_LABEL_IDENTIFIER;
+        return getElement().hasLabel();
     }
 
     public void draw(Graphics2D g) {
         Double labelPadding = 6.;
 
-        String label = getLabel();
-
         if (hasLabel()) {
+            String label = getLabel();
             g.setFont(font);
             FontRenderContext fontRenderContext = g.getFontRenderContext();
             TextLayout textLayout = new TextLayout(label, font, fontRenderContext);
@@ -127,7 +126,7 @@ public class LabelFigure extends Positionable {
 
     public void showPopup(Point2D position) {
         //Input dialog with a text field
-        String preset = this.getLabel() != Connectable.NO_LABEL_IDENTIFIER ? this.getLabel() : "";
+        String preset = this.hasLabel() ? this.getLabel() : "";
         String input = JOptionPane.showInputDialog(MainWindowController.main_window, "Enter a new Label:", preset);
         if(input != null) {
             if (!input.isEmpty()) {

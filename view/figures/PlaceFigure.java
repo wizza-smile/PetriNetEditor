@@ -186,7 +186,7 @@ public class PlaceFigure extends Positionable {
 
         //menu point "add label"
         JMenuItem menuItemAddLabel = new JMenuItem(new AddLabelToConnectableAction(this.getElement()));
-        if (this.getLabel() == Connectable.NO_LABEL_IDENTIFIER) {
+        if (!this.getElement().hasLabel()) {
             menuItemAddLabel.setText("Add Label");
             placePopupMenu.add(menuItemAddLabel);
         }
