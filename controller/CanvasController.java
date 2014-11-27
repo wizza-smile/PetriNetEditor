@@ -53,6 +53,10 @@ public class CanvasController {
         return placesAndTransitionFiguresIds;
     }
 
+    public static ArrayList<String> getArcFiguresIds() {
+        return canvas.arc_figure_ids;
+    }
+
     public static ArrayList<String> getPositionablesIds() {
         ArrayList<String> positionablesIds = new ArrayList<String>();
         positionablesIds.addAll(canvas.label_figure_ids);
@@ -132,7 +136,7 @@ public class CanvasController {
             if (figure.getElement() instanceof Connectable) {
                 ((Connectable)figure.getElement()).addNewArc();
             }
-            GlobalController.setMode(GlobalController.ACTION_ARC_SELECT_TARGET);
+            GlobalController.setActionMode(GlobalController.ACTION_ARC_SELECT_TARGET);
         }
     }
 
@@ -167,9 +171,28 @@ public class CanvasController {
         }
     }
 
-    public static void removeFigure(String figureId) {
-        BaseFigure baseFigure = canvas.getFigureById(figureId);
-        baseFigure.delete();
+    public static void removeFigure(String figureId, int type) {
+        switch (type) {
+            case CanvasController.FIGURE_PLACE:
+                canvas.place_figure_ids.remove(figureId);
+                break;
+            case CanvasController.FIGURE_TRANSITION:
+                canvas.transition_figure_ids.remove(figureId);
+                break;
+            case CanvasController.FIGURE_ARC:
+                canvas.arc_figure_ids.remove(figureId);
+                break;
+            case CanvasController.FIGURE_LABEL:
+                System.out.println( "delete LABELFIG "+figureId );
+                System.out.println( canvas.label_figure_ids );
+                canvas.label_figure_ids.remove(figureId);
+                System.out.println( canvas.label_figure_ids );
+                break;
+            default:
+                return;
+        }
+
+        canvas.removeFigure(figureId);
     }
 
     //DEPRECATED
@@ -212,7 +235,7 @@ public class CanvasController {
 
 
     public static void mouseClicked(MouseEvent e) {
-        switch (GlobalController.mode) {
+        switch (GlobalController.getActionMode()) {
             case GlobalController.ACTION_SELECT:
                 //on dbl-click: clear selection and select figure under pointer, if any
                 if (e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e)) {
@@ -220,7 +243,7 @@ public class CanvasController {
                     BaseFigure figureUnderMousePointer = SelectionController.getFigureUnderMousePointer(mousePressPoint);
                     if (figureUnderMousePointer instanceof Positionable){
                         SelectionController.addFigureToSelection((Positionable)figureUnderMousePointer);
-                        GlobalController.setMode(GlobalController.ACTION_SELECT);
+                        GlobalController.setActionMode(GlobalController.ACTION_SELECT);
                     }
                 }
                 break;
@@ -233,7 +256,7 @@ public class CanvasController {
     public static void mousePressed(MouseEvent e) {
         mousePressPoint = new Point2D.Double(e.getX(), e.getY());
         if (SwingUtilities.isLeftMouseButton(e)) {
-            switch (GlobalController.mode) {
+            switch (GlobalController.getActionMode()) {
                 case GlobalController.ACTION_SELECT:
                     SelectionController.mouseClickedInModeSelect(e);
                     break;
@@ -254,7 +277,7 @@ public class CanvasController {
                     if (figure != null && (figure instanceof Positionable) && !(figure instanceof LabelFigure)) {
                         Arc arc = (Arc)PetriNetController.getElementById(arc_no_target_id);
                         if (arc.selectTarget(figure.getId())) {
-                            GlobalController.setMode(GlobalController.ACTION_ARC);
+                            GlobalController.setActionMode(GlobalController.ACTION_ARC);
                         }
                     }
                     break;
@@ -264,7 +287,7 @@ public class CanvasController {
         }
         //RECHTER MOUSE PRESS
         if (SwingUtilities.isRightMouseButton(e)) {
-            if (GlobalController.mode != GlobalController.ACTION_ARC_SELECT_TARGET) {
+            if (GlobalController.getActionMode() != GlobalController.ACTION_ARC_SELECT_TARGET) {
                 //if a figure is under mouse, show its popup
                 BaseFigure figureUnderMousePointer = SelectionController.getFigureUnderMousePointer(mousePressPoint);
                 if (figureUnderMousePointer != null) {
@@ -277,7 +300,7 @@ public class CanvasController {
                 }
             } else {
                 //delete unfinished/red Arc
-                GlobalController.setMode(GlobalController.ACTION_ARC);
+                GlobalController.setActionMode(GlobalController.ACTION_ARC);
             }
         }
 
@@ -288,7 +311,7 @@ public class CanvasController {
     public static void mouseDragged(MouseEvent e) {
         currentMousePoint = new Point2D.Double(e.getX(), e.getY());
         if (SwingUtilities.isLeftMouseButton(e)) {
-            switch (GlobalController.mode) {
+            switch (GlobalController.getActionMode()) {
                 case  GlobalController.ACTION_SELECT:
                     SelectionController.updateSelection();
                     break;
@@ -314,12 +337,12 @@ public class CanvasController {
 
     public static void mouseReleased(MouseEvent e) {
         currentMousePoint = new Point2D.Double(e.getX(), e.getY());
-        switch (GlobalController.mode) {
+        switch (GlobalController.getActionMode()) {
             case GlobalController.ACTION_SELECT:
                 SelectionController.removeSelectionRectangle();
                 break;
             case GlobalController.ACTION_DRAG_SELECTION:
-                GlobalController.setMode(GlobalController.ACTION_SELECT);
+                GlobalController.setActionMode(GlobalController.ACTION_SELECT);
                 break;
             default:
                 break;

@@ -27,12 +27,19 @@ public class LabelFigure extends Positionable {
     public LabelFigure(BaseFigure labeledFigure, Point2D labeledFigurePosition) {
         this.elementId = labeledFigure.getId();
         this.element = labeledFigure.getElement();
-        this.id = "label_" + this.elementId;
+        this.setId("label_" + this.elementId);
+        register();
+
+        // this.labelFigureId = labelFigure.getId();
         this.position = new Point2D.Double(offsetToLabeledFigure.getX() + labeledFigurePosition.getX(), offsetToLabeledFigure.getY() + labeledFigurePosition.getY());
     }
 
+    public void register() {
+        CanvasController.addFigure(this, CanvasController.FIGURE_LABEL);
+    }
+
     public void delete() {
-        CanvasController.removeLabelFigure(this.getId());
+        CanvasController.removeFigure(this.getId(), CanvasController.FIGURE_LABEL);
     }
 
     public boolean intersects(Rectangle2D r) {
@@ -112,9 +119,9 @@ public class LabelFigure extends Positionable {
         this.getLabeledFigure().markSelected(selected);
     }
 
-    public String getLabeledFigureId() {
-        return this.elementId;
-    }
+    // public String getLabeledFigureId() {
+    //     return this.elementId;
+    // }
 
     public LabelFigure getLabelFigure() {
         return this;

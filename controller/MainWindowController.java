@@ -106,16 +106,16 @@ public class MainWindowController {
                 break;
             //Mode buttons
             case "select_mode":
-                GlobalController.setMode(GlobalController.ACTION_SELECT);
+                GlobalController.setActionMode(GlobalController.ACTION_SELECT);
                 break;
             case "place_mode":
-                GlobalController.setMode(GlobalController.ACTION_PLACE);
+                GlobalController.setActionMode(GlobalController.ACTION_PLACE);
                 break;
             case "transition_mode":
-                GlobalController.setMode(GlobalController.ACTION_TRANSITION);
+                GlobalController.setActionMode(GlobalController.ACTION_TRANSITION);
                 break;
             case "arc_mode":
-                GlobalController.setMode(GlobalController.ACTION_ARC);
+                GlobalController.setActionMode(GlobalController.ACTION_ARC);
                 break;
 
         }

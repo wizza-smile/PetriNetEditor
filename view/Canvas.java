@@ -42,14 +42,12 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         grid = new Grid(this.getWidth(), this.getHeight());
-        if (this.enabledGrid) {
-            grid.drawGrid(g2);
-        }
+        grid.drawGrid(g2);
 
         //Draw all arcs first
-        for (String arc_id : PetriNetController.getArcIds()) {
-            Arc arc = (Arc)PetriNetController.getElementById(arc_id);
-            arc.getFigure().draw(g2);
+        for (String arc_figure_id : CanvasController.getArcFiguresIds()) {
+            ArcFigure arcFigure = (ArcFigure)CanvasController.getFigureById(arc_figure_id);
+            arcFigure.draw(g2);
         }
 
         //draw places and transitions
@@ -59,9 +57,9 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         }
 
         //draw labels
-        for (String figure_id : label_figure_ids) {
-            BaseFigure figure = CanvasController.getFigureById(figure_id);
-            figure.draw(g2);
+        for (String label_figure_id : label_figure_ids) {
+            LabelFigure labelFigure = (LabelFigure)CanvasController.getFigureById(label_figure_id);
+            labelFigure.draw(g2);
         }
 
         SelectionController.drawSelectionFigure(g2);

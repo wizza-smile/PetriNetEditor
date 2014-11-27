@@ -12,10 +12,13 @@ import javax.swing.*;
 
 public class GlobalController {
 
+    //the reference size of displayed elements
     public static Double size = 1.;
     public static boolean opacity = false;
 
-    public static int mode = 0;
+    //the current actionMode of the application changes its behaviour on user-interaction.
+    public static int actionMode = 0;
+    //the possible actionModes of the application
     public static final int ACTION_SELECT = 0;
     public static final int ACTION_DRAG_SELECTION = 1;
     public static final int ACTION_PLACE = 2;
@@ -24,14 +27,14 @@ public class GlobalController {
     public static final int ACTION_ARC_SELECT_TARGET = 5;
 
 
-    public static boolean STOP_PAINT = false;
+    // public static boolean STOP_PAINT = false;
 
     // EVENTS
-    public static final int CANVAS_MOUSE_PRESSED = 0;
+    // public static final int CANVAS_MOUSE_PRESSED = 0;
 
 
     public static void startApplication() {
-        Toolkit.getDefaultToolkit().setDynamicLayout(false);
+        // Toolkit.getDefaultToolkit().setDynamicLayout(false);
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 PetriNetController.createPetriNet();
@@ -48,10 +51,15 @@ public class GlobalController {
         });
     }
 
-
-    public static void setMode(int mode) {
+    /**
+     * set the current actionMode.
+     * performs cleanup operations depending on which ActionMode
+     * the Application is switching from/to
+     * @param actionMode - the actionMode to switch to
+     */
+    public static void setActionMode(int actionMode) {
         //cleanup after
-        switch (GlobalController.mode) {
+        switch (GlobalController.actionMode) {
             case ACTION_ARC_SELECT_TARGET:
                 if (CanvasController.arc_no_target_id != null) {
                     Arc arc = (Arc)PetriNetController.getElementById(CanvasController.arc_no_target_id);
@@ -63,7 +71,7 @@ public class GlobalController {
                 break;
         }
         //cleanup before
-        switch (mode) {
+        switch (actionMode) {
             case ACTION_PLACE:
             case ACTION_TRANSITION:
             case ACTION_ARC:
@@ -75,7 +83,11 @@ public class GlobalController {
                 break;
         }
 
-        GlobalController.mode = mode;
+        GlobalController.actionMode = actionMode;
+    }
+
+    public static int getActionMode() {
+        return GlobalController.actionMode;
     }
 
     public static void setSize(Double size) {
@@ -83,7 +95,7 @@ public class GlobalController {
 
         ArcFigure.ARROW_RADIUS = ArcFigure.ARROW_RADIUS_BASE * size;
         PlaceFigure.DIAMETER = PlaceFigure.DIAMETER_BASE * size;
-        TransitionFigure.DIMENSION = TransitionFigure.DIMENSION_BASE * size;
+        TransitionFigure.SIZE = TransitionFigure.SIZE_BASE * size;
         CanvasController.PETRINET_PADDING = CanvasController.PETRINET_PADDING_BASE * size;
 
         CanvasController.repaintCanvas();

@@ -27,19 +27,19 @@ public class SelectionController {
             if(figureUnderMousePointer instanceof LabelFigure) {
                 SelectionController.clearSelection();
                 SelectionController.addFigureToSelection((LabelFigure)figureUnderMousePointer);
-                GlobalController.setMode(GlobalController.ACTION_DRAG_SELECTION);
+                GlobalController.setActionMode(GlobalController.ACTION_DRAG_SELECTION);
             } else {
                 if (figureUnderMousePointer instanceof Positionable) {
                     //now its clear its a transition or place!
                     //check if its already in selected elements!
                     if (selectedElements_ids.contains(figureUnderMousePointer.getId())) {
                         //user wants to drag selected elements!
-                        GlobalController.setMode(GlobalController.ACTION_DRAG_SELECTION);
+                        GlobalController.setActionMode(GlobalController.ACTION_DRAG_SELECTION);
                     } else {
                         //select the element start dragging
                         SelectionController.clearSelection();
                         SelectionController.addFigureToSelection((Positionable)figureUnderMousePointer);
-                        GlobalController.setMode(GlobalController.ACTION_DRAG_SELECTION);
+                        GlobalController.setActionMode(GlobalController.ACTION_DRAG_SELECTION);
                     }
                 }
             }

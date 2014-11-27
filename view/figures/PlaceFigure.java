@@ -21,7 +21,8 @@ public class PlaceFigure extends Positionable {
 
     private Ellipse2D ellipse;
     private Ellipse2D tokenPoint;
-    private String labelFigureId;
+    // private String labelFigureId;
+    private LabelFigure labelFigure;
 
     final public static double DIAMETER_BASE = Grid.cellSize/1;
     public static double DIAMETER = DIAMETER_BASE;
@@ -32,9 +33,7 @@ public class PlaceFigure extends Positionable {
         this.element = (PetriNetElement)place;
         register();
 
-        LabelFigure labelFigure = new LabelFigure(this, this.getPlace().getPosition());
-        this.labelFigureId = labelFigure.getId();
-        CanvasController.addLabelFigure(labelFigureId, labelFigure);
+        labelFigure = new LabelFigure(this, this.getPlace().getPosition());
     }
 
     public void register() {
@@ -43,7 +42,7 @@ public class PlaceFigure extends Positionable {
 
     public void delete() {
         getLabelFigure().delete();
-        CanvasController.removePlaceFigure(this.getId());
+        CanvasController.removeFigure(this.getId(), CanvasController.FIGURE_PLACE);
     }
 
     public Place getPlace() {
@@ -51,7 +50,7 @@ public class PlaceFigure extends Positionable {
     }
 
     public LabelFigure getLabelFigure() {
-        return (LabelFigure)CanvasController.getFigureById(this.labelFigureId);
+        return labelFigure;
     }
 
     public boolean contains(Point2D position) {

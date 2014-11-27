@@ -73,7 +73,7 @@ public class Arc extends PetriNetElement {
             Transition transition = (Transition)PetriNetController.getElementById(transition_id);
             transition.removeArcId(this.getId());
         }
-        CanvasController.removeFigure(this.getId());
+        CanvasController.removeFigure(this.getId(), CanvasController.FIGURE_ARC);
         unregister();
     }
 

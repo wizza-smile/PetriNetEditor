@@ -18,8 +18,8 @@ public class TransitionFigure extends Positionable {
     private Rectangle2D transitionRectangle;
     private String labelFigureId;
 
-    final public static double DIMENSION_BASE = 45;
-    public static double DIMENSION = DIMENSION_BASE;
+    final public static double SIZE_BASE = 45;
+    public static double SIZE = SIZE_BASE;
 
 
     /**
@@ -33,7 +33,6 @@ public class TransitionFigure extends Positionable {
 
         LabelFigure labelFigure = new LabelFigure(this, this.getTransition().getPosition());
         this.labelFigureId = labelFigure.getId();
-        CanvasController.addLabelFigure(labelFigureId, labelFigure);
     }
 
     public void register() {
@@ -42,7 +41,7 @@ public class TransitionFigure extends Positionable {
 
     public void delete() {
         getLabelFigure().delete();
-        CanvasController.removeTransitionFigure(this.getId());
+        CanvasController.removeFigure(this.getId(), CanvasController.FIGURE_TRANSITION);
     }
 
     public void drawLabel(Graphics2D g) {
@@ -116,10 +115,10 @@ public class TransitionFigure extends Positionable {
 
     public Rectangle2D generateTransitionRectangle() {
         return new Rectangle2D.Double(
-            getTransition().getPosition().getX() - DIMENSION / 4,
-            getTransition().getPosition().getY() - DIMENSION / 2,
-            DIMENSION/2,
-            DIMENSION
+            getTransition().getPosition().getX() - SIZE / 4,
+            getTransition().getPosition().getY() - SIZE / 2,
+            SIZE/2,
+            SIZE
         );
     }
 
