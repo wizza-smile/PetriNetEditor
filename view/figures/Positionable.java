@@ -16,14 +16,17 @@ import java.awt.geom.*;
  */
 public abstract class Positionable extends BaseFigure {
 
+    protected boolean selected = false;
+
     protected Color strokeColor = new Color(0, 0, 0);
     protected Color fillColor = new Color(255, 255, 255);
     protected Color fillColorAlpha = new Color(255, 255, 255, 195);
-    protected boolean selected = false;
     protected Color selectedColor = new Color(201, 157, 172);
     protected Color selectedColorAlpha = new Color(183, 55, 55, 40);
 
-    //offset to mouse pointer (for dragging)
+    /**
+     * offset to mouse pointer (needed for dragging)
+     */
     protected Point2D offset;
 
     public abstract boolean intersects(Rectangle2D r);

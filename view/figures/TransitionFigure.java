@@ -1,7 +1,6 @@
 package view.figures;
 
 import model.*;
-import view.Grid;
 import controller.*;
 
 import java.lang.Math;

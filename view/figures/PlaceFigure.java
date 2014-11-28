@@ -2,12 +2,9 @@
 package view.figures;
 
 import model.*;
-import view.Grid;
 import controller.*;
 
 import java.lang.Math;
-
-
 
 import java.awt.*;
 import java.awt.event.*;
@@ -23,7 +20,7 @@ public class PlaceFigure extends Positionable {
     private Ellipse2D tokenPoint;
     private LabelFigure labelFigure;
 
-    final public static double DIAMETER_BASE = Grid.cellSize/1;
+    final public static double DIAMETER_BASE = 50;
     public static double DIAMETER = DIAMETER_BASE;
 
 

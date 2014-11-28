@@ -7,6 +7,10 @@ import java.awt.event.*;
 import java.awt.geom.Point2D;
 import javax.swing.*;
 
+
+/**
+ * the base class for all petriNetElements (Arc/Transition/Place)
+ */
 public abstract class PetriNetElement {
 
     protected Point2D position;
@@ -17,9 +21,27 @@ public abstract class PetriNetElement {
     //abstract methods
     ////////////////////
 
+    /**
+     * delete this PetriNetElement from the PetriNet element-HashMap and its id in the corresponding id List
+     */
     public abstract void delete();
+
+    /**
+     * create a figure of this PetriNetElements corresponding figure-type
+     * @return the figure object
+     */
     public abstract BaseFigure createFigure();
+
+    /**
+     * returns the int value of the correspponding element types constant, as specified in PetriNetController.
+     * @return the int value
+     */
     public abstract int getElementType();
+
+    /**
+     * generates a unique id for a new instance by using UUIDs.
+     * @return   the unique id.
+     */
     public abstract String generateId();
     public abstract void unregister();
 
@@ -41,7 +63,7 @@ public abstract class PetriNetElement {
 
     /**
      * when called for the first time:
-     * creates a related figure and keeps refernce
+     * creates a related figure and keeps reference
      * @return the related figure
      */
     public BaseFigure getFigure() {

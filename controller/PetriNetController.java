@@ -19,9 +19,10 @@ public class PetriNetController {
     public final static int ELEMENT_TRANSITION = 1;
     public final static int ELEMENT_ARC = 2;
 
-
+    /**
+     * the instance of the petriNet currently being edited
+     */
     static private PetriNet petriNet;
-
 
 
     public static Integer getPetriNetElementCount() {

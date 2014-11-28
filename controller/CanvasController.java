@@ -140,7 +140,7 @@ public class CanvasController {
      * @param p - the x/y amount by which the reference point will be adjusted
      */
     public static void addToGridReferencePoint(Point2D p) {
-        Grid.addToReferencePoint(p);
+        canvas.addToGridReferencePoint(p);
     }
 
 

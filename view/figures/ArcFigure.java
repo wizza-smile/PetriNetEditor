@@ -20,10 +20,20 @@ public class ArcFigure extends BaseFigure {
     final public static Double ARROW_RADIUS_BASE = 6.1;
     public static Double ARROW_RADIUS = ARROW_RADIUS_BASE;
 
-    Line2D line;
+    /**
+     * the line between the midpoints of transition and place
+     */
+    protected Line2D line;
 
-    //two possible arrow heads 0=target_transition 1= target_place
-    public ArrowHead[] arrow_heads = new ArrowHead[2];
+    /**
+     * filled with two possible arrow_heads.
+     * [0] = target_transition [1] = target_place
+     */
+    protected ArrowHead[] arrow_heads = new ArrowHead[2];
+
+    /**
+     * the target_type of the most recently selected arrowHead of this arcFigure.
+     */
     public int selectedArrowHeadsTargetType;
 
     //gradient triangle
@@ -32,7 +42,10 @@ public class ArcFigure extends BaseFigure {
     boolean place_is_left;
     boolean place_is_up;
 
-    Point2D intersection_place, intersection_transition;
+    /**
+     * the point of intersection of [line] with the place resp. transition figure.
+     */
+    protected Point2D intersection_place, intersection_transition;
 
 
     public ArcFigure(Arc arc) {
@@ -57,7 +70,12 @@ public class ArcFigure extends BaseFigure {
         return CanvasController.FIGURE_ARC;
     }
 
-    //check if arrowHead's been clicked on, then store its target
+    /**
+     * check if an arrowHead has been clicked on,
+     * if yes: store its target_type in property (selectedArrowHeadsTargetType)
+     * @param  position - position of mouse click
+     * @return boolean
+     */
     public boolean contains(Point2D position) {
         for (ArrowHead ah : arrow_heads ) {
             if (ah != null && ah.contains(position)) {
@@ -420,7 +438,9 @@ public class ArcFigure extends BaseFigure {
         return arcPopupMenu;
     }
 
-
+    /**
+     * Popup menu action. Deletes an arc target.
+     */
     protected class DeleteArcMenuAction extends DeletePetriNetElementAction {
         int target_type;
 

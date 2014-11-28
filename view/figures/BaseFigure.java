@@ -26,6 +26,12 @@ public abstract class BaseFigure {
     public abstract int getFigureType();
     public abstract void register();
     public abstract void delete();
+
+    /**
+     * checks wether an relevant part of the figures representaion has been clicked on
+     * @param  position   position of mouse click
+     * @return            boolean
+     */
     public abstract boolean contains(Point2D position);
     public abstract void draw(Graphics2D g);
     public abstract void showPopup(Point2D position);

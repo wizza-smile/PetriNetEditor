@@ -40,7 +40,8 @@ public class Transition extends Connectable {
     }
 
     /**
-     * check whether this Transition can(!) be activated
+     * check whether this Transition can be activated
+     * @return boolean
      */
     public boolean isActivated() {
         boolean isActivated = true;
