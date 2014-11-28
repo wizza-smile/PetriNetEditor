@@ -70,13 +70,13 @@ public class CanvasController {
         return canvas;
     }
 
-    // public static view.Canvas getCanvas() {
-    //     return canvas;
-    // }
 
     /* Resize the Canvas and move Elements and Viewport to create illusion of endless canvas */
     public static void cleanUpCanvas() {
-        if (PetriNetController.getPetriNetElementCount() == 0) return;
+        if (PetriNetController.getPetriNetElementCount() == 0) {
+            canvas.setToMinSize();
+            return;
+        }
 
         Rectangle2D figures_rectangle = CanvasController.getFiguresBounds();
         Rectangle2D viewport_rectangle = MainWindowController.getViewportRectangle();

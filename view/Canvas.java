@@ -21,7 +21,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
     public Grid grid;
     boolean enabledGrid = true;
-    Dimension minSize = new Dimension(300, 250);
+    Dimension minSize = new Dimension(100, 100);
 
     private HashMap<String, BaseFigure> figures = new HashMap<String, BaseFigure>();
     // public ArrayList<String> place_figure_ids = new ArrayList<String>();
@@ -81,12 +81,17 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         return figures.get(figureId);
     }
 
-    public Dimension getMinSize() {
-        return minSize;
-    }
+    // public Dimension getMinSize() {
+    //     return minSize;
+    // }
 
     public void setCanvasSize(Dimension dim) {
         this.setPreferredSize(dim);
+    }
+
+    public void setToMinSize() {
+        this.setPreferredSize(minSize);
+        revalidate();
     }
 
 
