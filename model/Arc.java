@@ -34,6 +34,8 @@ public class Arc extends PetriNetElement {
         this.getFigure();
         this.getSource().addArcId(this.getId());
         selectTarget(target_id);
+
+        checkAndMergeDoublette(source_id, target_id);
     }
 
     public Arc(String source_id, int type) {
@@ -78,8 +80,8 @@ public class Arc extends PetriNetElement {
     }
 
     public boolean connectsSameElements(String elem_id_1, String elem_id_2) {
-        if (elem_id_1 == this.place_id && elem_id_2 == this.transition_id
-            || elem_id_2 == this.place_id && elem_id_1 == this.transition_id) {
+        if (elem_id_1.equals(this.place_id) && elem_id_2.equals(this.transition_id)
+            || elem_id_2.equals(this.place_id) && elem_id_1.equals(this.transition_id)) {
             return true;
         }
         return false;
@@ -136,10 +138,19 @@ public class Arc extends PetriNetElement {
 
         if (!validTarget) return false;
 
+        checkAndMergeDoublette(source_id, target_id);
+
+        //unset the red arc with no target
+        CanvasController.arc_no_target_id = null;
+
+        return true;
+    }
+
+    public void checkAndMergeDoublette(String source_id, String target_id) {
         //Check if an arc already exists with the same place and transition
         Arc arc = null;
         boolean doublette_found = false;
-        for (String arc_id : PetriNetController.getPetriNet().getArcIds() ) {
+        for (String arc_id : PetriNetController.getArcIds() ) {
             arc = (Arc)PetriNetController.getElementById(arc_id);
             if (this.getId() != arc.getId() && arc.connectsSameElements(target_id, source_id)) {
                 doublette_found = true;
@@ -152,11 +163,6 @@ public class Arc extends PetriNetElement {
             //merge/remove after iteration (concurrency!)
             this.merge(arc);
         }
-
-        //unset the red arc with no target
-        CanvasController.arc_no_target_id = null;
-
-        return true;
     }
 
     public Transition getTransition() {
