@@ -53,7 +53,7 @@ public class Arc extends PetriNetElement {
 
 
     public String generateId() {
-        return "a_"+PetriNetController.getPetriNet().getNextElementId();
+        return "a_"+GlobalController.getUUID();
     }
 
     public void unregister() {

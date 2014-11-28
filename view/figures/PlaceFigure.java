@@ -21,7 +21,6 @@ public class PlaceFigure extends Positionable {
 
     private Ellipse2D ellipse;
     private Ellipse2D tokenPoint;
-    // private String labelFigureId;
     private LabelFigure labelFigure;
 
     final public static double DIAMETER_BASE = Grid.cellSize/1;
@@ -70,7 +69,6 @@ public class PlaceFigure extends Positionable {
     }
 
     public void draw(Graphics2D g) {
-        // regenrate Ellipse token
         setEllipse(generateEllipse());
 
         drawFill(g);

@@ -10,8 +10,8 @@ import java.awt.*;
 import java.awt.geom.*;
 
 public class PetriNet {
-    //counts id's for PetriNetElements
-    private static int id_counter = 0;
+    // //counts id's for PetriNetElements
+    // private static int id_counter = 0;
     private static int element_counter = 0;
 
     private HashMap<String, PetriNetElement> elements = new HashMap<String, PetriNetElement>();
@@ -21,9 +21,9 @@ public class PetriNet {
 
 
 
-    public int getNextElementId() {
-        return ++this.id_counter;
-    }
+    // public String getNextElementId() {
+    //     return UUID.randomUUID().toString();
+    // }
 
     public int getElementCount() {
         return element_counter;
@@ -31,18 +31,7 @@ public class PetriNet {
 
     public HashMap<String, PetriNetElement> getElements() {
         return elements;
-        // HashMap<String, PetriNetElement> outputElements = new HashMap<String, PetriNetElement>();
-
-        // Iterator it = elements.entrySet().iterator();
-        // while (it.hasNext()) {
-        //     Map.Entry pairs = (Map.Entry)it.next();
-
-        //     outputElements.put((String)pairs.getKey(), ((PetriNetElement)pairs.getValue()).cloneElement());
-        // }
-
-        // return outputElements;
     }
-
 
     public java.util.List<String> getArcIds() {
         return arc_ids;
@@ -59,12 +48,10 @@ public class PetriNet {
     }
 
 
-
     public void addArc(String arcId, PetriNetElement arc) {
         addElement(arcId, arc);
         getArcIds().add(arcId);
     }
-
 
 
     public void removeArcId(String arcId) {

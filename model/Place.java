@@ -23,7 +23,7 @@ public class Place extends Connectable {
     }
 
     public String generateId() {
-        return "p_"+PetriNetController.getPetriNet().getNextElementId();
+        return "p_"+GlobalController.getUUID();
     }
 
     public int getElementType() {

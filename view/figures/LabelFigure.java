@@ -24,10 +24,11 @@ public class LabelFigure extends Positionable {
     private Point2D offsetToLabeledFigure = new Point2D.Double(30, 50);
     private RoundRectangle2D label_border_rect;
 
+
     public LabelFigure(BaseFigure labeledFigure, Point2D labeledFigurePosition) {
         this.elementId = labeledFigure.getId();
         this.element = labeledFigure.getElement();
-        this.setId("label_" + this.elementId);
+        this.setId("label_" + GlobalController.getUUID());
         register();
 
         this.position = new Point2D.Double(offsetToLabeledFigure.getX() + labeledFigurePosition.getX(), offsetToLabeledFigure.getY() + labeledFigurePosition.getY());
@@ -69,7 +70,6 @@ public class LabelFigure extends Positionable {
 
     public void draw(Graphics2D g) {
         Double labelPadding = 6.;
-
         if (hasLabel()) {
             String label = getLabel();
             g.setFont(font);

@@ -64,15 +64,16 @@ public class MainWindowController {
         fileChooser.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             current_directory = fileChooser.getCurrentDirectory();
-            System.out.println(fileChooser.getCurrentDirectory());
-
           }
         });
         int returnVal = fileChooser.showOpenDialog(main_window);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
+            GlobalController.clearPetriNetEditor();
             File file = fileChooser.getSelectedFile();
             final String[] args = {file.toString()};
             PNMLParser.main(args);
+            CanvasController.cleanUpCanvasAfterRepaint = true;
+            CanvasController.repaintCanvas();
         }
     }
 
@@ -93,7 +94,7 @@ public class MainWindowController {
         switch (button_id) {
             //File buttons
             case "create_new":
-                System.out.println("CREATE NEW");
+                GlobalController.clearPetriNetEditor();
                 break;
             case "open":
                 openFile();

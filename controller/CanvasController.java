@@ -27,6 +27,8 @@ public class CanvasController {
 
     static private view.Canvas canvas;
 
+    public static boolean cleanUpCanvasAfterRepaint = false;
+
     static Point2D mousePressPoint;
     static Point2D currentMousePoint = new Point2D.Double(.0,.0);
 
@@ -341,7 +343,7 @@ public class CanvasController {
      */
     public static Rectangle2D getFiguresBounds() {
         Rectangle2D petriNetBounds = canvas.getPetriNetFiguresBounds();
-        Rectangle2D labelsBounds = canvas.getPetriNetFiguresBounds();
+        Rectangle2D labelsBounds = canvas.getLabelsBounds();
         if (labelsBounds != null) {
             petriNetBounds.add(labelsBounds);
         }
@@ -358,5 +360,11 @@ public class CanvasController {
     }
 
 
+    public static void finishedCanvasPaint() {
+        if (cleanUpCanvasAfterRepaint) {
+            cleanUpCanvas();
+            cleanUpCanvasAfterRepaint = false;
+        }
+    }
 
 }

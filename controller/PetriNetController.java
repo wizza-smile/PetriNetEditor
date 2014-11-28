@@ -74,10 +74,6 @@ public class PetriNetController {
 
 
     public static void newConnectableElementAtPosition(Point2D position, int type) {
-        Integer next_element_id = petriNet.getNextElementId();
-        String elementId;
-        PetriNetElement element;
-
         switch (type) {
             case PetriNetController.ELEMENT_PLACE:
                 new Place(position);

@@ -23,7 +23,7 @@ public class Transition extends Connectable {
     }
 
     public String generateId() {
-        return "t_"+PetriNetController.getPetriNet().getNextElementId();
+        return "t_"+GlobalController.getUUID();
     }
 
 

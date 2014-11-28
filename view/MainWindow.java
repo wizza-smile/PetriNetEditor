@@ -34,7 +34,7 @@ public class MainWindow extends JFrame {//implements Scrollable
     public void init() {
         this.addComponentListener(new ResizeListener());
 
-        this.setTitle("PetriNetEditor");
+        this.setTitle(GlobalController.applicationTitle);
         this.setSize(657, 500);
         this.setMinimumSize(new Dimension(400, 400));
         this.setLocationRelativeTo(null);

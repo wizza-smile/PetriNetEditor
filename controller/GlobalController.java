@@ -12,6 +12,7 @@ import javax.swing.*;
 
 public class GlobalController {
 
+    public static String applicationTitle = "PetriNetEditor - Jonas Karsten q9272968";
     //the reference size of displayed elements
     public static Double size = 1.;
     public static boolean opacity = false;
@@ -25,12 +26,6 @@ public class GlobalController {
     public static final int ACTION_TRANSITION = 3;
     public static final int ACTION_ARC = 4;
     public static final int ACTION_ARC_SELECT_TARGET = 5;
-
-
-    // public static boolean STOP_PAINT = false;
-
-    // EVENTS
-    // public static final int CANVAS_MOUSE_PRESSED = 0;
 
 
     public static void startApplication() {
@@ -49,6 +44,10 @@ public class GlobalController {
                 GlobalController.setSize(0.86);
             }
         });
+    }
+
+    public static String getUUID() {
+        return UUID.randomUUID().toString();
     }
 
     /**
@@ -106,6 +105,12 @@ public class GlobalController {
         CanvasController.repaintCanvas();
     }
 
+    public static void clearPetriNetEditor() {
+        SelectionController.clearSelection();
+        PetriNetController.createPetriNet();
+        MainWindowController.injectCanvas(CanvasController.createCanvas());
+    }
+
 
     public static ArrayList<String> combineIdArrayLists(ArrayList<String>[] list_arr) {
         ArrayList<String> newList = new ArrayList<String>();
@@ -115,6 +120,7 @@ public class GlobalController {
 
         return newList;
     }
+
 
 
 }

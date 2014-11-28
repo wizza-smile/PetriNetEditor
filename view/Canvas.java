@@ -65,7 +65,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
         SelectionController.drawSelectionFigure(g2);
 
-        MainWindowController.setStatusBarText(CanvasController.getCurrentMousePoint().getX() + " " + CanvasController.getCurrentMousePoint().getY());
+        CanvasController.finishedCanvasPaint();
     }
 
 
