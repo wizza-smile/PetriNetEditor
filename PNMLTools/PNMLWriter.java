@@ -4,6 +4,7 @@ package PNMLTools;
 import model.*;
 import controller.*;
 
+import java.lang.Math;
 import java.awt.geom.*;
 
 import java.io.File;
@@ -39,16 +40,16 @@ public final class PNMLWriter {
             for (String elem_id : PetriNetController.getPlaceIds()) {
                 Place place = (Place)PetriNetController.getElementById(elem_id);
                 Point2D position = place.getPosition();
-                Double position_x = position.getX();
-                Double position_y = position.getY();
+                Double position_x = (double)(Math.round(position.getX()*100)/100);
+                Double position_y = (double)(Math.round(position.getY()*100)/100);
                 pnmlWriter.addPlace(place.getId(), place.getLabel(), String.valueOf(position_x), String.valueOf(position_y), String.valueOf(place.getTokenCount()));
             }
 
             for (String elem_id : PetriNetController.getTransitionIds()) {
                 Transition transition = (Transition)PetriNetController.getElementById(elem_id);
                 Point2D position = transition.getPosition();
-                Double position_x = position.getX();
-                Double position_y = position.getY();
+                Double position_x = (double)(Math.round(position.getX()*100)/100);
+                Double position_y = (double)(Math.round(position.getY()*100)/100);
                 pnmlWriter.addTransition(transition.getId(), transition.getLabel(), String.valueOf(position_x), String.valueOf(position_y));
             }
 
