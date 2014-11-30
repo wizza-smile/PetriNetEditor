@@ -25,6 +25,10 @@ public abstract class BaseFigure {
 
     public abstract int getFigureType();
     public abstract void register();
+
+    /**
+     * delete this Figure from the Canvas figures-HashMap and its id from the corresponding id List.
+     */
     public abstract void delete();
 
     /**

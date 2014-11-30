@@ -43,6 +43,10 @@ public abstract class PetriNetElement {
      * @return   the unique id.
      */
     public abstract String generateId();
+
+    /**
+     * remove this element from the PetriNet element HashMap and the corresponding ids Collection.
+     */
     public abstract void unregister();
 
 
@@ -50,11 +54,18 @@ public abstract class PetriNetElement {
     //implemented methods
     //////////////////////
 
+    /**
+     * set the id for this PetriNetElement and add it to the elements HashMap elements and the corrsponding id Collection of the current PetriNet.
+     * @param element_id the id to be set for this element.
+     */
     public void register(String element_id) {
         this.setId(element_id);
         PetriNetController.addElement(this, getElementType());
     }
 
+    /**
+     * generate and set the id for this PetriNetElement and add it to the elements HashMap elements and the corrsponding id Collection of the current PetriNet.
+     */
     public void register() {
         String element_id = generateId();
         this.setId(element_id);
@@ -63,7 +74,7 @@ public abstract class PetriNetElement {
 
     /**
      * when called for the first time:
-     * creates a related figure and keeps reference
+     * creates a related figure and keeps a reference.
      * @return the related figure
      */
     public BaseFigure getFigure() {
