@@ -14,10 +14,18 @@ public class Place extends Connectable {
 
     private int tokenCount;
 
+    /**
+     * Constructor to be called by PNML Parser
+     * @param  place_id id to be used for the new Place
+     */
     public Place(String place_id) {
         super(place_id);
     }
 
+    /**
+     * Constructor to be called when user clicks into canvas
+     * @param  position where to place the new Connectable
+     */
     public Place(Point2D position) {
         super(position);
     }

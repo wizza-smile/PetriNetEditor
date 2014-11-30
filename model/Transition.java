@@ -14,10 +14,18 @@ public class Transition extends Connectable {
 
     public String label;
 
+    /**
+     * Constructor to be called by PNML Parser
+     * @param  transition_id id to be used for the new Transition
+     */
     public Transition(String transition_id) {
         super(transition_id);
     }
 
+    /**
+     * Constructor to be called when user clicks into canvas
+     * @param  position where to place the new Transition
+     */
     public Transition(Point2D position) {
         super(position);
     }

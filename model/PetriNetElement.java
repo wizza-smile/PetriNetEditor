@@ -22,7 +22,7 @@ public abstract class PetriNetElement {
     ////////////////////
 
     /**
-     * delete this PetriNetElement from the PetriNet element-HashMap and its id in the corresponding id List
+     * delete this PetriNetElement from the PetriNet element-HashMap and its id from the corresponding id List
      */
     public abstract void delete();
 
@@ -33,8 +33,8 @@ public abstract class PetriNetElement {
     public abstract BaseFigure createFigure();
 
     /**
-     * returns the int value of the correspponding element types constant, as specified in PetriNetController.
-     * @return the int value
+     * returns the int value of the corresponding element types constant, as specified in PetriNetController.
+     * @return the int value (ELEMENT_PLACE|ELEMENT_TRANSITION|ELEMENT_ARC)
      */
     public abstract int getElementType();
 

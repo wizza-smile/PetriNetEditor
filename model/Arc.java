@@ -7,16 +7,33 @@ import java.awt.event.*;
 import java.awt.geom.Point2D;
 import javax.swing.*;
 
+/**
+ * the Arc.
+ * an Arc can have one, two or no target (yet to be choosen).
+ */
 public class Arc extends PetriNetElement {
 
-    public static final int TARGET_PLACE = 0;
-    public static final int TARGET_TRANSITION = 1;
-    public static final int TARGET_BOTH = 2;
-
+    /**
+     * defines the type of target(s) of this arc (place/transition/both).
+     */
     protected int target_type;
 
+    /**
+     * target type
+     */
+    public static final int TARGET_PLACE = 0, TARGET_TRANSITION = 1, TARGET_BOTH = 2;
+
+    /**
+     * the id of a connectable (transition/place) related to this Arc (if already choosen).
+     */
     protected String transition_id, place_id;
 
+    /**
+     * Constructor to be called by PNML Parser
+     * @param  arc_id    id to be used for new arc
+     * @param  source_id id of source element of this arc
+     * @param  target_id id of target element of this arc
+     */
     public Arc(String arc_id, String source_id, String target_id) {
         register(arc_id);
 
@@ -34,10 +51,13 @@ public class Arc extends PetriNetElement {
         this.getFigure();
         this.getSource().addArcId(this.getId());
         selectTarget(target_id);
-
-        checkAndMergeDoublette(source_id, target_id);
     }
 
+    /**
+     * Constructor to be called when user clicks into canvas
+     * @param  source_id id of source element of this arc
+     * @param  type      target type of this arc (transition/place)
+     */
     public Arc(String source_id, int type) {
         register();
 
@@ -79,30 +99,14 @@ public class Arc extends PetriNetElement {
         unregister();
     }
 
-    public boolean connectsSameElements(String elem_id_1, String elem_id_2) {
-        if (elem_id_1.equals(this.place_id) && elem_id_2.equals(this.transition_id)
-            || elem_id_2.equals(this.place_id) && elem_id_1.equals(this.transition_id)) {
-            return true;
-        }
-        return false;
-    }
-
-    //the input arc will be removed!
-    protected void merge(Arc arc) {
-        //if the two arcs differ in place/transiiton
-        if (arc.target_type == TARGET_BOTH || arc.target_type != this.target_type ) {
-            //now both directions
-            this.target_type = TARGET_BOTH;
-        }
-        arc.delete();
-
-        return;
-    }
-
     public int getTargetType() {
         return this.target_type;
     }
 
+    /**
+     * remove the target of type target_type from this Arc. If no target remains, delete this Arc.
+     * @param target_type the target_type to be removed.
+     */
     public void removeTarget(int target_type) {
         if (this.target_type == TARGET_BOTH) {
             this.target_type -= target_type+1;
@@ -112,6 +116,10 @@ public class Arc extends PetriNetElement {
         }
     }
 
+    /**
+     * check if a target has already be choosen for this Arc.
+     * @return boolean
+     */
     public boolean isTargetSet() {
         return transition_id == null || place_id == null ? false : true;
     }
@@ -138,7 +146,7 @@ public class Arc extends PetriNetElement {
 
         if (!validTarget) return false;
 
-        checkAndMergeDoublette(source_id, target_id);
+        checkAndMergeDoublette();
 
         //unset the red arc with no target
         CanvasController.arc_no_target_id = null;
@@ -146,34 +154,81 @@ public class Arc extends PetriNetElement {
         return true;
     }
 
-    public void checkAndMergeDoublette(String source_id, String target_id) {
-        //Check if an arc already exists with the same place and transition
+    /**
+     * if an Arc with the same Place and Transition Elements exists, merge the two Arcs.
+     */
+    public void checkAndMergeDoublette() {
+        System.out.println( this.transition_id + " " + this.place_id );
         Arc arc = null;
         boolean doublette_found = false;
-        for (String arc_id : PetriNetController.getArcIds() ) {
+        for (String arc_id : this.getSource().getArcIds() ) {
             arc = (Arc)PetriNetController.getElementById(arc_id);
-            if (this.getId() != arc.getId() && arc.connectsSameElements(target_id, source_id)) {
+            if (this.getId() != arc.getId() && arc.connectsSameElements(this.transition_id, this.place_id)) {
                 doublette_found = true;
                 break;
             }
         }
-
-        //if yes merge!
         if (doublette_found) {
             //merge/remove after iteration (concurrency!)
             this.merge(arc);
         }
     }
 
+    /**
+     * check if the two input element_ids are identical to the transition_id and place_id of this Arc.
+     * @param  elem_id_1 an element_id
+     * @param  elem_id_2 an element_id
+     * @return boolean
+     */
+    public boolean connectsSameElements(String elem_id_1, String elem_id_2) {
+        if (elem_id_1.equals(this.place_id) && elem_id_2.equals(this.transition_id)
+            || elem_id_2.equals(this.place_id) && elem_id_1.equals(this.transition_id)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * merge the target types, save it to this Arc and delete the input arc.
+     * @param arc the Arc to be merged with this Arc
+     */
+    protected void merge(Arc arc) {
+        if (arc.target_type == TARGET_BOTH || arc.target_type != this.target_type ) {
+            this.target_type = TARGET_BOTH;
+        }
+        arc.delete();
+
+        return;
+    }
+
+    /**
+     * returns the Transition related to this Arc (if already choosen).
+     * @return the Place.
+     */
     public Transition getTransition() {
         return (Transition)PetriNetController.getElementById(this.transition_id);
     }
 
+    /**
+     * returns the Place related to this Arc (if already choosen).
+     * @return the Place.
+     */
     public Place getPlace() {
         return (Place)PetriNetController.getElementById(this.place_id);
     }
 
-    //if Arc has definite source element, return this elements id
+    /**
+     * if this Arc has a definite source element (it's target_type is not TARGET_BOTH), return the source element.
+     * @return [description]
+     */
+    public Connectable getSource() {
+        return (Connectable)PetriNetController.getElementById(getSourceId());
+    }
+
+    /**
+     * if this Arc has a definite source element (it's target_type is not TARGET_BOTH), return the source's element_id.
+     * @return the source's id, if defined, null otherwise.
+     */
     public String getSourceId() {
         if (this.target_type == TARGET_PLACE) {
             return this.transition_id;
@@ -184,7 +239,10 @@ public class Arc extends PetriNetElement {
         return null;
     }
 
-    //if Arc has definite source element, return this elements id
+    /**
+     * if this Arc has a definite target element (it's target_type is not TARGET_BOTH), return the target's element_id.
+     * @return the target's id, if defined, null otherwise.
+     */
     public String getTargetId() {
         if (this.target_type == TARGET_PLACE) {
             return this.place_id;
@@ -195,9 +253,6 @@ public class Arc extends PetriNetElement {
         return null;
     }
 
-    public Connectable getSource() {
-        return (Connectable)PetriNetController.getElementById(getSourceId());
-    }
 
     public ArcFigure createFigure() {
         return new ArcFigure(this);

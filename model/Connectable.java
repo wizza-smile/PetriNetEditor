@@ -12,12 +12,23 @@ import java.awt.geom.Point2D;
  */
 public abstract class Connectable extends PetriNetElement {
 
+    /**
+     * if the label of a Connectable is identical to this String, no label will be shown or saved.
+     */
     public static final String NO_LABEL_IDENTIFIER = "no_label";
+    /**
+     * the label text of this Connectable
+     */
     public String label;
+    /**
+     * Collection of all arc_ids of arcs that have this Connectable as source or target
+     */
     protected ArrayList<String> arc_ids = new ArrayList<String>();
+
 
     /**
      * Constructor to be called by PNML Parser
+     * @param  connectable_id  id to be used for the new Connectable
      */
     Connectable (String connectable_id) {
         register(connectable_id);
@@ -28,6 +39,7 @@ public abstract class Connectable extends PetriNetElement {
 
     /**
      * Constructor to be called when user clicks into canvas
+     * @param  position where to place the ne Connectable
      */
     Connectable(Point2D position) {
         register();
@@ -51,6 +63,10 @@ public abstract class Connectable extends PetriNetElement {
         unregister();
     }
 
+    /**
+     * add a new arc with this Connectable as source.
+     * (Target to be choosen)
+     */
     public void addNewArc() {
         Arc arc = new Arc(this.getId(), this.getElementType());
         addArcId(arc.getId());

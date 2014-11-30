@@ -124,6 +124,11 @@ public class ArcFigure extends BaseFigure {
         this.alpha = Math.abs(Math.asin(a/c)*180/Math.PI);
     }
 
+    /**
+     * exploits the similarity between the gradient rectangle and
+     * the rectangular rectangle which's hypotenuse is the line
+     * between place's midpoint and intersection point
+     */
     protected void computeIntersectionPlace() {
         Double place_intersect_x = .0; Double place_intersect_y = .0;
 
