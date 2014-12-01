@@ -40,13 +40,17 @@ public class PNMLParser {
      * @param args
      *      Die Konsolen Parameter, mit denen das Programm aufgerufen wird.
      */
-    public static void main(final String[] args) {
+    public static void main(final String[] args) throws Exception {
         if (args.length > 0) {
             File pnmlDatei = new File(args[0]);
             if (pnmlDatei.exists()) {
                 PNMLParser pnmlParser = new PNMLParser(pnmlDatei);
                 pnmlParser.initParser();
-                pnmlParser.parse();
+                try {
+                    pnmlParser.parse();
+                } catch (Exception e) {
+                    throw new Exception("Fehler beim parsen der PNML-Datei aufgetreten! Sollte die PNML-Datei keine Fehler aufweisen, wenden Sie sich bitte an den Entwickler!");
+                }
                 pnmlParser.addArcs();
             } else {
                 System.err.println("Die Datei " + pnmlDatei.getAbsolutePath()
@@ -113,8 +117,7 @@ public class PNMLParser {
                 xmlParser = factory.createXMLEventReader(dateiEingabeStrom);
 
             } catch (XMLStreamException e) {
-                System.err
-                        .println("XML Verarbeitungsfehler: " + e.getMessage());
+                System.err.println("XML Verarbeitungsfehler: " + e.getMessage());
                 e.printStackTrace();
             }
         } catch (FileNotFoundException e) {
@@ -127,7 +130,7 @@ public class PNMLParser {
      * Diese Methode liest die XML Datei und delegiert die
      * gefundenen XML Elemente an die entsprechenden Methoden.
      */
-    public final void parse() {
+    public final void parse() throws Exception {
         while (xmlParser.hasNext()) {
             try {
                 XMLEvent event = xmlParser.nextEvent();
@@ -136,8 +139,7 @@ public class PNMLParser {
                         handleStartEvent(event);
                         break;
                     case XMLStreamConstants.END_ELEMENT:
-                        String name = event.asEndElement().getName().toString()
-                                .toLowerCase();
+                        String name = event.asEndElement().getName().toString().toLowerCase();
                         if (name.equals("token")) {
                             isToken = false;
                         } else if (name.equals("name")) {
@@ -161,9 +163,9 @@ public class PNMLParser {
                     default:
                 }
             } catch (XMLStreamException e) {
-                System.err.println("Fehler beim Parsen des PNML Dokuments. "
-                        + e.getMessage());
+                System.err.println("Fehler beim Parsen des PNML Dokuments. "+ e.getMessage());
                 e.printStackTrace();
+                throw new Exception();
             }
         }
     }

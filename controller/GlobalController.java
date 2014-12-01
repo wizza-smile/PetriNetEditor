@@ -63,6 +63,7 @@ public class GlobalController {
                 if (CanvasController.arc_no_target_id != null) {
                     Arc arc = (Arc)PetriNetController.getElementById(CanvasController.arc_no_target_id);
                     arc.delete();
+                    CanvasController.arc_no_target_id = null;
                     CanvasController.repaintCanvas();
                 }
                 break;

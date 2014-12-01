@@ -158,7 +158,6 @@ public class Arc extends PetriNetElement {
      * if an Arc with the same Place and Transition Elements exists, merge the two Arcs.
      */
     public void checkAndMergeDoublette() {
-        System.out.println( this.transition_id + " " + this.place_id );
         Arc arc = null;
         boolean doublette_found = false;
         for (String arc_id : this.getSource().getArcIds() ) {

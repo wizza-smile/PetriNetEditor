@@ -5,13 +5,14 @@ import view.figures.*;
 import view.*;
 import PNMLTools.*;
 
+import java.io.File;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 
 import javax.swing.*;
-import java.io.File;
-
+import javax.swing.filechooser.*;
 
 public class MainWindowController {
 
@@ -61,6 +62,8 @@ public class MainWindowController {
 
     public static void openFile() {
         final JFileChooser fileChooser = new JFileChooser(current_directory);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("PNML FILES", "pnml", "xml");
+        fileChooser.setFileFilter(filter);
         fileChooser.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             current_directory = fileChooser.getCurrentDirectory();
@@ -71,9 +74,15 @@ public class MainWindowController {
             GlobalController.clearPetriNetEditor();
             File file = fileChooser.getSelectedFile();
             final String[] args = {file.toString()};
-            PNMLParser.main(args);
-            CanvasController.cleanUpCanvasAfterRepaint = true;
-            CanvasController.repaintCanvas();
+            try {
+              PNMLParser.main(args);
+              CanvasController.cleanUpCanvasAfterRepaint = true;
+              CanvasController.repaintCanvas();
+            }
+            catch(Exception e){
+                JOptionPane.showMessageDialog(main_window, e.getMessage());
+            }
+
         }
     }
 
