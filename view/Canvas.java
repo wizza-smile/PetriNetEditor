@@ -31,10 +31,12 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     public ArrayList<String> place_and_transition_figure_ids = new ArrayList<String>();
 
     public Canvas() {
+        this.setFocusable(true);
         this.setCanvasSize(MainWindowController.getViewport().getSize());
         this.setOpaque(false);
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
+        this.addKeyListener(this);
     }
 
     public void paintComponent(Graphics graphics) {
@@ -149,6 +151,10 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     }
 
     public void mouseEntered(MouseEvent e) {
+        Component component = e.getComponent();
+        if (!component.hasFocus()) {
+            component.requestFocusInWindow();
+        }
     }
 
     public void mouseExited(MouseEvent e) {
@@ -169,9 +175,11 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     }
 
     public void keyPressed(KeyEvent e) {
+        CanvasController.keyPressed(e);
     }
 
     public void keyReleased(KeyEvent e) {
+        CanvasController.keyReleased(e);
     }
 
 }

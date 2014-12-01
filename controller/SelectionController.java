@@ -24,7 +24,7 @@ public class SelectionController {
         if (figureUnderMousePointer != null) {
             //check if a label is under mouse pointer
             //if yes: only this label will be selected (and dragged)
-            if(figureUnderMousePointer instanceof LabelFigure) {
+            if(figureUnderMousePointer instanceof LabelFigure && !CanvasController.selectionKeyActive) {
                 SelectionController.clearSelection();
                 SelectionController.addFigureToSelection((LabelFigure)figureUnderMousePointer);
                 GlobalController.setActionMode(GlobalController.ACTION_DRAG_SELECTION);
@@ -33,11 +33,17 @@ public class SelectionController {
                     //now its clear its a transition or place!
                     //check if its already in selected elements!
                     if (selectedElements_ids.contains(figureUnderMousePointer.getId())) {
-                        //user wants to drag selected elements!
-                        GlobalController.setActionMode(GlobalController.ACTION_DRAG_SELECTION);
+                        if (CanvasController.selectionKeyActive) {
+                            SelectionController.removeFigureFromSelection((Positionable)figureUnderMousePointer);
+                        } else {
+                            //user wants to drag selected elements!
+                            GlobalController.setActionMode(GlobalController.ACTION_DRAG_SELECTION);
+                        }
                     } else {
+                        if (!CanvasController.selectionKeyActive) {
+                            SelectionController.clearSelection();
+                        }
                         //select the element start dragging
-                        SelectionController.clearSelection();
                         SelectionController.addFigureToSelection((Positionable)figureUnderMousePointer);
                         GlobalController.setActionMode(GlobalController.ACTION_DRAG_SELECTION);
                     }
@@ -46,7 +52,9 @@ public class SelectionController {
             }
             SelectionController.setOffsetToSelectedElements(mousePressPoint);
         } else {
-            SelectionController.clearSelection();
+            if (!CanvasController.selectionKeyActive) {
+                SelectionController.clearSelection();
+            }
         }
     }
 
@@ -68,7 +76,9 @@ public class SelectionController {
             if (inSelectionRectangle) {
                 SelectionController.addFigureToSelection(figure);
             } else {
-                SelectionController.removeFigureFromSelection(figure);
+                if (!CanvasController.selectionKeyActive) {
+                    SelectionController.removeFigureFromSelection(figure);
+                }
             }
         }
 

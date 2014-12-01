@@ -67,6 +67,7 @@ public abstract class BaseFigure {
             public void actionPerformed(ActionEvent event) {
                 SelectionController.deleteSelection();
                 CanvasController.cleanUpCanvas();
+                CanvasController.repaintCanvas();
              }
         });
         menuItemDelete.setText("Delete Selected Elements");

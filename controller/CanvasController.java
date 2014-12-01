@@ -28,6 +28,7 @@ public class CanvasController {
     static private view.Canvas canvas;
 
     public static boolean cleanUpCanvasAfterRepaint = false;
+    public static boolean selectionKeyActive = false;
 
     static Point2D mousePressPoint;
     static Point2D currentMousePoint = new Point2D.Double(.0,.0);
@@ -365,6 +366,18 @@ public class CanvasController {
             cleanUpCanvas();
             cleanUpCanvasAfterRepaint = false;
         }
+    }
+
+
+    public static void keyPressed( KeyEvent e) {
+        int shortcut = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+        if (e.getModifiers() == shortcut) {
+            selectionKeyActive = true;
+        }
+    }
+
+    public static void keyReleased(KeyEvent e) {
+        selectionKeyActive = false;
     }
 
 }

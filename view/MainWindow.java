@@ -15,7 +15,7 @@ import javax.swing.border.*;
 import javax.swing.JToolBar.*;
 
 
-public class MainWindow extends JFrame {//implements Scrollable
+public class MainWindow extends JFrame {
 
     Color editorBackgroundColor = new Color(224, 224, 255);
 
@@ -111,7 +111,6 @@ public class MainWindow extends JFrame {//implements Scrollable
 
         return statusLabel;
     }
-
 }
 
 
