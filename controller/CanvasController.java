@@ -281,6 +281,9 @@ public class CanvasController {
      * @param e the mouseEvent
      */
     public static void mousePressed(MouseEvent e) {
+        if ((e.getModifiers() & Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()) != 0) {
+            selectionKeyActive = true;
+        }
         mousePressPoint = new Point2D.Double(e.getX(), e.getY());
         //LEFT MOUSE BUTTON PRESSED
         if (SwingUtilities.isLeftMouseButton(e)) {
@@ -368,6 +371,7 @@ public class CanvasController {
      * @param e the MouseEvent.
      */
     public static void mouseReleased(MouseEvent e) {
+        selectionKeyActive = false;
         switch (GlobalController.getActionMode()) {
             case GlobalController.ACTION_SELECT:
                 SelectionController.removeSelectionRectangle();
@@ -434,23 +438,23 @@ public class CanvasController {
         }
     }
 
-    /**
-     * Listen if the Selection key is being pressed.
-     * @param e the KeyEvent.
-     */
-    public static void keyPressed( KeyEvent e) {
-        int shortcut = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
-        if (e.getModifiers() == shortcut) {
-            selectionKeyActive = true;
-        }
-    }
+    // /**
+    //  * Listen if the Selection key is being pressed.
+    //  * @param e the KeyEvent.
+    //  */
+    // public static void keyPressed( KeyEvent e) {
+    //     // int shortcut = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+    //     // if (e.getModifiers() == shortcut) {
+    //     //     selectionKeyActive = true;
+    //     // }
+    // }
 
-    /**
-     * Listen if the Selection key has been released.
-     * @param e the KeyEvent.
-     */
-    public static void keyReleased(KeyEvent e) {
-        selectionKeyActive = false;
-    }
+    // /**
+    //  * Listen if the Selection key has been released.
+    //  * @param e the KeyEvent.
+    //  */
+    // public static void keyReleased(KeyEvent e) {
+    //     selectionKeyActive = false;
+    // }
 
 }

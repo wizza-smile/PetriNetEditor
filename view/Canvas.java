@@ -17,15 +17,13 @@ import javax.swing.*;
 
 
 
-public class Canvas extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
+public class Canvas extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener {
 
     public Grid grid;
     boolean enabledGrid = true;
     Dimension minSize = new Dimension(100, 100);
 
     private HashMap<String, BaseFigure> figures = new HashMap<String, BaseFigure>();
-    // public ArrayList<String> place_figure_ids = new ArrayList<String>();
-    // public ArrayList<String> transition_figure_ids = new ArrayList<String>();
     public ArrayList<String> arc_figure_ids = new ArrayList<String>();
     public ArrayList<String> label_figure_ids = new ArrayList<String>();
     public ArrayList<String> place_and_transition_figure_ids = new ArrayList<String>();
@@ -36,7 +34,6 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         this.setOpaque(false);
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
-        this.addKeyListener(this);
     }
 
     public void paintComponent(Graphics graphics) {
@@ -169,17 +166,6 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     }
 
     public void mouseWheelMoved(MouseWheelEvent e) {
-    }
-
-    public void keyTyped(KeyEvent e) {
-    }
-
-    public void keyPressed(KeyEvent e) {
-        CanvasController.keyPressed(e);
-    }
-
-    public void keyReleased(KeyEvent e) {
-        CanvasController.keyReleased(e);
     }
 
 }
