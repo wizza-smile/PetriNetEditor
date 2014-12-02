@@ -331,7 +331,6 @@ public class CanvasController {
                 GlobalController.setActionMode(GlobalController.ACTION_ARC);
             }
         }
-
         CanvasController.repaintCanvas();
     }
 
@@ -361,7 +360,6 @@ public class CanvasController {
                     break;
             }
         }
-
         CanvasController.repaintCanvas();
     }
 
@@ -384,7 +382,6 @@ public class CanvasController {
         CanvasController.repaintCanvas();
     }
 
-
     /**
      * mouseMoved event handler. Stores current mouse position.
      * Needed for arcs with no selected target.
@@ -406,7 +403,7 @@ public class CanvasController {
     }
 
     /**
-     * compute a surrounding Rectangle of all Figures with added padding
+     * compute a Rectangle that surrounds all Figures (with added padding).
      * @return the surrounding Rectangle
      */
     public static Rectangle2D getFiguresBounds() {
@@ -427,7 +424,9 @@ public class CanvasController {
         return figuresBounds;
     }
 
-
+    /**
+     * callback function after Canvas repaint.
+     */
     public static void finishedCanvasPaint() {
         if (cleanUpCanvasAfterRepaint) {
             cleanUpCanvas();
@@ -435,7 +434,10 @@ public class CanvasController {
         }
     }
 
-
+    /**
+     * Listen if the Selection key is being pressed.
+     * @param e the KeyEvent.
+     */
     public static void keyPressed( KeyEvent e) {
         int shortcut = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
         if (e.getModifiers() == shortcut) {
@@ -443,6 +445,10 @@ public class CanvasController {
         }
     }
 
+    /**
+     * Listen if the Selection key has been released.
+     * @param e the KeyEvent.
+     */
     public static void keyReleased(KeyEvent e) {
         selectionKeyActive = false;
     }
