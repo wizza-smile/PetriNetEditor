@@ -40,7 +40,7 @@ public class GlobalController {
                 canvas.setSize(new Dimension(200, 200));
 
                 MainWindowController.injectCanvas(canvas);
-                //set initialSize
+                //set initial size
                 GlobalController.setSize(0.86);
             }
         });

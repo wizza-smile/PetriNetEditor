@@ -17,7 +17,7 @@ public class SelectionController {
     public static Rectangle2D selectionRectangle;
     private static ArrayList<String> selectedElements_ids = new ArrayList<String>();
 
-    public static void mouseClickedInModeSelect(MouseEvent e) {
+    public static void mousePressedInModeSelect(MouseEvent e) {
         Point2D mousePressPoint = CanvasController.mousePressPoint;
         BaseFigure figureUnderMousePointer = SelectionController.getFigureUnderMousePointer(mousePressPoint);
 

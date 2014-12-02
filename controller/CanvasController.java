@@ -23,19 +23,37 @@ public class CanvasController {
     public final static int FIGURE_LABEL = 3;
 
     public final static Double PETRINET_PADDING_BASE = 20.;
+    /**
+     * the padding in pixel, that will be added to the petriNetSize when a new canvas size is computed.
+     */
     public static Double PETRINET_PADDING = PETRINET_PADDING_BASE;
 
     static private view.Canvas canvas;
 
+    /**
+     * if set to true, the cleanupCanvas() function will be called once on the next repaint.
+     * Needed to cleanUp instantly after a petriNet has been loaded from a pnml-file.
+     */
     public static boolean cleanUpCanvasAfterRepaint = false;
+    /**
+     * stores, if the keyboard button, used for adding elements to an existing selection, is currently being pressed.
+     */
     public static boolean selectionKeyActive = false;
 
     static Point2D mousePressPoint;
     static Point2D currentMousePoint = new Point2D.Double(.0,.0);
 
+    /**
+     * when for a new arc, a target has not been selected yet, it is already added as arc
+     * (and displayed as a red line) and its id will be stored here.
+     */
     public static String arc_no_target_id;
 
 
+    /**
+     * get the ids of all figures currently used as keys in the figures HashMap in Canvas.
+     * @return the ids as a List.
+     */
     public static ArrayList<String> getAllFigureIds() {
         ArrayList<String> allFigureIds = new ArrayList<String>();
         allFigureIds.addAll(canvas.label_figure_ids);
@@ -56,6 +74,10 @@ public class CanvasController {
         return canvas.arc_figure_ids;
     }
 
+    /**
+     * get all figure ids of Positionable figures (places/transitions/labels).
+     * @return [description]
+     */
     public static ArrayList<String> getPositionablesIds() {
         ArrayList<String> positionablesIds = new ArrayList<String>();
         positionablesIds.addAll(canvas.label_figure_ids);
@@ -64,6 +86,11 @@ public class CanvasController {
         return positionablesIds;
     }
 
+    /**
+     * retrieve a figure from the figures HashMap in Canvas based on its id.
+     * @param  figureId the id of the figure to retrieve.
+     * @return  the figure.
+     */
     public static BaseFigure getFigureById(String figureId) {
         return canvas.getFigureById(figureId);
     }
@@ -75,7 +102,9 @@ public class CanvasController {
     }
 
 
-    /* Resize the Canvas and move Elements and Viewport to create illusion of endless canvas */
+    /**
+     * Resize the Canvas and move Elements and Viewport to create the illusion of an endless canvas.
+     */
     public static void cleanUpCanvas() {
         if (PetriNetController.getPetriNetElementCount() == 0) {
             canvas.setToMinSize();
@@ -85,6 +114,7 @@ public class CanvasController {
         Rectangle2D figures_rectangle = CanvasController.getFiguresBounds();
         Rectangle2D viewport_rectangle = MainWindowController.getViewportRectangle();
 
+        //add viewport rectangle to figures rectangle!
         figures_rectangle.add(viewport_rectangle);
 
         Double cleanedCanvasWidth = figures_rectangle.getWidth();
@@ -93,9 +123,8 @@ public class CanvasController {
         canvas.setPreferredSize(new Dimension(cleanedCanvasWidth.intValue(), cleanedCanvasHeight.intValue()));
 
         /* move all elements by the offset of
-        a) point(0,0) and
-        b) combinedViewportAndPetrinetRectangle upper_left point
-        so that all elements will be within new canvas size */
+        a) point(0,0) == to == b) the combinedViewportAndPetrinetRectangle upper_left point
+        so that all elements will be positioned within new canvas size */
         Double move_x = (-1) * figures_rectangle.getX();
         Double move_y = (-1) * figures_rectangle.getY();
 
@@ -108,7 +137,7 @@ public class CanvasController {
         canvas.revalidate();
 
         //if the viewport stayed inside canvas through the resizing (ie. it's position has not been adjusted automatically by revalidating):
-        //adjust viewport position by the movement made
+        //adjust viewport position by the movement made,
         //so that the illusion of a static viewport is created
         boolean scroll_y = cleanedCanvasHeight > MainWindowController.getViewport().getViewPosition().getY() + MainWindowController.getViewport().getHeight();
         boolean scroll_x = cleanedCanvasWidth > MainWindowController.getViewport().getViewPosition().getX() + MainWindowController.getViewport().getWidth();
@@ -153,6 +182,11 @@ public class CanvasController {
         canvas.addFigure(figure.getId(), figure);
     }
 
+    /**
+     * add a figure_id to the corresponding id List in Canvas.
+     * @param figureId the id to add.
+     * @param type     the type of the figure element.
+     */
     public static void addFigureId(String figureId, int type) {
         switch (type) {
             case CanvasController.FIGURE_PLACE:
@@ -174,11 +208,21 @@ public class CanvasController {
         }
     }
 
+    /**
+     * remove a figure from the figures HashMap and the corresponding id List.
+     * @param figureId the id of the figure element that will be removed.
+     * @param type     the type of the figure element.
+     */
     public static void removeFigure(String figureId, int type) {
         removeFigureId(figureId, type);
         canvas.removeFigure(figureId);
     }
 
+    /**
+     * remove a figure_id from the corresponding id List in Canvas.
+     * @param figureId the id to remove.
+     * @param type     the type of the figure element.
+     */
     public static void removeFigureId(String figureId, int type) {
         switch (type) {
             case CanvasController.FIGURE_PLACE:
@@ -199,12 +243,15 @@ public class CanvasController {
     }
 
 
-
     public static Dimension getCanvasSize() {
         return canvas.getPreferredSize();
     }
 
 
+    /**
+     * mouse click handler. needed especially for double click events.
+     * @param e the mouseEvent
+     */
     public static void mouseClicked(MouseEvent e) {
         switch (GlobalController.getActionMode()) {
             case GlobalController.ACTION_SELECT:
@@ -214,7 +261,7 @@ public class CanvasController {
                     BaseFigure figureUnderMousePointer = SelectionController.getFigureUnderMousePointer(mousePressPoint);
                     if (figureUnderMousePointer instanceof Positionable){
                         SelectionController.addFigureToSelection((Positionable)figureUnderMousePointer);
-                        GlobalController.setActionMode(GlobalController.ACTION_SELECT);
+                        // GlobalController.setActionMode(GlobalController.ACTION_SELECT);
                     }
                 }
                 break;
@@ -229,7 +276,7 @@ public class CanvasController {
         if (SwingUtilities.isLeftMouseButton(e)) {
             switch (GlobalController.getActionMode()) {
                 case GlobalController.ACTION_SELECT:
-                    SelectionController.mouseClickedInModeSelect(e);
+                    SelectionController.mousePressedInModeSelect(e);
                     break;
                 case GlobalController.ACTION_PLACE:
                     PetriNetController.newConnectableElementAtPosition(mousePressPoint, PetriNetController.ELEMENT_PLACE);
@@ -336,9 +383,6 @@ public class CanvasController {
     public static void repaintCanvas() {
         canvas.repaint();
     }
-
-
-
 
 
     /**
