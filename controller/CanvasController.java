@@ -257,7 +257,7 @@ public class CanvasController {
             }
         }
         //RECHTER MOUSE PRESS
-        if (SwingUtilities.isRightMouseButton(e)) {
+        if (SwingUtilities.isRightMouseButton(e) && !selectionKeyActive) {
             if (GlobalController.getActionMode() != GlobalController.ACTION_ARC_SELECT_TARGET) {
                 //if a figure is under mouse, show its popup
                 BaseFigure figureUnderMousePointer = SelectionController.getFigureUnderMousePointer(mousePressPoint);
