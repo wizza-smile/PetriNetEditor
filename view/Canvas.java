@@ -31,7 +31,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     public ArrayList<String> place_and_transition_figure_ids = new ArrayList<String>();
 
     public Canvas() {
-        this.setFocusable(true);
+        this.setFocusable(false);
         this.setCanvasSize(MainWindowController.getViewport().getSize());
         this.setOpaque(false);
         this.addMouseListener(this);

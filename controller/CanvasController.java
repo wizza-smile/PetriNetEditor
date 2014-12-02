@@ -154,6 +154,9 @@ public class CanvasController {
     }
 
 
+    /**
+     * handle mouse_press_event when in actionMode "GlobalController.ACTION_ARC"
+     */
     public static void handleMousePressedModeArc() {
         //check if a transition/place is under mousepointer
         BaseFigure figure = SelectionController.getFigureUnderMousePointer(mousePressPoint);
@@ -167,16 +170,19 @@ public class CanvasController {
         }
     }
 
-
     /**
-     * adjusts the reference point from which the grid will be painted.
+     * adjusts the reference point from which the grid will be painted, to create the illusion of a static grid.
      * @param p - the x/y amount by which the reference point will be adjusted
      */
     public static void addToGridReferencePoint(Point2D p) {
         canvas.addToGridReferencePoint(p);
     }
 
-
+    /**
+     * add a figure element to the figures HashMap in Canvas and to the corresponding ids List.
+     * @param figure the figure element to add.
+     * @param type   the type of the figure element.
+     */
     public static void addFigure(BaseFigure figure, int type) {
         addFigureId(figure.getId(), type);
         canvas.addFigure(figure.getId(), figure);
@@ -247,7 +253,6 @@ public class CanvasController {
         return canvas.getPreferredSize();
     }
 
-
     /**
      * mouse click handler. needed especially for double click events.
      * @param e the mouseEvent
@@ -271,8 +276,13 @@ public class CanvasController {
     }
 
 
+    /**
+     * mouse_pressed_event handler. Initiates different actions, depending on the current ActionMode (defined in GlobalController).
+     * @param e the mouseEvent
+     */
     public static void mousePressed(MouseEvent e) {
         mousePressPoint = new Point2D.Double(e.getX(), e.getY());
+        //LEFT MOUSE BUTTON PRESSED
         if (SwingUtilities.isLeftMouseButton(e)) {
             switch (GlobalController.getActionMode()) {
                 case GlobalController.ACTION_SELECT:
@@ -303,7 +313,7 @@ public class CanvasController {
                     break;
             }
         }
-        //RECHTER MOUSE PRESS
+        //RIGHT MOUSE BUTTON PRESSED (show popup)
         if (SwingUtilities.isRightMouseButton(e) && !selectionKeyActive) {
             if (GlobalController.getActionMode() != GlobalController.ACTION_ARC_SELECT_TARGET) {
                 //if a figure is under mouse, show its popup
@@ -317,7 +327,7 @@ public class CanvasController {
                     }
                 }
             } else {
-                //delete unfinished/red Arc
+                //cancel/delete unfinished/red Arc
                 GlobalController.setActionMode(GlobalController.ACTION_ARC);
             }
         }
@@ -325,7 +335,10 @@ public class CanvasController {
         CanvasController.repaintCanvas();
     }
 
-
+    /**
+     * mouseDragged event handler. Either select elements or drag selected elements.
+     * @param e the MouseEvent.
+     */
     public static void mouseDragged(MouseEvent e) {
         currentMousePoint = new Point2D.Double(e.getX(), e.getY());
         if (SwingUtilities.isLeftMouseButton(e)) {
@@ -334,7 +347,7 @@ public class CanvasController {
                     SelectionController.updateSelection();
                     break;
                 case GlobalController.ACTION_DRAG_SELECTION:
-                    //move all selected Elements to mouse position/ consider offset
+                    //move all selected Elements to mouse position (consider offset!)
                     ArrayList<String> selectedElements_ids = SelectionController.getSelectedElementsIds();
                     boolean clearSelection = true;
                     for (String id : selectedElements_ids ) {
@@ -344,7 +357,7 @@ public class CanvasController {
                     }
                     break;
                 default:
-                    MainWindowController.setStatusBarText("MOUSE DRAGGED");
+                    // MainWindowController.setStatusBarText("MOUSE DRAGGED");
                     break;
             }
         }
@@ -352,9 +365,11 @@ public class CanvasController {
         CanvasController.repaintCanvas();
     }
 
-
+    /**
+     * mouseReleased event handler.
+     * @param e the MouseEvent.
+     */
     public static void mouseReleased(MouseEvent e) {
-        currentMousePoint = new Point2D.Double(e.getX(), e.getY());
         switch (GlobalController.getActionMode()) {
             case GlobalController.ACTION_SELECT:
                 SelectionController.removeSelectionRectangle();
@@ -370,6 +385,11 @@ public class CanvasController {
     }
 
 
+    /**
+     * mouseMoved event handler. Stores current mouse position.
+     * Needed for arcs with no selected target.
+     * @param e the MouseEvent.
+     */
     public static void mouseMoved(MouseEvent e) {
         currentMousePoint = new Point2D.Double(e.getX(), e.getY());
         CanvasController.repaintCanvas();
@@ -380,10 +400,10 @@ public class CanvasController {
         return currentMousePoint;
     }
 
+
     public static void repaintCanvas() {
         canvas.repaint();
     }
-
 
     /**
      * compute a surrounding Rectangle of all Figures with added padding
