@@ -39,7 +39,10 @@ public class CanvasController {
     public static ArrayList<String> getAllFigureIds() {
         ArrayList<String> allFigureIds = new ArrayList<String>();
         allFigureIds.addAll(canvas.label_figure_ids);
-        allFigureIds.addAll(canvas.place_and_transition_figure_ids);
+        //reverse connectable_ids to select elements that are drawn ontop of others with higher priority!
+        ArrayList<String> copyForReverse = new ArrayList<String>(canvas.place_and_transition_figure_ids);
+        Collections.reverse(copyForReverse);
+        allFigureIds.addAll(copyForReverse);
         allFigureIds.addAll(canvas.arc_figure_ids);
 
         return allFigureIds;

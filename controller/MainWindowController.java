@@ -65,9 +65,9 @@ public class MainWindowController {
         FileNameExtensionFilter filter = new FileNameExtensionFilter("PNML FILES", "pnml", "xml");
         fileChooser.setFileFilter(filter);
         fileChooser.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            current_directory = fileChooser.getCurrentDirectory();
-          }
+            public void actionPerformed(ActionEvent e) {
+                current_directory = fileChooser.getCurrentDirectory();
+            }
         });
         int returnVal = fileChooser.showOpenDialog(main_window);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -89,6 +89,11 @@ public class MainWindowController {
 
     public static void saveFile() {
         final JFileChooser fileChooser = new JFileChooser(current_directory);
+        fileChooser.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                current_directory = fileChooser.getCurrentDirectory();
+            }
+        });
         int returnVal = fileChooser.showSaveDialog(main_window);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
