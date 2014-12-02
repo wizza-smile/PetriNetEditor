@@ -39,6 +39,8 @@ public class PNMLParser {
      *
      * @param args
      *      Die Konsolen Parameter, mit denen das Programm aufgerufen wird.
+     * @throws Exception
+     *      wenn das Parsen fehl schlägt.
      */
     public static void main(final String[] args) throws Exception {
         if (args.length > 0) {
@@ -129,6 +131,8 @@ public class PNMLParser {
     /**
      * Diese Methode liest die XML Datei und delegiert die
      * gefundenen XML Elemente an die entsprechenden Methoden.
+     * @throws Exception
+     *         wenn das Parsen fehl schlägt.
      */
     public final void parse() throws Exception {
         while (xmlParser.hasNext()) {

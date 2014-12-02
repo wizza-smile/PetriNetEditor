@@ -312,7 +312,9 @@ public class ArcFigure extends BaseFigure {
         return factor_x_y;
     }
 
-
+    /**
+     * the arrowHead Figure
+     */
     public class ArrowHead {
         final int TARGET_TYPE;
 
@@ -444,7 +446,7 @@ public class ArcFigure extends BaseFigure {
     }
 
     /**
-     * Popup menu action. Deletes an arc target.
+     * Popup menu action that deletes an arc target (and eventually an arc, if it was the last target).
      */
     protected class DeleteArcMenuAction extends DeletePetriNetElementAction {
         int target_type;
