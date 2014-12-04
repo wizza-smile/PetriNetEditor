@@ -282,7 +282,7 @@ public class CanvasController {
      * @param e the mouseEvent
      */
     public static void mousePressed(MouseEvent e) {
-        if ((e.getModifiers() & Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()) != 0 && !SwingUtilities.isRightMouseButton(e)) {
+        if ((e.getModifiers() & MouseEvent.CTRL_MASK) != 0) {
             selectionKeyActive = true;
         }
         mousePressPoint = new Point2D.Double(e.getX(), e.getY());
@@ -318,7 +318,7 @@ public class CanvasController {
             }
         }
         //RIGHT MOUSE BUTTON PRESSED (show popup)
-        if (SwingUtilities.isRightMouseButton(e) && !selectionKeyActive) {
+        if (SwingUtilities.isRightMouseButton(e)) {
             if (GlobalController.getActionMode() != GlobalController.ACTION_ARC_SELECT_TARGET) {
                 //if a figure is under mouse, show its popup
                 BaseFigure figureUnderMousePointer = SelectionController.getFigureUnderMousePointer(mousePressPoint);
