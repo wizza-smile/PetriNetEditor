@@ -103,14 +103,14 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
     /**
      * get a figure from the figures HashMap by the key/id.
-     * @param  figureId [description]
-     * @return          [description]
+     * @param  figureId the key of the figure to be retrieved.
+     * @return  the figure.
      */
     public BaseFigure getFigureById(String figureId) {
         return figures.get(figureId);
     }
 
-     public void setCanvasSize(Dimension dim) {
+    public void setCanvasSize(Dimension dim) {
         this.setPreferredSize(dim);
     }
 
@@ -119,7 +119,10 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         revalidate();
     }
 
-    //get the rectangle that encloses all labels
+    /**
+     * compute a rectangle that encloses all labels.
+     * @return the rectangle.
+     */
     public Rectangle2D getLabelsBounds() {
         Rectangle2D labelsBounds = null;
         boolean initialized = false;
@@ -139,7 +142,10 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         return labelsBounds;
     }
 
-    //get the rectangle that encloses all transitions and places
+    /**
+     * compute a rectangle that encloses all transitions and places.
+     * @return the rectangle.
+     */
     public Rectangle2D getPetriNetFiguresBounds() {
         Rectangle2D petriNetBounds = new Rectangle2D.Double(0, 0, 0, 0);
         boolean initialized = false;
@@ -157,14 +163,18 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         return petriNetBounds;
     }
 
-
+    /**
+     * shift the refernce Point from whicgh the grid will be drawn
+     * by the x / y values of p
+     * @param p a Point that carries the x / y values.
+     */
     public void addToGridReferencePoint(Point2D p) {
         Grid.addToReferencePoint(p);
     }
 
 
-
-
+    ///////////
+    // override LISTENER methods (MOUSE/ MOUSE MOVE).
     public void mouseClicked(MouseEvent e) {
         CanvasController.mouseClicked(e);
     }
@@ -179,9 +189,6 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
     public void mouseEntered(MouseEvent e) {
         Component component = e.getComponent();
-        if (!component.hasFocus()) {
-            component.requestFocusInWindow();
-        }
     }
 
     public void mouseExited(MouseEvent e) {
@@ -208,9 +215,11 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
  */
 class Grid {
 
-    //the reference point from which drawing of Grid will be started
-    //it's imported to keep the illusion of non shifting viewport on canvas resizing
-    //should always be 0 or negative
+    /**
+     * the reference point from which drawing of Grid will be started.
+     * it's imported to keep the illusion of non shifting viewport on canvas resizing.
+     * should always be 0 or negative.
+     */
     static Point2D gridOriginReferencePoint = new Point2D.Double(.0,.0);
 
     private int width;
@@ -221,7 +230,10 @@ class Grid {
     private Color subGridColor = new Color(215, 215, 215);
     private Color mainGridColor = new Color(190, 190, 190);
 
-
+    /**
+     * @param  width  the width of the grid. Is equal to the width of canvas.
+     * @param  height the height of the grid. Is equal to the height of canvas.
+     */
     public Grid(int width, int height) {
         this.width = width;
         this.height = height;
@@ -233,7 +245,7 @@ class Grid {
 
     /**
      * adjusts the reference point from which the grid will be painted.
-     * @param p - the x/y amount by which the reference point will be adjusted
+     * @param p - a point that carries the x/y amount by which the reference point will be adjusted
      */
     public static void addToReferencePoint(Point2D p) {
         Point2D new_point = new Point2D.Double(Grid.gridOriginReferencePoint.getX()-p.getX(), Grid.gridOriginReferencePoint.getY()-p.getY());
@@ -241,7 +253,7 @@ class Grid {
     }
 
     /**
-     * draws the grid. It consists of to components a main grid with cellSize and
+     * draws the grid. It consists of two components. A main grid with size = cellSize and
      * a finer subgrid.
      * @param g2 - the Graphics2D of Canvas
      */

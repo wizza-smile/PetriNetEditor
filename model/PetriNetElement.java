@@ -13,7 +13,6 @@ import javax.swing.*;
  */
 public abstract class PetriNetElement {
 
-    protected Point2D position;
     protected String id;
     protected BaseFigure figure;
 

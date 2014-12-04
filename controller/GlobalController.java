@@ -13,32 +13,39 @@ import javax.swing.*;
 public class GlobalController {
 
     public static String applicationTitle = "PetriNetEditor - Jonas Karsten q9272968";
-    //the reference size of displayed elements
+    /** the reference size of displayed elements. */
     public static Double size = 1.;
+
+    /** whether opacity mode is active. */
     public static boolean opacity = false;
 
-    //the current actionMode of the application changes its behaviour on user-interaction.
+    /** the current actionMode of the application changes its behaviour on user-interaction. */
     public static int actionMode = 0;
+
     //the possible actionModes of the application
+    /** the user can select and start to drag elements in this ActionMode. */
     public static final int ACTION_SELECT = 0;
+    /** When this ActionMode is active, the user is currently dragging selected elements. */
     public static final int ACTION_DRAG_SELECTION = 1;
+    /** the user can add a new Place in this ActionMode. */
     public static final int ACTION_PLACE = 2;
+    /** the user can add a new Transition in this ActionMode. */
     public static final int ACTION_TRANSITION = 3;
+    /** the user can add a new Arc in this ActionMode. */
     public static final int ACTION_ARC = 4;
+    /** the user can select a target for a new/unfinished Arc in this ActionMode. */
     public static final int ACTION_ARC_SELECT_TARGET = 5;
 
-
+    /**
+     * starts the Application and injects the Canvas that is private property of CanvasController into MainWindow.
+     */
     public static void startApplication() {
-        // Toolkit.getDefaultToolkit().setDynamicLayout(false);
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 PetriNetController.createPetriNet();
-
                 MainWindowController.startMainWindow();
-
                 view.Canvas canvas = CanvasController.createCanvas();
                 canvas.setSize(new Dimension(200, 200));
-
                 MainWindowController.injectCanvas(canvas);
                 //set initial size
                 GlobalController.setSize(0.86);
@@ -46,6 +53,10 @@ public class GlobalController {
         });
     }
 
+    /**
+     * create a UUID.
+     * see https://docs.oracle.com/javase/7/docs/api/java/util/UUID.html
+     */
     public static String getUUID() {
         return UUID.randomUUID().toString();
     }
@@ -57,7 +68,7 @@ public class GlobalController {
      * @param actionMode - the actionMode to switch to
      */
     public static void setActionMode(int actionMode) {
-        //cleanup after
+        //cleanup after actionMode
         switch (GlobalController.actionMode) {
             case ACTION_ARC_SELECT_TARGET:
                 if (CanvasController.arc_no_target_id != null) {
@@ -70,7 +81,7 @@ public class GlobalController {
             default:
                 break;
         }
-        //cleanup before
+        //cleanup before actionMode
         switch (actionMode) {
             case ACTION_PLACE:
             case ACTION_TRANSITION:
@@ -90,6 +101,10 @@ public class GlobalController {
         return GlobalController.actionMode;
     }
 
+    /**
+     * reset all relevant reference sizes and repaint canvas.
+     * @param size the new global refernce size.
+     */
     public static void setSize(Double size) {
         GlobalController.size = size;
 
@@ -101,27 +116,17 @@ public class GlobalController {
         CanvasController.repaintCanvas();
     }
 
+    /** toggle opacity mode. */
     public static void toggleOpacity() {
         GlobalController.opacity = !GlobalController.opacity;
         CanvasController.repaintCanvas();
     }
 
+    /** reset the Editor to clean initial State. Current PetriNet will be deleted. */
     public static void clearPetriNetEditor() {
         SelectionController.clearSelection();
         PetriNetController.createPetriNet();
         MainWindowController.injectCanvas(CanvasController.createCanvas());
     }
-
-
-    public static ArrayList<String> combineIdArrayLists(ArrayList<String>[] list_arr) {
-        ArrayList<String> newList = new ArrayList<String>();
-        for (ArrayList<String> list : list_arr) {
-            newList.addAll(list);
-        }
-
-        return newList;
-    }
-
-
 
 }

@@ -11,6 +11,7 @@ import java.awt.geom.*;
 import javax.swing.*;
 
 
+/** the labelFigure of a Connectable PetriNetElement (Place/Transition). */
 public class LabelFigure extends Positionable {
     protected int fontSize = 13;
     Font font = new Font(null, java.awt.Font.PLAIN, fontSize);
@@ -26,7 +27,6 @@ public class LabelFigure extends Positionable {
 
 
     public LabelFigure(BaseFigure labeledFigure, Point2D labeledFigurePosition) {
-        // this.elementId = labeledFigure.getId();
         this.element = labeledFigure.getElement();
         this.setId("label_" + GlobalController.getUUID());
         register();
