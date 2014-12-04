@@ -44,7 +44,7 @@ public class CanvasController {
     static Point2D currentMousePoint = new Point2D.Double(.0,.0);
 
     /**
-     * when for a new arc, a target has not been selected yet, it is already added as arc
+     * when for a new arc, a target has not been selected yet, then it is already added as arc
      * (and displayed as a red line) and its id will be stored here.
      */
     public static String arc_no_target_id;
@@ -131,6 +131,8 @@ public class CanvasController {
         if (move_x != 0 || move_y != 0) {
             System.out.println(" MOVE after canvas resize | left or up");
             PetriNetController.moveAllElements(move_x, move_y);
+            /* update grid reference point, so that the illusion of stable grid is kept */
+            CanvasController.addToGridReferencePoint(new Point2D.Double(move_x, move_y));
         }
 
         //REVALIDATE new canvas size
@@ -281,8 +283,8 @@ public class CanvasController {
      * @param e the mouseEvent
      */
     public static void mousePressed(MouseEvent e) {
-        if ((e.getModifiers() & Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()) != 0) {
-            selectionKeyActive = true;
+        if ((e.getModifiers() & Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()) != 0 && !SwingUtilities.isRightMouseButton(e)) {
+            System.out.println( e.getModifiers() & Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() );
         }
         mousePressPoint = new Point2D.Double(e.getX(), e.getY());
         //LEFT MOUSE BUTTON PRESSED

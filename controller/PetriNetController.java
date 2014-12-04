@@ -135,8 +135,6 @@ public class PetriNetController {
             elem.setPosition(new_position);
         }
 
-        /* update grid reference point, so that the illusion of stable grid is kept */
-        CanvasController.addToGridReferencePoint(new Point2D.Double(x, y));
     }
 
 
