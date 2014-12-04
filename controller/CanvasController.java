@@ -268,7 +268,6 @@ public class CanvasController {
                     BaseFigure figureUnderMousePointer = SelectionController.getFigureUnderMousePointer(mousePressPoint);
                     if (figureUnderMousePointer instanceof Positionable){
                         SelectionController.addFigureToSelection((Positionable)figureUnderMousePointer);
-                        // GlobalController.setActionMode(GlobalController.ACTION_SELECT);
                     }
                 }
                 break;
@@ -284,7 +283,7 @@ public class CanvasController {
      */
     public static void mousePressed(MouseEvent e) {
         if ((e.getModifiers() & Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()) != 0 && !SwingUtilities.isRightMouseButton(e)) {
-            System.out.println( e.getModifiers() & Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() );
+            selectionKeyActive = true;
         }
         mousePressPoint = new Point2D.Double(e.getX(), e.getY());
         //LEFT MOUSE BUTTON PRESSED
