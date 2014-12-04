@@ -122,10 +122,6 @@ public class LabelFigure extends Positionable {
         this.getLabeledFigure().markSelected(selected);
     }
 
-    // public String getLabeledFigureId() {
-    //     return this.elementId;
-    // }
-
     public LabelFigure getLabelFigure() {
         return this;
     }
