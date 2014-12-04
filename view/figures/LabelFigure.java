@@ -26,7 +26,7 @@ public class LabelFigure extends Positionable {
 
 
     public LabelFigure(BaseFigure labeledFigure, Point2D labeledFigurePosition) {
-        this.elementId = labeledFigure.getId();
+        // this.elementId = labeledFigure.getId();
         this.element = labeledFigure.getElement();
         this.setId("label_" + GlobalController.getUUID());
         register();

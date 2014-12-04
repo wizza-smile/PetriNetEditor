@@ -20,9 +20,7 @@ public class ArcFigure extends BaseFigure {
     final public static Double ARROW_RADIUS_BASE = 6.1;
     public static Double ARROW_RADIUS = ARROW_RADIUS_BASE;
 
-    /**
-     * the line between the midpoints of transition and place
-     */
+    /**  line between the midpoints of transition and place. */
     protected Line2D line;
 
     /**

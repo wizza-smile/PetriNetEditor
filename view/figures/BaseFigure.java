@@ -17,18 +17,19 @@ import javax.swing.*;
  * is superclass of all PetriNetFigures (Arc/Label/Transition/Place)
  */
 public abstract class BaseFigure {
+    /**  id of this figure. */
     protected String id;
 
-    //the element the figure represents
-    protected String elementId;
+    /** the element that this figure represents. */
     protected PetriNetElement element;
 
+    /** returns the type of this figure as defined in CanvasController. */
     public abstract int getFigureType();
+
+    /** set the id for this BaseFigure and add it to the figures HashMap and the corrsponding id Collection of the Canvas. */
     public abstract void register();
 
-    /**
-     * delete this Figure from the Canvas figures-HashMap and its id from the corresponding id List.
-     */
+    /** delete this Figure from the Canvas figures-HashMap and its id from the corresponding id List. */
     public abstract void delete();
 
     /**
@@ -37,14 +38,18 @@ public abstract class BaseFigure {
      * @return            boolean
      */
     public abstract boolean contains(Point2D position);
+
+    /**
+     * draw this figure to Canvas. Called in paintComponent in Canvas.
+     * @param g the graphics object of Canvas.
+     */
     public abstract void draw(Graphics2D g);
+
+    /** show the Popup for this figure. */
     public abstract void showPopup(Point2D position);
 
-
+    /** return the element that this figure represents. */
     public PetriNetElement getElement() {
-        if (this.element == null) {
-            this.element = PetriNetController.getElementById(this.elementId);
-        }
         return this.element;
     }
 
@@ -55,11 +60,18 @@ public abstract class BaseFigure {
     ///////////////
     //POPUP    ////
 
+    /**
+     * show this PopUp, if multiple Elements are selected.
+     * @param e the MouseEvent.
+     */
     public void showMultiSelectionPopup(MouseEvent e) {
         JPopupMenu contextMenu = getMultiSelectionPopup();
         contextMenu.show(e.getComponent(), e.getX(), e.getY());
     }
 
+    /**
+     * create the PopUp to show, if multiple Elements are selected.
+     */
     public JPopupMenu getMultiSelectionPopup() {
         JPopupMenu multiSelectionMenu = new JPopupMenu();
         JMenuItem menuItemDelete = new JMenuItem();
@@ -77,6 +89,7 @@ public abstract class BaseFigure {
         return multiSelectionMenu;
     }
 
+    /** PopUp-Action for adding a Label to a Connectable (Place/Transition). */
     protected class AddLabelToConnectableAction extends AbstractAction {
         protected Connectable element;
 
@@ -93,6 +106,7 @@ public abstract class BaseFigure {
         }
     }
 
+    /** PopUp-Action for deleting a PetriNetElement from the PetriNet. */
     protected class DeletePetriNetElementAction extends AbstractAction {
         protected PetriNetElement element;
 

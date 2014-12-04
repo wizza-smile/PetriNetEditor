@@ -1,10 +1,8 @@
 package view;
 
-
 import model.*;
 import view.figures.*;
 import controller.*;
-
 
 import java.util.*;
 
@@ -12,21 +10,33 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 
-
 import javax.swing.*;
 
 
-
+/**
+ * the canvas that the PetriNet is drawn upon.
+ */
 public class Canvas extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener {
 
+    /** the grid that is drawn on the canvas */
     public Grid grid;
-    boolean enabledGrid = true;
+
+    /** the minimal size of the Canvas */
     Dimension minSize = new Dimension(100, 100);
 
+    /**
+     * the HashMap that stores all the figures currently drawn on the canvas.
+     * The key is the figure's id.
+     */
     private HashMap<String, BaseFigure> figures = new HashMap<String, BaseFigure>();
+
+    /** stores the ids of all ArcFigures currently drawn on Canvas. */
     public ArrayList<String> arc_figure_ids = new ArrayList<String>();
+    /** stores the ids of all LabelFigures currently drawn on Canvas. */
     public ArrayList<String> label_figure_ids = new ArrayList<String>();
+    /** stores the ids of all Place- and TransitionFigures currently drawn on Canvas. */
     public ArrayList<String> place_and_transition_figure_ids = new ArrayList<String>();
+
 
     public Canvas() {
         this.setFocusable(false);
@@ -36,6 +46,11 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         this.addMouseMotionListener(this);
     }
 
+
+    /**
+     * draw the grid, the current configuration of the PetriNet and the selctionRectangle (if one is set).
+     * @param graphics [description]
+     */
     public void paintComponent(Graphics graphics) {
 
         java.awt.Graphics2D g2 = (java.awt.Graphics2D) graphics;
@@ -62,20 +77,35 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
             labelFigure.draw(g2);
         }
 
+        //draw the selection rectangle.
         SelectionController.drawSelectionFigure(g2);
 
+        //callback function.
         CanvasController.finishedCanvasPaint();
     }
 
-
+    /**
+     * add a figure to the figures HashMap.
+     * @param figureId the key to be used.
+     * @param figure   the figure to be stored.
+     */
     public void addFigure(String figureId, BaseFigure figure) {
         figures.put(figureId, figure);
     }
 
+    /**
+     * remove a figure from the figure HashMap.
+     * @param figureId the key of the figure to be removed.
+     */
     public void removeFigure(String figureId) {
         figures.remove(figureId);
     }
 
+    /**
+     * get a figure from the figures HashMap by the key/id.
+     * @param  figureId [description]
+     * @return          [description]
+     */
     public BaseFigure getFigureById(String figureId) {
         return figures.get(figureId);
     }

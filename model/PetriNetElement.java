@@ -55,7 +55,7 @@ public abstract class PetriNetElement {
     //////////////////////
 
     /**
-     * set the id for this PetriNetElement and add it to the elements HashMap elements and the corrsponding id Collection of the current PetriNet.
+     * set the id for this PetriNetElement and add it to the elements HashMap and the corrsponding id Collection of the current PetriNet.
      * @param element_id the id to be set for this element.
      */
     public void register(String element_id) {
