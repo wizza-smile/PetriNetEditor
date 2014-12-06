@@ -16,9 +16,11 @@ import javax.swing.*;
 
 
 public class ArcFigure extends BaseFigure {
-    //radius of the circle surrounding arrow (size of arrow!)
-    final public static Double ARROW_RADIUS_BASE = 6.1;
-    public static Double ARROW_RADIUS = ARROW_RADIUS_BASE;
+
+    /** ratio to the global size (defined in GlobalController). */
+    final public static Double ARROW_HEAD_RADIUS_BASE = 6.1;
+    /** radius of the circle surrounding arrowHead (size of arrowHead!) */
+    public static Double ARROW_HEAD_RADIUS = ARROW_HEAD_RADIUS_BASE;
 
     /**  line between the midpoints of transition and place. */
     protected Line2D line;
@@ -34,10 +36,14 @@ public class ArcFigure extends BaseFigure {
      */
     public int selectedArrowHeadsTargetType;
 
-    //gradient triangle
+    /** defining the gradient triangle */
     Double a, b, c, alpha, gradient;
+
     boolean is_negative_gradient;
+
+    /** whether the place is positioned more to the left then the transition */
     boolean place_is_left;
+    /** whether the place is positioned higher then the transition */
     boolean place_is_up;
 
     /**
@@ -235,7 +241,7 @@ public class ArcFigure extends BaseFigure {
             g.draw(shortened_line);
 
             //DRAW ARROW_HEAD(S)
-            Double BASE_POINT_DIAMETER = 5.7*ARROW_RADIUS;
+            Double BASE_POINT_DIAMETER = 5.7*ARROW_HEAD_RADIUS;
             if (this.getTargetType() == Arc.TARGET_TRANSITION || this.getTargetType() == Arc.TARGET_BOTH) {
                 // TRANSITION is target
                 ArrowHead arrowHead = new ArrowHead(Arc.TARGET_TRANSITION);
@@ -352,12 +358,12 @@ public class ArcFigure extends BaseFigure {
             factor_x_y = getFactor_X_Y(target_is_left, target_is_up);
 
             //due to rotation ? the rectangle around the arrow needs repositioning, so that the arrow will always touch the intersection point
-            arrow_move_x = (ARROW_RADIUS/c) * a * factor_x_y.getX();
-            arrow_move_y = (ARROW_RADIUS/c) * b * factor_x_y.getY();
+            arrow_move_x = (ARROW_HEAD_RADIUS/c) * a * factor_x_y.getX();
+            arrow_move_y = (ARROW_HEAD_RADIUS/c) * b * factor_x_y.getY();
 
             //compute the actual offset of arrow to (0,0)
-            offset_x = intersection_target.getX()-ARROW_RADIUS+arrow_move_x;
-            offset_y = intersection_target.getY()-ARROW_RADIUS+arrow_move_y;
+            offset_x = intersection_target.getX()-ARROW_HEAD_RADIUS+arrow_move_x;
+            offset_y = intersection_target.getY()-ARROW_HEAD_RADIUS+arrow_move_y;
         }
 
         public boolean contains(Point2D position) {
@@ -371,9 +377,9 @@ public class ArcFigure extends BaseFigure {
 
 
             Path2D path = new Path2D.Double();
-            path.moveTo(ARROW_RADIUS, 0);
-            path.lineTo(2*ARROW_RADIUS, 2*ARROW_RADIUS);
-            path.lineTo(0, 2*ARROW_RADIUS);
+            path.moveTo(ARROW_HEAD_RADIUS, 0);
+            path.lineTo(2*ARROW_HEAD_RADIUS, 2*ARROW_HEAD_RADIUS);
+            path.lineTo(0, 2*ARROW_HEAD_RADIUS);
             path.closePath();
 
             Rectangle2D bounds = path.getBounds2D();

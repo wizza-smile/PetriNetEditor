@@ -23,7 +23,10 @@ public abstract class BaseFigure {
     /** the element that this figure represents. */
     protected PetriNetElement element;
 
-    /** returns the type of this figure as defined in CanvasController. */
+    /**
+     * returns the type of this figure as defined in CanvasController.
+     * @return the figure type.
+     */
     public abstract int getFigureType();
 
     /** set the id for this BaseFigure and add it to the figures HashMap and the corrsponding id Collection of the Canvas. */
@@ -45,10 +48,16 @@ public abstract class BaseFigure {
      */
     public abstract void draw(Graphics2D g);
 
-    /** show the Popup for this figure. */
+    /**
+     * show the Popup for this figure.
+     * @param position the position where the popUp will appear.
+     */
     public abstract void showPopup(Point2D position);
 
-    /** return the element that this figure represents. */
+    /**
+     * return the element that this figure represents.
+     * @return the PetriNetElement.
+     */
     public PetriNetElement getElement() {
         return this.element;
     }
@@ -70,7 +79,8 @@ public abstract class BaseFigure {
     }
 
     /**
-     * create the PopUp to show, if multiple Elements are selected.
+     * the PopUp to show, if multiple Elements are selected.
+     * @return the JPopupMenu.
      */
     public JPopupMenu getMultiSelectionPopup() {
         JPopupMenu multiSelectionMenu = new JPopupMenu();

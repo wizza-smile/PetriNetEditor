@@ -81,32 +81,51 @@ public abstract class Connectable extends PetriNetElement {
         return arc_ids;
     }
 
-    /** add an arc_id to the arc_ids property. */
+    /**
+     * add an arc_id to the arc_ids property.
+     * @param arc_id
+     *        the arc_id to add
+     */
     public void addArcId(String arc_id) {
         arc_ids.add(arc_id);
     }
 
-    /** remove an arc_id from the arc_ids property. */
+    /**
+     * remove an arc_id from the arc_ids property.
+     * @param arc_id the arc_id to remove
+     */
     public void removeArcId(String arc_id) {
         arc_ids.remove(arc_id);
     }
 
-    /** checks whether the label is set to the NO_LABEL_IDENTIFIER constant. */
+    /**
+     * checks whether the label is set to the NO_LABEL_IDENTIFIER constant.
+     * @return boolean
+     */
     public boolean hasLabel() {
         return !this.label.equals(Connectable.NO_LABEL_IDENTIFIER);
     }
 
-    /** returns the label String of this Connectable if it is not set to the NO_LABEL_IDENTIFIER constant. */
+    /**
+     * returns the label String of this Connectable if it is not set to the NO_LABEL_IDENTIFIER constant.
+     * @return the label String.
+     */
     public String getLabel() {
         return hasLabel() ? this.label : "";
     }
 
-    /** set the label String of this Connectable */
+    /**
+     * set the label String of this Connectable
+     * @param label the label text
+     */
     public void setLabel(String label) {
         this.label = label;
     }
 
-    /** return the position of this Connectable's midpoint */
+    /**
+     * return the position of this Connectable's midpoint
+     * @return the position of the midpoint of this Connectable.
+     */
     public Point2D getPosition() { return position; }
 
     /**

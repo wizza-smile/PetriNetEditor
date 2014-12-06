@@ -56,6 +56,7 @@ public class GlobalController {
     /**
      * create a UUID.
      * see https://docs.oracle.com/javase/7/docs/api/java/util/UUID.html
+     * @return  the UUID.
      */
     public static String getUUID() {
         return UUID.randomUUID().toString();
@@ -108,7 +109,7 @@ public class GlobalController {
     public static void setSize(Double size) {
         GlobalController.size = size;
 
-        ArcFigure.ARROW_RADIUS = ArcFigure.ARROW_RADIUS_BASE * size;
+        ArcFigure.ARROW_HEAD_RADIUS = ArcFigure.ARROW_HEAD_RADIUS_BASE * size;
         PlaceFigure.DIAMETER = PlaceFigure.DIAMETER_BASE * size;
         TransitionFigure.SIZE = TransitionFigure.SIZE_BASE * size;
         CanvasController.PETRINET_PADDING = CanvasController.PETRINET_PADDING_BASE * size;
