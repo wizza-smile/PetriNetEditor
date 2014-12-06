@@ -36,15 +36,17 @@ public class ArcFigure extends BaseFigure {
      */
     public int selectedArrowHeadsTargetType;
 
-    /** defining the gradient triangle */
-    Double a, b, c, alpha, gradient;
+    /** defining the gradient triangle (a,b,c,alpha,gradient) */
+    protected Double a, b, c, alpha, gradient;
 
-    boolean is_negative_gradient;
+    /** whether the gradient is negative */
+    protected boolean is_negative_gradient;
 
     /** whether the place is positioned more to the left then the transition */
-    boolean place_is_left;
+    protected boolean place_is_left;
+
     /** whether the place is positioned higher then the transition */
-    boolean place_is_up;
+    protected boolean place_is_up;
 
     /**
      * the point of intersection of [line] with the place resp. transition figure.
@@ -58,6 +60,10 @@ public class ArcFigure extends BaseFigure {
         register();
     }
 
+    /**
+     * get the Arc that this figure represents.
+     * @return the Arc.
+     */
     public Arc getArc() {
         return (Arc)this.element;
     }
@@ -91,26 +97,34 @@ public class ArcFigure extends BaseFigure {
         return false;
     }
 
-    public boolean intersects(Rectangle2D rect) {
-        return false;
-    }
-
+    /**
+     * get the Transition connected to the respective Arc.
+     * @return the Transition.
+     */
     public Transition getTransition() {
         return this.getArc().getTransition();
     }
 
+    /**
+     * get the Place connected to the respective Arc.
+     * @return the Place.
+     */
     public Place getPlace() {
         return this.getArc().getPlace();
     }
 
-
+    /**
+     * get the target_type of the respective Arc.
+     * @return the target_type property of the Arc.
+     */
     public int getTargetType() {
         return this.getArc().getTargetType();
     }
 
-
+    /**
+     * compute the gradient triangle using the midpoints of the two connected Elements.
+     */
     protected void computeGradientTriangle() {
-
         // determine the orientation of gradient triangle by considering who is up or left (place/transition)
         this.place_is_left = getPlace().getPosition().getX() < getTransition().getPosition().getX();
         this.place_is_up = getPlace().getPosition().getY() < getTransition().getPosition().getY();
@@ -195,10 +209,13 @@ public class ArcFigure extends BaseFigure {
     }
 
 
+    /**
+     * draw this arcFigure including it's ArrowHead(s).
+     * @param g the Canvas graphic.
+     */
     public void draw(Graphics2D g) {
-
         if (!getArc().isTargetSet()) {
-            //a traget is not yet set, follow the mouse with a red line!!
+            //a target is not yet set, follow the mouse with a red line from source to mouse position!!
             Arc arc = getArc();
             Point2D source_position = arc.getSource().getPosition();
             Point2D target_position = CanvasController.getCurrentMousePoint();
@@ -209,10 +226,8 @@ public class ArcFigure extends BaseFigure {
             g.setPaint(new Color(23, 0, 0));
             g.setColor(Color.RED);
             g.draw(line);
-
         } else {
             //this is an arc, that connects two elements.
-            //determine where to draw arrow head(s)
             Transition transition = getTransition();
             Place place = getPlace();
 
@@ -241,46 +256,52 @@ public class ArcFigure extends BaseFigure {
             g.draw(shortened_line);
 
             //DRAW ARROW_HEAD(S)
-            Double BASE_POINT_DIAMETER = 5.7*ARROW_HEAD_RADIUS;
+            //the size of the small square where a arrow origins from the source.
+            Double BASE_SQUARE_SIZE = 5.7*ARROW_HEAD_RADIUS;
+            //determine where to draw arrow head(s) by analysing target_type
             if (this.getTargetType() == Arc.TARGET_TRANSITION || this.getTargetType() == Arc.TARGET_BOTH) {
-                // TRANSITION is target
+                // Transition is target
                 ArrowHead arrowHead = new ArrowHead(Arc.TARGET_TRANSITION);
                 arrow_heads[0] = arrowHead;
                 arrowHead.draw(g);
             } else if (intersection_transition != null) {
-
+                // Transition is NOT a target
                 Rectangle2D point = new Rectangle2D.Double(
-                    intersection_transition.getX() - BASE_POINT_DIAMETER / 12,
-                    intersection_transition.getY() - BASE_POINT_DIAMETER / 12,
-                    BASE_POINT_DIAMETER/6,
-                    BASE_POINT_DIAMETER/6
+                    intersection_transition.getX() - BASE_SQUARE_SIZE / 12,
+                    intersection_transition.getY() - BASE_SQUARE_SIZE / 12,
+                    BASE_SQUARE_SIZE/6,
+                    BASE_SQUARE_SIZE/6
                 );
                 g.setColor(new Color(0,0,0,200));
                 g.fill(point);
             }
 
             if (this.getTargetType() == Arc.TARGET_PLACE || this.getTargetType() == Arc.TARGET_BOTH) {
-                //PLACE is target
+                //Place is target
                 ArrowHead arrowHead = new ArrowHead(Arc.TARGET_PLACE);
                 arrow_heads[1] = arrowHead;
                 arrowHead.draw(g);
             } else {
+                //Place is NOT target
                 Rectangle2D point = new Rectangle2D.Double(
-                    intersection_place.getX() - BASE_POINT_DIAMETER / 12,
-                    intersection_place.getY() - BASE_POINT_DIAMETER / 12,
-                    BASE_POINT_DIAMETER/6,
-                    BASE_POINT_DIAMETER/6
+                    intersection_place.getX() - BASE_SQUARE_SIZE / 12,
+                    intersection_place.getY() - BASE_SQUARE_SIZE / 12,
+                    BASE_SQUARE_SIZE/6,
+                    BASE_SQUARE_SIZE/6
                 );
                 g.setColor(new Color(0,0,0,200));
                 g.fill(point);
             }
         }
-
     }
 
-
+    /**
+     * coumpute the intersection point of two lines that are known to intersect.
+     * @param  lineA one line
+     * @param  lineB the other line
+     * @return the point of intersection.
+     */
     public Point2D getIntersectionPoint(Line2D lineA, Line2D lineB) {
-
         double x1 = lineA.getX1();
         double y1 = lineA.getY1();
         double x2 = lineA.getX2();
@@ -304,7 +325,12 @@ public class ArcFigure extends BaseFigure {
         return p;
     }
 
-    //determines, if negative or positive for x/y direction
+    /**
+     * determines, whether an inversion of values for certain computations is needed for x/y direction.
+     * @param  target_is_left whether (ie.) the target of an Arrow is positioned more left than its source.
+     * @param  target_is_up whether (ie.) the target of an Arrow is positionedhigher than its source.
+     * @return  the x/y factors encoded as Point.
+     */
     public Point getFactor_X_Y(boolean target_is_left, boolean target_is_up) {
         Point factor_x_y;
 
@@ -325,7 +351,7 @@ public class ArcFigure extends BaseFigure {
         Shape rotatedArrowShape;
         Point2D target_position, source_position;
         Point2D intersection_target;
-        //rotation_angle by which to rotate the arrow
+        /** rotation_angle by which to rotate the arrow */
         Double rotation_angle;
         Double arrow_move_x, arrow_move_y;
         Double offset_x, offset_y;
@@ -333,7 +359,6 @@ public class ArcFigure extends BaseFigure {
         boolean target_is_left, target_is_up;
 
         ArrowHead(int type) {
-
             this.TARGET_TYPE = type;
 
             if (TARGET_TYPE == Arc.TARGET_TRANSITION) {
@@ -366,16 +391,22 @@ public class ArcFigure extends BaseFigure {
             offset_y = intersection_target.getY()-ARROW_HEAD_RADIUS+arrow_move_y;
         }
 
+        /**
+         * checks whether a given point lies within this ArrowHeadFigure.
+         * @param  position the given point.
+         * @return boolean
+         */
         public boolean contains(Point2D position) {
             Point2D modified_position = new Point2D.Double(position.getX() - offset_x, position.getY() - offset_y);
             if (rotatedArrowShape.contains(modified_position)) return true;
             return false;
         }
 
-        //draw the arrowHead
+        /**
+         * draw the arrowHead
+         * @param g Canvas graphic.
+         */
         public void draw(Graphics2D g) {
-
-
             Path2D path = new Path2D.Double();
             path.moveTo(ARROW_HEAD_RADIUS, 0);
             path.lineTo(2*ARROW_HEAD_RADIUS, 2*ARROW_HEAD_RADIUS);
@@ -396,9 +427,14 @@ public class ArcFigure extends BaseFigure {
             // g.draw(bounds);
 
             g.translate(-offset_x, -offset_y);
-
         }
 
+        /**
+         * determine the rotation angle for the arrowHead.
+         * @param  target_is_left whether the target element of the arrowHead is positioned left from it's source element.
+         * @param  alpha          the angle alpha of the gradient triangle of the respective Arc.
+         * @return the rotation angle.
+         */
         public Double getRotationAngle(boolean target_is_left, Double alpha) {
             Double rotation_angle;
 
@@ -422,7 +458,6 @@ public class ArcFigure extends BaseFigure {
 
             return rotation_angle;
         }
-
     }
 
 
@@ -438,7 +473,12 @@ public class ArcFigure extends BaseFigure {
         contextMenu.show(MainWindowController.main_window, position_x.intValue(), position_y.intValue());
     }
 
-
+    /**
+     * create the popUpMenu for this ArcFigure.
+     * @param  arc_id      the represented Arc's id.
+     * @param  target_type the target type of the represented Arc.
+     * @return  the JPopupMenu
+     */
     public JPopupMenu getPopup(String arc_id, int target_type) {
         JPopupMenu arcPopupMenu = new JPopupMenu();
         JMenuItem menuItem = new JMenuItem(new DeleteArcMenuAction(this.getElement(), target_type));
@@ -464,9 +504,7 @@ public class ArcFigure extends BaseFigure {
             ((Arc)element).removeTarget(target_type);
             CanvasController.repaintCanvas();
         }
-
     }
-
 
 
 }
