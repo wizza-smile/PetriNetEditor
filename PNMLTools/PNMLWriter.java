@@ -102,7 +102,7 @@ public final class PNMLWriter {
         try {
             FileOutputStream fos = new FileOutputStream(pnmlDatei);
             XMLOutputFactory factory = XMLOutputFactory.newInstance();
-            writer = factory.createXMLStreamWriter(fos);
+            writer = factory.createXMLStreamWriter(fos, "UTF-8");
             // XML Dokument mit Version 1.0 und Kodierung UTF-8 beginnen
             writer.writeStartDocument("UTF-8", "1.0");
             writer.writeStartElement("pnml");
