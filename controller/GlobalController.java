@@ -98,6 +98,10 @@ public class GlobalController {
         GlobalController.actionMode = actionMode;
     }
 
+    /**
+     * get the current ActionMode of the application
+     * @return the current ActionMode
+     */
     public static int getActionMode() {
         return GlobalController.actionMode;
     }

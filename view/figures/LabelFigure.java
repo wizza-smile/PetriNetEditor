@@ -117,6 +117,7 @@ public class LabelFigure extends Positionable {
         return (Positionable)getElement().getFigure();
     }
 
+    /** set the 'selected' properties of this LabelFigure and of the labeled Figure to 'true'. */
     public void markSelected(boolean selected) {
         this.selected = selected;
         this.getLabeledFigure().markSelected(selected);

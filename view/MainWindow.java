@@ -24,6 +24,22 @@ public class MainWindow extends JFrame {
     Canvas canvas;
     public JScrollPane canvasPane;
 
+    //{buttonId, tooltipText}
+    public Object[][] fileButtons = new Object[][]{
+        {"create_new", "New"},
+        {"open", "Open"},
+        {"save", "Save"},
+        {"exit", "Exit"}
+    };
+
+    public Object[][] modeButtons = new Object[][]{
+        {"select_mode", "Select"},
+        {"place_mode", "Place"},
+        {"transition_mode", "Transition"},
+        {"arc_mode", "Arc"}
+    };
+
+
     // a resize Listener to call the Canvas-Resizing whenever the mainWindow size changes
     private class ResizeListener extends ComponentAdapter {
         public void componentResized(ComponentEvent e) {
@@ -39,10 +55,12 @@ public class MainWindow extends JFrame {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        JMenuBar menubar = createMenuBar();
+        //create an instance of inner class MenuBar
+        JMenuBar menubar = new MenuBar();
         this.setJMenuBar(menubar);
 
-        JToolBar toolbar = new ButtonBar();// createToolBar();
+        //create an instance of inner class ButtonBar
+        JToolBar toolbar = new ButtonBar();
         this.add(toolbar, BorderLayout.NORTH);
 
         statusbar = createStatusBar();
@@ -67,35 +85,6 @@ public class MainWindow extends JFrame {
         return canvasPane;
     }
 
-    private JMenuBar createMenuBar() {
-        JMenuBar menubar = new JMenuBar();
-
-        ImageIcon icon = new ImageIcon("exit.png");
-
-        //File Menu
-        JMenu file = new JMenu("File");
-        JMenuItem eMenuItem = new JMenuItem("Exit", icon);
-        eMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                System.exit(0);
-            }
-        });
-        file.add(eMenuItem);
-        menubar.add(file);
-
-        //Options Menu
-        JMenu options = new JMenu("Options");
-        JMenuItem opacityMenuItem = new JMenuItem("toggle opacity", icon);
-        opacityMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                GlobalController.toggleOpacity();
-            }
-        });
-        options.add(opacityMenuItem);
-        menubar.add(options);
-
-        return menubar;
-    }
 
     public void setStatusBarText(String s) {
         statusbar.setText(s);
@@ -110,116 +99,145 @@ public class MainWindow extends JFrame {
 
         return statusLabel;
     }
-}
 
 
-class ButtonBar extends JToolBar {
+    private class MenuBar extends JMenuBar {
 
-    //{buttonId, tooltipText}
-    public Object[][] fileButtons = new Object[][]{
-        {"create_new", "new"},
-        {"open", "open"},
-        {"save", "save"},
-        {"exit", "exit"}
-    };
+        MenuBar() {
+            // ImageIcon icon = new ImageIcon("exit.png");
 
-    public Object[][] modeButtons = new Object[][]{
-        {"select_mode", "select"},
-        {"place_mode", "Place"},
-        {"transition_mode", "Transition"},
-        {"arc_mode", "Arc"}
-    };
+            //File Menu
+            JMenu file = new JMenu("File");
+            this.addMenuBlock(file, fileButtons);
 
-    ButtonBar() {
-        super(JToolBar.HORIZONTAL);
+            // //ActionMode Menu
+            // JMenu actionMode = new JMenu("Action Mode");
+            // this.addMenuBlock(actionMode, modeButtons);
 
-        //set display parameter for each block of buttons
-        Object[] blockParams;
-
-        this.setFloatable(false);
-        this.setAlignmentX(0);
-        this.setBackground(Color.DARK_GRAY);
-        this.setMargin(new Insets(3,5,5,5));
-
-        blockParams = new Object[]{"file", 40};
-        addButtonBlock(fileButtons, blockParams);
-
-        Separator jSeparator = new Separator();
-        this.add(jSeparator);
-
-        blockParams = new Object[]{"mode", 60};
-        addButtonBlock(modeButtons, blockParams);
-
-        Separator jSeparator2 = new Separator();
-        this.add(jSeparator2);
-
-        JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 20);
-            slider.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                Double size = 0.7 + (((JSlider)e.getSource()).getValue() * (0.8/100));
-                GlobalController.setSize(size);
-                CanvasController.repaintCanvas();
-            }
-        });
-
-        slider.setMaximumSize(new Dimension(150, 30));
-        slider.setPreferredSize(new Dimension(150, 30));
-
-        // //Create the label.
-        // JLabel sliderLabel = new JLabel("Size:", JLabel.CENTER);
-        // sliderLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 13));
-        // sliderLabel.setForeground(Color.white);
-        // this.add(sliderLabel);
-
-        this.add(slider);
-    }
-
-    private void addButtonBlock(Object[][] block, Object[] blockParams) {
-        ButtonGroup grp = new ButtonGroup();
-        for (Object[] button_info : block) {
-            this.addSeparator(new Dimension(8, 1));
-            JButton btn = createButton(button_info, blockParams, grp);
-            grp.add(btn);
-            this.add(btn);
-        }
-    }
-
-
-    private JButton createButton(Object[] button_info, Object[] blockParams, ButtonGroup grp) {
-        ImageIcon icon = new ImageIcon(this.getClass().getResource("images/" + button_info[0] + ".png"));
-        final JButton button = new JButton(icon);
-        final Object[] final_button_info = button_info;
-        final ButtonGroup group = grp;
-
-        button.setToolTipText((String)button_info[1]);
-
-        if ((String)blockParams[0] == "file") {
-            button.setBorder(new LineBorder(Color.RED, 2));
-            button.setBorderPainted(true);
-            button.setBackground(new Color( 255,0,0,120 ));
-            button.setContentAreaFilled(true);
-        }
-
-        button.setOpaque(true);
-
-        button.setMaximumSize(new Dimension((int)blockParams[1], 30));
-        button.setPreferredSize(new Dimension((int)blockParams[1], 30));
-
-        button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                //unselect all other buttons from related group
-                Enumeration<AbstractButton> button_enum = group.getElements();
-                while(button_enum.hasMoreElements()){
-                    JButton jb = (JButton) button_enum.nextElement();
-                    jb.setSelected(false);
+            //Options Menu
+            JMenu options = new JMenu("Options");
+            JMenuItem opacityMenuItem = new JMenuItem("toggle opacity");
+            opacityMenuItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent event) {
+                    GlobalController.toggleOpacity();
                 }
-                //select this button and execute action
-                button.setSelected(true);
-                MainWindowController.executeButtonBarAction((String)final_button_info[0]);
-            }
-        });
+            });
+            options.add(opacityMenuItem);
+            this.add(options);
+        }
 
-        return button;
+        private void addMenuBlock(JMenu menu, Object[][] block) {
+            for (Object[] button_info : block) {
+                final Object[] final_button_info = button_info;
+                JMenuItem eMenuItem = new JMenuItem((String)button_info[1]);
+                eMenuItem.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent event) {
+                        MainWindowController.executeButtonBarAction((String)final_button_info[0]);
+                    }
+                });
+                menu.add(eMenuItem);
+            }
+            this.add(menu);
+        }
+    }
+
+    /**
+     * the ButtonBar
+     */
+    private class ButtonBar extends JToolBar {
+
+        ButtonBar() {
+            super(JToolBar.HORIZONTAL);
+
+            //will take display parameter for each block of buttons
+            Object[] blockParams;
+
+            this.setFloatable(false);
+            this.setAlignmentX(0);
+            this.setBackground(Color.DARK_GRAY);
+            this.setMargin(new Insets(3,5,5,5));
+
+            blockParams = new Object[]{"file", 40};
+            addButtonBlock(fileButtons, blockParams);
+
+            Separator jSeparator = new Separator();
+            this.add(jSeparator);
+
+            blockParams = new Object[]{"mode", 60};
+            addButtonBlock(modeButtons, blockParams);
+
+            Separator jSeparator2 = new Separator();
+            this.add(jSeparator2);
+
+            JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 20);
+                slider.addChangeListener(new ChangeListener() {
+                public void stateChanged(ChangeEvent e) {
+                    Double size = 0.7 + (((JSlider)e.getSource()).getValue() * (0.8/100));
+                    GlobalController.setSize(size);
+                    CanvasController.repaintCanvas();
+                }
+            });
+
+            slider.setMaximumSize(new Dimension(150, 30));
+            slider.setPreferredSize(new Dimension(150, 30));
+
+            // //Create the label.
+            // JLabel sliderLabel = new JLabel("Size:", JLabel.CENTER);
+            // sliderLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 13));
+            // sliderLabel.setForeground(Color.white);
+            // this.add(sliderLabel);
+
+            this.add(slider);
+        }
+
+        private void addButtonBlock(Object[][] block, Object[] blockParams) {
+            ButtonGroup grp = new ButtonGroup();
+            for (Object[] button_info : block) {
+                this.addSeparator(new Dimension(8, 1));
+                JButton btn = createButton(button_info, blockParams, grp);
+                grp.add(btn);
+                this.add(btn);
+            }
+        }
+
+
+        private JButton createButton(Object[] button_info, Object[] blockParams, ButtonGroup grp) {
+            ImageIcon icon = new ImageIcon(this.getClass().getResource("images/" + button_info[0] + ".png"));
+            final JButton button = new JButton(icon);
+            final Object[] final_button_info = button_info;
+            final ButtonGroup group = grp;
+
+            button.setToolTipText((String)button_info[1]);
+
+            if ((String)blockParams[0] == "file") {
+                button.setBorder(new LineBorder(Color.RED, 2));
+                button.setBorderPainted(true);
+                button.setBackground(new Color( 255,0,0,120 ));
+                button.setContentAreaFilled(true);
+            }
+
+            button.setOpaque(true);
+
+            button.setMaximumSize(new Dimension((int)blockParams[1], 30));
+            button.setPreferredSize(new Dimension((int)blockParams[1], 30));
+
+            button.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent event) {
+                    //unselect all other buttons from related group
+                    Enumeration<AbstractButton> button_enum = group.getElements();
+                    while(button_enum.hasMoreElements()){
+                        JButton jb = (JButton) button_enum.nextElement();
+                        jb.setSelected(false);
+                    }
+                    //select this button and execute action
+                    button.setSelected(true);
+                    MainWindowController.executeButtonBarAction((String)final_button_info[0]);
+                }
+            });
+
+            return button;
+        }
+
     }
 
 }

@@ -175,33 +175,41 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
     ///////////
     // override LISTENER methods (MOUSE/ MOUSE MOVE).
+    /** check CanvasController for actual eventHandling */
     public void mouseClicked(MouseEvent e) {
         CanvasController.mouseClicked(e);
     }
 
+    /** check CanvasController for actual eventHandling */
     public void mousePressed(MouseEvent e) {
         CanvasController.mousePressed(e);
     }
 
+    /** check CanvasController for actual eventHandling */
     public void mouseReleased(MouseEvent e) {
         CanvasController.mouseReleased(e);
     }
 
+    /** check CanvasController for actual eventHandling */
     public void mouseEntered(MouseEvent e) {
         Component component = e.getComponent();
     }
 
+    /** check CanvasController for actual eventHandling */
     public void mouseExited(MouseEvent e) {
     }
 
+    /** check CanvasController for actual eventHandling */
     public void mouseDragged(MouseEvent e) {
         CanvasController.mouseDragged(e);
     }
 
+    /** check CanvasController for actual eventHandling */
     public void mouseMoved(MouseEvent e) {
         CanvasController.mouseMoved(e);
     }
 
+    /** check CanvasController for actual eventHandling */
     public void mouseWheelMoved(MouseWheelEvent e) {
     }
 

@@ -19,6 +19,7 @@ public class ArcFigure extends BaseFigure {
 
     /** ratio to the global size (defined in GlobalController). */
     final public static Double ARROW_HEAD_RADIUS_BASE = 6.1;
+
     /** radius of the circle surrounding arrowHead (size of arrowHead!) */
     public static Double ARROW_HEAD_RADIUS = ARROW_HEAD_RADIUS_BASE;
 
@@ -83,7 +84,8 @@ public class ArcFigure extends BaseFigure {
     /**
      * check if an arrowHead has been clicked on,
      * if yes: store its target_type in property (selectedArrowHeadsTargetType)
-     * @param  position - position of mouse click
+     * @param  position
+     *         position of mouse click
      * @return boolean
      */
     public boolean contains(Point2D position) {

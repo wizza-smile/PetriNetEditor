@@ -17,15 +17,18 @@ import javax.swing.SwingUtilities;
 
 
 public class CanvasController {
+    /** a figure type */
     public final static int FIGURE_PLACE = 0;
+    /** a figure type */
     public final static int FIGURE_TRANSITION = 1;
+    /** a figure type */
     public final static int FIGURE_ARC = 2;
+    /** a figure type */
     public final static int FIGURE_LABEL = 3;
 
+    /** ratio to the global size (defined in GlobalController). */
     public final static Double PETRINET_PADDING_BASE = 20.;
-    /**
-     * the padding in pixel, that will be added to the petriNetSize when a new canvas size is computed.
-     */
+    /** the padding in pixel, that will be added to the petriNetSize when a new canvas size is computed. */
     public static Double PETRINET_PADDING = PETRINET_PADDING_BASE;
 
     static private view.Canvas canvas;
