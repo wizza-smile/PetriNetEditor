@@ -229,7 +229,7 @@ public class ArcFigure extends BaseFigure {
             g.setColor(Color.RED);
             g.draw(line);
         } else {
-            //this is an arc, that connects two elements.
+            //this is an arc, that already connects two elements.
             Transition transition = getTransition();
             Place place = getPlace();
 
@@ -243,9 +243,11 @@ public class ArcFigure extends BaseFigure {
             g.setPaint(new Color(123, 123, 123));
             g.draw(line);
 
+            //compute neccesary values to draw the Arc.
             computeGradientTriangle();
             computeIntersectionPlace();
             computeIntersectionTransition();
+            ///////////////////////////
 
             if (intersection_transition == null) return;
 
@@ -267,7 +269,7 @@ public class ArcFigure extends BaseFigure {
                 arrow_heads[0] = arrowHead;
                 arrowHead.draw(g);
             } else if (intersection_transition != null) {
-                // Transition is NOT a target
+                //the Transition is NOT a target
                 Rectangle2D point = new Rectangle2D.Double(
                     intersection_transition.getX() - BASE_SQUARE_SIZE / 12,
                     intersection_transition.getY() - BASE_SQUARE_SIZE / 12,
@@ -284,7 +286,7 @@ public class ArcFigure extends BaseFigure {
                 arrow_heads[1] = arrowHead;
                 arrowHead.draw(g);
             } else {
-                //Place is NOT target
+                //the Place is NOT a target
                 Rectangle2D point = new Rectangle2D.Double(
                     intersection_place.getX() - BASE_SQUARE_SIZE / 12,
                     intersection_place.getY() - BASE_SQUARE_SIZE / 12,
@@ -409,6 +411,7 @@ public class ArcFigure extends BaseFigure {
          * @param g Canvas graphic.
          */
         public void draw(Graphics2D g) {
+            //create the triangle as Path with peak up.
             Path2D path = new Path2D.Double();
             path.moveTo(ARROW_HEAD_RADIUS, 0);
             path.lineTo(2*ARROW_HEAD_RADIUS, 2*ARROW_HEAD_RADIUS);
@@ -417,10 +420,12 @@ public class ArcFigure extends BaseFigure {
 
             Rectangle2D bounds = path.getBounds2D();
 
+            //rotate the triangle to the desired angle.
             AffineTransform transform = new AffineTransform();
             transform.rotate(Math.toRadians(rotation_angle), bounds.getX() + bounds.getWidth() / 2, bounds.getY() + bounds.getHeight() / 2);
-
             rotatedArrowShape = path.createTransformedShape( transform );
+
+            //draw the rotated triangle at the desired position.
             g.setColor(Color.BLACK);
             g.translate(offset_x, offset_y);
             g.fill(rotatedArrowShape);
@@ -428,13 +433,16 @@ public class ArcFigure extends BaseFigure {
             // bounds = rotated.getBounds2D();
             // g.draw(bounds);
 
+            //reset the current graphics position back to original position.
             g.translate(-offset_x, -offset_y);
         }
 
         /**
          * determine the rotation angle for the arrowHead.
-         * @param  target_is_left whether the target element of the arrowHead is positioned left from it's source element.
-         * @param  alpha          the angle alpha of the gradient triangle of the respective Arc.
+         * @param  target_is_left
+         *         whether the target element of the arrowHead is positioned left from it's source element.
+         * @param  alpha
+         *         the angle alpha of the gradient triangle of the respective Arc.
          * @return the rotation angle.
          */
         public Double getRotationAngle(boolean target_is_left, Double alpha) {

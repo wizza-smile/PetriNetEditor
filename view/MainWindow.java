@@ -15,6 +15,10 @@ import javax.swing.border.*;
 import javax.swing.JToolBar.*;
 
 
+/**
+ * Main Window - contains the Toolbar, the MenuBar and the statusBar,
+ * as well as, of course, the Canvas in its ScrollPane.
+ */
 public class MainWindow extends JFrame {
 
     Color editorBackgroundColor = new Color(224, 224, 255);
@@ -67,7 +71,6 @@ public class MainWindow extends JFrame {
         this.add(statusbar, BorderLayout.SOUTH);
 
         canvasPane = createCanvasPane();
-
         this.add(canvasPane, BorderLayout.CENTER);
     }
 

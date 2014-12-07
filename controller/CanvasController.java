@@ -160,7 +160,8 @@ public class CanvasController {
 
 
     /**
-     * handle mouse_press_event when in actionMode "GlobalController.ACTION_ARC"
+     * handle mouse_press_event when in actionMode "GlobalController.ACTION_ARC".
+     * If the user clicks on a Transition or Place, start a new Arc, with the clicked element as source.
      */
     public static void handleMousePressedModeArc() {
         //check if a transition/place is under mousepointer
@@ -177,7 +178,8 @@ public class CanvasController {
 
     /**
      * adjusts the reference point from which the grid will be painted, to create the illusion of a static grid.
-     * @param p - the x/y amount by which the reference point will be adjusted
+     * @param p
+     *        the x/y amount by which the reference point will be adjusted
      */
     public static void addToGridReferencePoint(Point2D p) {
         canvas.addToGridReferencePoint(p);

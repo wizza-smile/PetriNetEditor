@@ -117,17 +117,23 @@ public class Arc extends PetriNetElement {
     }
 
     /**
-     * check if a target has already be choosen for this Arc.
+     * check if a target has already been choosen for this Arc.
      * @return boolean
      */
     public boolean isTargetSet() {
-        return transition_id == null || place_id == null ? false : true;
+        return (transition_id == null || place_id == null) ? false : true;
     }
 
+    /**
+     * set the target for an unfinished Arc to the element with given target_id.
+     * Checks if an Arc with the same set of Place and Transition elements already exists,
+     * and if so, merges the two Arcs.
+     * @param  target_id the element_id of the target to set.
+     * @return true, if the target has been successfully selected, false otherwise.
+     */
     public boolean selectTarget(String target_id) {
         String source_id = this.getSourceId();
         boolean validTarget = false;
-
 
         Connectable target_elem = (Connectable)PetriNetController.getElementById(target_id);
         if (TARGET_TRANSITION == this.target_type && target_elem instanceof Transition) {
@@ -142,7 +148,6 @@ public class Arc extends PetriNetElement {
             target_elem.addArcId(this.getId());
             validTarget = true;
         }
-
 
         if (!validTarget) return false;
 

@@ -66,7 +66,8 @@ public class GlobalController {
      * set the current actionMode.
      * performs cleanup operations depending on which ActionMode
      * the Application is switching from/to
-     * @param actionMode - the actionMode to switch to
+     * @param actionMode
+     *        the actionMode to switch to
      */
     public static void setActionMode(int actionMode) {
         //cleanup after actionMode

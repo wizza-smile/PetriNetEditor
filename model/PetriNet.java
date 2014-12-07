@@ -20,11 +20,6 @@ public class PetriNet {
     protected ArrayList<String> arc_ids = new ArrayList<String>();
 
 
-
-    // public String getNextElementId() {
-    //     return UUID.randomUUID().toString();
-    // }
-
     public int getElementCount() {
         return element_counter;
     }
@@ -38,21 +33,17 @@ public class PetriNet {
     }
 
     public java.util.List<String> getTransitionIds() {
-        // return Collections.synchronizedList(transition_ids);
         return transition_ids;
     }
 
     public java.util.List<String> getPlaceIds() {
-        // return Collections.synchronizedList(transition_ids);
         return place_ids;
     }
-
 
     public void addArc(String arcId, PetriNetElement arc) {
         addElement(arcId, arc);
         getArcIds().add(arcId);
     }
-
 
     public void removeArcId(String arcId) {
         getArcIds().remove(arcId);
@@ -65,8 +56,6 @@ public class PetriNet {
     public void removePlaceId(String place_id) {
         getPlaceIds().remove(place_id);
     }
-
-
 
     public void addElement(String elementId, PetriNetElement element) {
         getElements().put(elementId, element);
@@ -81,10 +70,6 @@ public class PetriNet {
     public PetriNetElement getElementById(String elementId) {
         return elements.get(elementId);
     }
-
-
-
-
 
 
 }

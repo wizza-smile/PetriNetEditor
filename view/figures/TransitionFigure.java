@@ -17,7 +17,7 @@ public class TransitionFigure extends Positionable {
     private Rectangle2D transitionRectangle;
     private String labelFigureId;
 
-    final public static double SIZE_BASE = 45;
+    final public static double SIZE_BASE = 43;
     public static double SIZE = SIZE_BASE;
 
 
