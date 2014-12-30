@@ -44,7 +44,7 @@ public abstract class PetriNetElement {
     public abstract String generateId();
 
     /**
-     * remove this element from the PetriNet element HashMap and the corresponding ids Collection.
+     * remove this element from the PetriNet's element-HashMap and the corresponding ids Collection.
      */
     public abstract void unregister();
 

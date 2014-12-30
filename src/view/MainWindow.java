@@ -21,22 +21,46 @@ import javax.swing.JToolBar.*;
  */
 public class MainWindow extends JFrame {
 
+    /** the background color of the canvasPane */
     Color editorBackgroundColor = new Color(224, 224, 255);
 
-    JPanel panel;
-    JLabel statusbar;
-    Canvas canvas;
-    public JScrollPane canvasPane;
+    /** the scrollpane that contains the canvas */
+    protected JScrollPane canvasPane;
 
-    //{buttonId, tooltipText}
-    public Object[][] fileButtons = new Object[][]{
+    /** the canvas that the petrinet is drawn upon */
+    protected Canvas canvas;
+
+    /** the statusbar on the bottom of the window */
+    protected JLabel statusbar;
+
+
+    /**
+     * the File related functionality
+     * (displayed as buttons and menu entries)
+     * encoded as Object:
+     * {id, tooltipText}
+     * the id will also be used to bind the functionality
+     */
+    public Object[][] fileFunctions = new Object[][]{
         {"create_new", "New"},
         {"open", "Open"},
         {"save", "Save"},
         {"exit", "Exit"}
     };
 
-    public Object[][] modeButtons = new Object[][]{
+    // same as above for options
+    public Object[][] optionsFunctions = new Object[][]{
+        {"toggle_opacity", "toggle opacity"}
+    };
+
+    /**
+     * the ActionMode related functionality
+     * (displayed as buttons)
+     * encoded as Object:
+     * {id, tooltipText}
+     * the id will also be used to bind the functionality
+     */
+    public Object[][] modeFunctions = new Object[][]{
         {"select_mode", "Select"},
         {"place_mode", "Place"},
         {"transition_mode", "Transition"},
@@ -44,13 +68,21 @@ public class MainWindow extends JFrame {
     };
 
 
-    // a resize Listener to call the Canvas-Resizing whenever the mainWindow size changes
+    /**
+     * a resize Listener to call the Canvas-Resizing whenever the mainWindow size changes
+     */
     private class ResizeListener extends ComponentAdapter {
         public void componentResized(ComponentEvent e) {
             CanvasController.cleanUpCanvas();
         }
     }
 
+    /**
+     * initializes the MainWindow
+     * sets default values and creates all the parts:
+     * menubar/toolbar/canvasPane/statusbar
+     * sets a resizeListener
+     */
     public void init() {
         this.addComponentListener(new ResizeListener());
         this.setTitle(GlobalController.applicationTitle);
@@ -74,6 +106,10 @@ public class MainWindow extends JFrame {
         this.add(canvasPane, BorderLayout.CENTER);
     }
 
+    /**
+     * injects the canvas object into the canvasPane
+     * @param canvas the canvas object
+     */
     public void injectCanvas(Canvas canvas) {
         canvasPane.setViewportView(canvas);
     }
@@ -88,13 +124,24 @@ public class MainWindow extends JFrame {
         return canvasPane;
     }
 
+    /**
+     * returns the canvasPane
+     * @return the canvasPane
+     */
+    public JScrollPane getCanvasPane() {
+        return canvasPane;
+    }
 
+    /**
+     * set a text to the statusbar
+     * @param s the text to be displayed in the statusbar
+     */
     public void setStatusBarText(String s) {
         statusbar.setText(s);
     }
 
     private JLabel createStatusBar() {
-        JLabel statusLabel = new JLabel("status");
+        JLabel statusLabel = new JLabel(" ");
         statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
         statusLabel.setBorder(new BevelBorder(BevelBorder.LOWERED));
         statusLabel.setBackground(Color.WHITE);
@@ -104,38 +151,34 @@ public class MainWindow extends JFrame {
     }
 
 
+    /**
+     * the MenuBar.
+     * contains the "File" and the "Options" menu
+     */
     private class MenuBar extends JMenuBar {
 
         MenuBar() {
-            // ImageIcon icon = new ImageIcon("exit.png");
-
             //File Menu
             JMenu file = new JMenu("File");
-            this.addMenuBlock(file, fileButtons);
-
-            // //ActionMode Menu
-            // JMenu actionMode = new JMenu("Action Mode");
-            // this.addMenuBlock(actionMode, modeButtons);
+            this.addMenuBlock(file, fileFunctions);
 
             //Options Menu
             JMenu options = new JMenu("Options");
-            JMenuItem opacityMenuItem = new JMenuItem("toggle opacity");
-            opacityMenuItem.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent event) {
-                    GlobalController.toggleOpacity();
-                }
-            });
-            options.add(opacityMenuItem);
-            this.add(options);
+            this.addMenuBlock(options, optionsFunctions);
         }
 
+        /**
+         * creates and adds menuentries to a menu
+         * @param menu  the menu.
+         * @param block the parameter which defines the menuentries
+         */
         private void addMenuBlock(JMenu menu, Object[][] block) {
             for (Object[] button_info : block) {
                 final Object[] final_button_info = button_info;
                 JMenuItem eMenuItem = new JMenuItem((String)button_info[1]);
                 eMenuItem.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent event) {
-                        MainWindowController.executeButtonBarAction((String)final_button_info[0]);
+                        MainWindowController.executeMenuOrButtonBarAction((String)final_button_info[0]);
                     }
                 });
                 menu.add(eMenuItem);
@@ -143,6 +186,7 @@ public class MainWindow extends JFrame {
             this.add(menu);
         }
     }
+
 
     /**
      * the ButtonBar
@@ -152,26 +196,29 @@ public class MainWindow extends JFrame {
         ButtonBar() {
             super(JToolBar.HORIZONTAL);
 
-            //will take display parameter for each block of buttons
-            Object[] blockParams;
+            /** will take display parameter for each block of buttons */
+            Object[] displayParams;
 
             this.setFloatable(false);
             this.setAlignmentX(0);
             this.setBackground(Color.DARK_GRAY);
             this.setMargin(new Insets(3,5,5,5));
 
-            blockParams = new Object[]{"file", 40};
-            addButtonBlock(fileButtons, blockParams);
+            // add the FileMenu related buttons
+            displayParams = new Object[]{"file", 40};
+            addButtonGroup(fileFunctions, displayParams);
 
             Separator jSeparator = new Separator();
             this.add(jSeparator);
 
-            blockParams = new Object[]{"mode", 60};
-            addButtonBlock(modeButtons, blockParams);
+            // add the ActionMode buttons
+            displayParams = new Object[]{"mode", 60};
+            addButtonGroup(modeFunctions, displayParams);
 
             Separator jSeparator2 = new Separator();
             this.add(jSeparator2);
 
+            // add the slider that controls the display size of various elements
             JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 20);
                 slider.addChangeListener(new ChangeListener() {
                 public void stateChanged(ChangeEvent e) {
@@ -193,18 +240,29 @@ public class MainWindow extends JFrame {
             this.add(slider);
         }
 
-        private void addButtonBlock(Object[][] block, Object[] blockParams) {
+        /**
+         * creates and adds a group of buttons to the buttonbar
+         * @param block         contains the params that defines the buttons
+         * @param displayParams contains params to alter the appearance
+         */
+        private void addButtonGroup(Object[][] block, Object[] displayParams) {
             ButtonGroup grp = new ButtonGroup();
             for (Object[] button_info : block) {
                 this.addSeparator(new Dimension(8, 1));
-                JButton btn = createButton(button_info, blockParams, grp);
+                JButton btn = createButton(button_info, displayParams, grp);
                 grp.add(btn);
                 this.add(btn);
             }
         }
 
-
-        private JButton createButton(Object[] button_info, Object[] blockParams, ButtonGroup grp) {
+        /**
+         * create a single button and add it to the related buttonGroup
+         * @param  button_info   contains the params that define the button
+         * @param  displayParams defines the appearance of the button
+         * @param  grp           the ButtonGroup this button will be added to
+         * @return               [description]
+         */
+        private JButton createButton(Object[] button_info, Object[] displayParams, ButtonGroup grp) {
             ImageIcon icon = new ImageIcon(this.getClass().getResource("images/" + button_info[0] + ".png"));
             final JButton button = new JButton(icon);
             final Object[] final_button_info = button_info;
@@ -212,7 +270,7 @@ public class MainWindow extends JFrame {
 
             button.setToolTipText((String)button_info[1]);
 
-            if ((String)blockParams[0] == "file") {
+            if ((String)displayParams[0] == "file") {
                 button.setBorder(new LineBorder(Color.RED, 2));
                 button.setBorderPainted(true);
                 button.setBackground(new Color( 255,0,0,120 ));
@@ -221,9 +279,10 @@ public class MainWindow extends JFrame {
 
             button.setOpaque(true);
 
-            button.setMaximumSize(new Dimension((int)blockParams[1], 30));
-            button.setPreferredSize(new Dimension((int)blockParams[1], 30));
+            button.setMaximumSize(new Dimension((int)displayParams[1], 30));
+            button.setPreferredSize(new Dimension((int)displayParams[1], 30));
 
+            //this actionListener will ensure that only one button of a buttonGroup appears as "selected/active" at a time
             button.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent event) {
                     //unselect all other buttons from related group
@@ -234,7 +293,7 @@ public class MainWindow extends JFrame {
                     }
                     //select this button and execute action
                     button.setSelected(true);
-                    MainWindowController.executeButtonBarAction((String)final_button_info[0]);
+                    MainWindowController.executeMenuOrButtonBarAction((String)final_button_info[0]);
                 }
             });
 

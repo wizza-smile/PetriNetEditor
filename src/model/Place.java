@@ -10,7 +10,6 @@ import java.awt.geom.*;
 import javax.swing.*;
 
 public class Place extends Connectable {
-    public String label;
 
     private int tokenCount;
 
@@ -42,10 +41,18 @@ public class Place extends Connectable {
         PetriNetController.removePlace(this.getId());
     }
 
+    /**
+     * returns the number of tokens of this Place
+     * @return int
+     */
     public int getTokenCount() {
         return tokenCount;
     }
 
+    /**
+     * sets the number of tokens of this Place
+     * @param tokenCount int
+     */
     public void setTokenCount(int tokenCount) {
         this.tokenCount = tokenCount;
     }

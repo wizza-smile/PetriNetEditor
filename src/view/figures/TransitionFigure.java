@@ -17,7 +17,14 @@ public class TransitionFigure extends Positionable {
     private Rectangle2D transitionRectangle;
     private String labelFigureId;
 
+    /**
+     * ratio to the global size (defined in GlobalController).
+     */
     final public static double SIZE_BASE = 43;
+
+    /**
+     * the actual size of TransitionFigure
+     */
     public static double SIZE = SIZE_BASE;
 
 
@@ -47,6 +54,10 @@ public class TransitionFigure extends Positionable {
         return CanvasController.FIGURE_TRANSITION;
     }
 
+    /**
+     * draws the related LabelFigure.
+     * @param g the graphics object of the canvas
+     */
     public void drawLabel(Graphics2D g) {
         this.getLabelFigure().draw(g);
     }
@@ -108,6 +119,10 @@ public class TransitionFigure extends Positionable {
         }
     }
 
+    /**
+     * check whether the related Transition-element can be activated
+     * @return boolean
+     */
     public boolean isActivated() {
         return this.getTransition().isActivated();
     }
@@ -141,13 +156,21 @@ public class TransitionFigure extends Positionable {
     ///////////////
     //POPUP    ////
 
+    /**
+     * show the popUp menu at the position of right mouse click
+     * @param position the position of right mouse click
+     */
     public void showPopup(Point2D position) {
         JPopupMenu contextMenu = this.getPopup();
         Double position_x = position.getX();
         Double position_y = position.getY();
-        contextMenu.show(MainWindowController.main_window, position_x.intValue(), position_y.intValue());
+        contextMenu.show(MainWindowController.getMainWindow(), position_x.intValue(), position_y.intValue());
     }
 
+    /**
+     * create and return the popUp menu for TransitionFigures
+     * @return the popUp menu
+     */
     public JPopupMenu getPopup() {
         JPopupMenu transitionPopupMenu = new JPopupMenu();
 

@@ -480,7 +480,7 @@ public class ArcFigure extends BaseFigure {
         JPopupMenu contextMenu = this.getPopup(this.getId(), this.selectedArrowHeadsTargetType);
         Double position_x = position.getX();
         Double position_y = position.getY();
-        contextMenu.show(MainWindowController.main_window, position_x.intValue(), position_y.intValue());
+        contextMenu.show(MainWindowController.getMainWindow(), position_x.intValue(), position_y.intValue());
     }
 
     /**

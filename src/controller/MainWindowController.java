@@ -16,37 +16,56 @@ import javax.swing.filechooser.*;
 
 public class MainWindowController {
 
-    public static MainWindow main_window;
+    /** the MainWindow object */
+    protected static MainWindow main_window;
+
+    /** keeps the directory last visited by any filebrowser */
     static File current_directory;
 
 
-
+    /** creates and initializes the MainWindow object */
     public static void startMainWindow() {
         main_window = new MainWindow();
         main_window.init();
         main_window.setVisible(true);
     }
 
+    /**
+     * returns the MainWindow object
+     * @return the MainWindow object
+     */
     public static MainWindow getMainWindow() {
         return main_window;
     }
 
-
+    /**
+     * injects the canvas object into the canvasPane of the MainWindow object
+     * @param canvas the canvas object
+     */
     public static void injectCanvas(view.Canvas canvas) {
         main_window.injectCanvas(canvas);
     }
 
-
+    /**
+     * sets the text shown in the statusbar
+     * @param s the text as String
+     */
     public static void setStatusBarText(String s) {
         main_window.setStatusBarText(s);
     }
 
-
+    /**
+     * returns the viewport of the canvas pane
+     * @return the viewport
+     */
     public static JViewport getViewport() {
-        return main_window.canvasPane.getViewport();
+        return main_window.getCanvasPane().getViewport();
     }
 
-
+    /**
+     * computes and returns a rectangle that is congruent to the section of the viewport's current view position
+     * @return the computed rectangle
+     */
     public static Rectangle getViewportRectangle() {
         Double upper_left_x = getViewport().getViewPosition().getX();
         Double upper_left_y = getViewport().getViewPosition().getY();
@@ -59,7 +78,7 @@ public class MainWindowController {
         return new Rectangle(upper_left_x.intValue(), upper_left_y.intValue(), width.intValue(), height.intValue());
     }
 
-
+    /** open a file browser that lets the user select a PNML file to be opened */
     public static void openFile() {
         final JFileChooser fileChooser = new JFileChooser(current_directory);
         FileNameExtensionFilter filter = new FileNameExtensionFilter("PNML FILES", "pnml", "xml");
@@ -86,7 +105,7 @@ public class MainWindowController {
         }
     }
 
-
+    /** open a file browser that lets the user define a PNML file that the currently edited petrinet will be saved to */
     public static void saveFile() {
         final JFileChooser fileChooser = new JFileChooser(current_directory);
         fileChooser.addActionListener(new ActionListener() {
@@ -102,11 +121,13 @@ public class MainWindowController {
         }
     }
 
-
-    public static void executeButtonBarAction(String button_id) {
-
-        switch (button_id) {
-            //File buttons
+    /**
+     * executes a user selected action from the menubar/buttonbar by id
+     * @param action_id the id of the action to be executed
+     */
+    public static void executeMenuOrButtonBarAction(String action_id) {
+        switch (action_id) {
+            //FileMenu functionality
             case "create_new":
                 GlobalController.clearPetriNetEditor();
                 break;
@@ -119,7 +140,11 @@ public class MainWindowController {
             case "exit":
                 System.exit(0);
                 break;
-            //Mode buttons
+            //options menu
+            case "toggle_opacity":
+                GlobalController.toggleOpacity();
+                break;
+            //change ActionMode functionality
             case "select_mode":
                 GlobalController.setActionMode(GlobalController.ACTION_SELECT);
                 break;

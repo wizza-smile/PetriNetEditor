@@ -10,9 +10,6 @@ import java.awt.geom.*;
 import javax.swing.*;
 
 public class Transition extends Connectable {
-    protected final int elementType = PetriNetController.ELEMENT_TRANSITION;
-
-    public String label;
 
     /**
      * Constructor to be called by PNML Parser

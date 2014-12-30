@@ -12,11 +12,26 @@ import java.awt.event.*;
 import java.awt.geom.*;
 
 
+/**
+ * the controller of element selection related functionality
+ */
 public class SelectionController {
 
-    public static Rectangle2D selectionRectangle;
-    private static ArrayList<String> selectedElements_ids = new ArrayList<String>();
+    /** holds the current dimensions and position of the SelectionFigure */
+    protected static Rectangle2D selectionRectangle;
 
+    /** a List of ids of all elements currently selected */
+    protected static ArrayList<String> selectedElements_ids = new ArrayList<String>();
+
+
+    public static Rectangle2D getSelectionRectangle() {
+        return selectionRectangle;
+    }
+
+    /**
+     * a handler method for left mouse clicks in ActionMode "SELECT"
+     * @param e the mouseEvent of the left mouse click
+     */
     public static void mousePressedInModeSelect(MouseEvent e) {
         Point2D mousePressPoint = CanvasController.mousePressPoint;
         BaseFigure figureUnderMousePointer = SelectionController.getFigureUnderMousePointer(mousePressPoint);
@@ -40,6 +55,8 @@ public class SelectionController {
                             GlobalController.setActionMode(GlobalController.ACTION_DRAG_SELECTION);
                         }
                     } else {
+                        //if the user is pressing the selectionKey (strg/ctrl) the element will be added to current selection
+                        //otherwise the current selection gets cleared
                         if (!CanvasController.selectionKeyActive) {
                             SelectionController.clearSelection();
                         }
@@ -58,11 +75,14 @@ public class SelectionController {
         }
     }
 
-    //will select all petriNetElements that are intersecting with the selection rectangle.
+    /**
+     * will select all petriNetElements that are intersecting with the selection rectangle.
+     */
     public static void updateSelection() {
         double currentX = CanvasController.currentMousePoint.getX() > 0 ? CanvasController.currentMousePoint.getX() : 0;
         double currentY = CanvasController.currentMousePoint.getY() > 0 ? CanvasController.currentMousePoint.getY() : 0;
 
+        //compute the current selection rectangle
         double width = Math.abs(CanvasController.mousePressPoint.getX() - currentX);
         double height = Math.abs(CanvasController.mousePressPoint.getY() - currentY);
         double x = Math.min(CanvasController.mousePressPoint.getX(), currentX);
@@ -87,13 +107,17 @@ public class SelectionController {
 
     /**
      * remove and add again all selected transition and place ids to their id Collection,
-     * so that they willalways be drawn ontop of unselected elements
+     * so that they will always be drawn ontop of unselected elements
      */
     public static void onUpdateSelectedElements() {
         CanvasController.getPlacesAndTransitionFiguresIds().removeAll(selectedElements_ids);
         CanvasController.getPlacesAndTransitionFiguresIds().addAll(selectedElements_ids);
     }
 
+    /**
+     * set the offset of all selected elements to the position of the mouse pointer, during the moment of the dragging starts.
+     * @param point the position of the mouse pointer
+     */
     public static void setOffsetToSelectedElements(Point2D point) {
         for (String id : selectedElements_ids ) {
             Positionable figure = (Positionable)CanvasController.getFigureById(id);
@@ -107,7 +131,11 @@ public class SelectionController {
         }
     }
 
-    //get figure, if one is under pointer (TransitionFigure, PlaceFigure, LabelFigure, ArcFigure)
+    /**
+     * get the topmost figure, that is under pointer (TransitionFigure, PlaceFigure, LabelFigure, ArcFigure)
+     * @param  pointer position of the mouse pointer
+     * @return         the figure if one is found
+     */
     public static BaseFigure getFigureUnderMousePointer(Point2D pointer) {
         for (String id : CanvasController.getAllFigureIds() ) {
             BaseFigure figure = CanvasController.getFigureById(id);
@@ -147,6 +175,9 @@ public class SelectionController {
         selectedElements_ids = new ArrayList<String>();
     }
 
+    /**
+     * deletes all selected elements.
+     */
     public static void deleteSelection() {
         for (String id : selectedElements_ids ) {
             ((Positionable)CanvasController.getFigureById(id)).getElement().delete();

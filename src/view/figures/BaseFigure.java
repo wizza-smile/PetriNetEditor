@@ -36,7 +36,7 @@ public abstract class BaseFigure {
     public abstract void delete();
 
     /**
-     * checks wether an relevant part of the figures representaion has been clicked on
+     * checks wether a relevant part of the figures representaion has been clicked on
      * @param  position   position of mouse click
      * @return            boolean
      */

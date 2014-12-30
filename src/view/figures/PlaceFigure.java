@@ -20,7 +20,14 @@ public class PlaceFigure extends Positionable {
     private Ellipse2D tokenPoint;
     private LabelFigure labelFigure;
 
+    /**
+     * ratio to the global size (defined in GlobalController).
+     */
     final public static double DIAMETER_BASE = 50;
+
+    /**
+     * the actual diameter of PlaceFigure
+     */
     public static double DIAMETER = DIAMETER_BASE;
 
 
@@ -45,6 +52,10 @@ public class PlaceFigure extends Positionable {
         return CanvasController.FIGURE_PLACE;
     }
 
+    /**
+     * returns the Place element related to this PlaceFigure
+     * @return the Place element
+     */
     public Place getPlace() {
         return (Place)this.getElement();
     }
@@ -61,12 +72,16 @@ public class PlaceFigure extends Positionable {
         return this.ellipse.intersects(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
     }
 
+    /**
+     * draws the related LabelFigure.
+     * @param g the graphics object of the canvas
+     */
     public void drawLabel(Graphics2D g) {
         this.getLabelFigure().draw(g);
     }
 
     public void draw(Graphics2D g) {
-        setEllipse(generateEllipse());
+        this.ellipse = generateEllipse();
 
         drawFill(g);
         drawBorder(g);
@@ -117,11 +132,19 @@ public class PlaceFigure extends Positionable {
         g.draw(ellipse);
     }
 
+    /**
+     * draws the visual representaion of the tokenCount of this Place.
+     * @param g the graphics object of the canvas
+     */
     public void drawToken(Graphics2D g) {
         g.setPaint(new Color(0, 0, 0));
         g.fill(tokenPoint);
     }
 
+    /**
+     * creates and returns the dot that represents a token count of one.
+     * @return the dot
+     */
     public Ellipse2D generateTokenPoint() {
         return new Ellipse2D.Double(
             getPlace().getPosition().getX() - DIAMETER / 12,
@@ -131,6 +154,10 @@ public class PlaceFigure extends Positionable {
         );
     }
 
+    /**
+     * creates and returns the circle graphic for this Place
+     * @return the circle
+     */
     public Ellipse2D generateEllipse() {
         return new Ellipse2D.Double(
             getPlace().getPosition().getX() - DIAMETER / 2,
@@ -144,9 +171,6 @@ public class PlaceFigure extends Positionable {
         getLabelFigure().updatePosition();
     }
 
-    public void setEllipse(Ellipse2D e) {
-        this.ellipse = e;
-    }
 
     public Rectangle2D getBounds() {
         return this.ellipse.getBounds();
@@ -156,18 +180,26 @@ public class PlaceFigure extends Positionable {
     ///////////////
     //POPUP    ////
 
+    /**
+     * show the popUp menu at the position of right mouse click
+     * @param position the position of right mouse click
+     */
     public void showPopup(Point2D position) {
         JPopupMenu contextMenu = this.getPopup();
         Double position_x = position.getX();
         Double position_y = position.getY();
-        contextMenu.show(MainWindowController.main_window, position_x.intValue(), position_y.intValue());
+        contextMenu.show(MainWindowController.getMainWindow(), position_x.intValue(), position_y.intValue());
     }
 
+    /**
+     * create and return the popUp menu for PlaceFigures
+     * @return the popUp menu
+     */
     public JPopupMenu getPopup() {
         final String place_id = this.getId();
         JPopupMenu placePopupMenu = new JPopupMenu();
 
-        //menu point "set token"
+        //create and add the menu point "set token"
         JMenuItem menuItemToken = new JMenuItem();
         menuItemToken.setText("set TokenCount");
         menuItemToken.addActionListener(new ActionListener() {

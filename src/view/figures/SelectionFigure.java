@@ -15,7 +15,7 @@ public class SelectionFigure {
     protected static Color fillColor = new Color(255, 0, 255, 50);
 
     public static void draw(Graphics2D g) {
-        rectangle = SelectionController.selectionRectangle.getBounds();
+        rectangle = SelectionController.getSelectionRectangle().getBounds();
         drawFill(g);
         drawStroke(g);
     }

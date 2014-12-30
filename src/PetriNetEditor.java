@@ -7,8 +7,11 @@ import controller.*;
  */
 public class PetriNetEditor {
 
+    /**
+     * the main method that starts the whole application
+     * @param args no arguments are actively taken
+     */
     public static void main(String[] args) {
-        System.out.println("START");
         controller.GlobalController.startApplication();
     }
 
